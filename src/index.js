@@ -1,15 +1,68 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import Matrix from './components/matrix_window';
+import TopicView from './components/topic_view';
+import DocumentControl from './components/document_control';
+import Controls from './components/controls';
+import DocumentView from "./components/document_view";
 
-import App from './components/app';
-import reducers from './reducers';
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+export default class App extends Component {
+	constructor(props){
+		super(props);
 
-ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
-    <App />
-  </Provider>
-  , document.querySelector('.container'));
+
+	}
+
+
+
+  render() {
+
+    return (
+	<div>
+		<div  class="jumbotron">
+
+			<h1>Serendip: Topic Model Driven Visualization</h1>
+
+		</div>
+
+		<div className="row">
+
+			<div className="col-lg-3">
+                <div className="row">
+				    <Controls />
+                </div>
+                <hr/>
+                <div className="row">
+                    <DocumentControl />
+                </div>
+			</div>
+
+            <div className="col-lg-6">
+			    <Matrix />
+            </div>
+
+            <div className="col-lg-3">
+                <div className="row">
+                    <TopicView />
+                </div>
+                <hr/>
+                <div className="row">
+                    <DocumentView />
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+	</div>
+    );
+  }
+}
+
+
+
+ReactDOM.render(<App />, document.querySelector('.container'));
