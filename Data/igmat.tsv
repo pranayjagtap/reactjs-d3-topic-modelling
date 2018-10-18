@@ -1,0 +1,21 @@
+Industry	Clerks	Communication	Construction	Engineering	Equip Op	Repair	Food Svc	Gen Phys	Health & Bio	Hum & Ed	Analysis	Managers	Outreach	Public safety	Service
+Government	3	2	2	2	3	2	2	3	3	3	3	3	3	3	2
+Other Svcs	3	2	2	1	3	2	3	3	2	2	2	3	3	1	3
+Accom/Food	3	1	1	1	3	1	4	3	1	1	1	3	1	1	4
+Arts/Ent/Rec	2	2	1	1	2	1	3	2	1	2	2	2	3	1	3
+Health/Soc	4	2	1	1	3	1	3	2	4	3	2	3	4	2	3
+Ed Svcs	3	3	1	1	3	1	3	2	3	4	3	3	3	1	3
+Admin/Waste	3	2	1	2	2	1	2	2	2	1	3	3	1	1	2
+Mgmt	3	2	1	2	2	1	2	2	2	1	2	2	1	1	2
+Prof/Sci/Tech	3	2	1	3	2	1	1	2	2	1	3	3	2	1	2
+Real Estate	3	1	1	1	2	1	2	2	1	1	2	2	1	1	2
+Finance	4	1	1	1	1	1	2	1	2	1	3	3	1	1	2
+Information	3	3	1	1	2	2	2	2	1	2	3	3	1	1	2
+Transport	3	1	1	1	3	1	2	3	1	1	2	3	2	1	3
+Retail	3	1	2	1	3	2	4	3	2	1	2	3	3	1	4
+Wholesale	3	2	1	2	3	2	2	3	1	1	3	3	1	1	3
+Manufacturing	3	2	2	3	4	3	3	4	2	1	3	3	1	1	3
+Construction	3	1	3	2	3	3	1	3	1	1	2	3	1	1	1
+Utilities	2	1	2	1	2	1	1	2	1	1	2	2	1	1	1
+Extraction	1	1	1	1	2	1	1	1	1	1	1	1	1	1	1
+Agriculture	2	1	1	1	2	1	2	3	1	1	1	1	1	1	2

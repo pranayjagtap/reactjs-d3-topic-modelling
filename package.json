@@ -31,7 +31,8 @@
     "react-dom": "16.3.2",
     "react-redux": "^5.0.7",
     "redux": "4.0.0",
-    "youtube-api-search": "0.0.5"
+    "youtube-api-search": "0.0.5",
+    "d3": "latest"
   },
   "bugs": {
     "url": "https://github.com/StephenGrider/ReduxSimpleStarter/issues"

@@ -1,0 +1,33 @@
+.grow rect {
+    stroke: black;
+    shape-rendering: crispEdges;
+    fill: none;
+}
+
+
+.axis text {
+    font: 10px sans-serif;
+}
+
+.legend text {
+    font: 12px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.x.axis path,
+.x.axis line {
+    display: none;
+}
+
+
+.y.axis path,
+.y.axis line {
+    display: none;
+}
+

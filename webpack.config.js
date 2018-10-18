@@ -5,6 +5,7 @@ module.exports = {
     publicPath: '/',
     filename: 'bundle.js'
   },
+  
   module: {
     loaders: [
       {
@@ -17,7 +18,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx','.css']
   },
   devServer: {
     historyApiFallback: true,
@@ -28,3 +29,4 @@ module.exports = {
     }
   }
 };
+
