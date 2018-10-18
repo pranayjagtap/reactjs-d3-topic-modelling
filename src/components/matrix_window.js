@@ -1,7 +1,7 @@
 import {Component} from "react";
 import React from "react";
 import * as d3 from "d3-3";
-//import  '../../style/style.css';
+import  '../../style/style.css';
 class Matrix extends Component{
     constructor(props){
         super(props);
