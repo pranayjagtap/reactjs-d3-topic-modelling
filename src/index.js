@@ -20,11 +20,6 @@ export default class App extends Component {
 
     return (
 	<div>
-		<div  class="jumbotron">
-
-			<h1>Serendip: Topic Model Driven Visualization</h1>
-
-		</div>
 
 		<div className="row">
 
