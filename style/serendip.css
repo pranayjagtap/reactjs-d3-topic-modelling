@@ -62,3 +62,16 @@
 .sideworkspace{
 	height: 250px;
 }
+
+#sortcontrol{
+    height: 70px;
+    border-bottom: solid 1px;
+    text-align: center;
+    padding: 20px;
+}
+
+#selectioncontrol{
+	height: 150px;
+    border-bottom: solid 1px;
+    overflow: scroll;
+}
