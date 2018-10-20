@@ -2,26 +2,25 @@ import {Component} from "react";
 import React from "react";
 
 
-class TopicView extends Component{
+class Controls extends Component{
     constructor(props){
         super(props);
-
-        this.state={term:''};
-
     }
-    render (){
+    render (){ 
         return (
-
-            <div style={{backgroundColor: '#F8F8F8',borderRadius: '15px'}}>
-                <h3 align="center">Topic View</h3>
-                <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            <div className="window side">
+                <div className="sidenavbar">Topic View 
+                    <div className="sidebtnctrl">
+                        <div className="sidebtns">a</div>
+                        <div className="sidebtns">b</div>
+                        <div className="sidebtns">c</div>
+                    </div>
+                </div>
+                <div className="sideworkspace">
+                No Topic Selected
+                </div>
             </div>
-
         );
     }
-
-
-
-
 }
-export default TopicView;
+export default Controls;
