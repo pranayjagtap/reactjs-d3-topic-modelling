@@ -6,53 +6,68 @@ import DocumentControl from './components/document_control';
 import Controls from './components/controls';
 import DocumentView from "./components/document_view";
 
+//stylesheet
+import  '../style/serendip.css';
+
+const m5 = {
+    margin: '5px'
+};
+
+const nopad = {
+    padding: '0px'
+};
+
+const title = {
+    fontWeight: '700',
+    margin: '0px 15px',
+};
 
 export default class App extends Component {
 	constructor(props){
 		super(props);
-
-
 	}
 
-
-
   render() {
-
     return (
 	<div>
 
-		<div className="row">
 
-			<div className="col-lg-3">
-                <div className="row">
+		<div  className="navbar">
+        <span style={title}>Serendip</span>
+
+        <select>
+            <option value="0">Select model</option>
+        </select>
+		</div>
+
+
+		<div style={m5}>
+			<div style={nopad} className="col-lg-2">
+                <div style={m5}>
 				    <Controls />
                 </div>
-                <hr/>
-                <div className="row">
+                <div style={m5}>
                     <DocumentControl />
                 </div>
 			</div>
-
-            <div className="col-lg-6">
-			    <Matrix />
+            <div style={m5}>
+                <div style={nopad} className="col-lg-8">
+                    <div style={m5}>
+        			    <Matrix />
+                    </div>
+                </div>
             </div>
 
-            <div className="col-lg-3">
-                <div className="row">
+            <div style={nopad} className="col-lg-2">
+                <div style={m5}>
                     <TopicView />
                 </div>
-                <hr/>
-                <div className="row">
+                <div style={m5}>
                     <DocumentView />
                 </div>
             </div>
 
         </div>
-
-
-
-
-
 	</div>
     );
   }
@@ -60,4 +75,4 @@ export default class App extends Component {
 
 
 
-ReactDOM.render(<App />, document.querySelector('.container'));
+ReactDOM.render(<App/>, document.querySelector('.serendipapp'));

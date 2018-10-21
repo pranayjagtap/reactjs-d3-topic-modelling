@@ -11,17 +11,19 @@ class DocumentView extends Component{
     }
     render (){
         return (
-
-            <div style={{backgroundColor: '#F8F8F8',borderRadius: '15px'}}>
-                <h3 align="center">Document View</h3>
-                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            <div className="window side">
+                <div className="sidenavbar">Document View
+                <div className="sidebtnctrl">
+                        <div className="sidebtns">a</div>
+                        <div className="sidebtns">b</div>
+                        <div className="sidebtns">c</div>
+                    </div>
                 </div>
-
-                );
-            }
-
-
-
-
+                <div className="sideworkspace">
+                No Document selected
+                </div>
+            </div>
+        );
+    }
 }
-    export default DocumentView;
+export default DocumentView;

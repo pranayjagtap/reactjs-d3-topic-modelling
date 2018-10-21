@@ -1,0 +1,78 @@
+.navbar{
+    width: 100%;
+    height: 50px;
+    border: solid 1px;
+    font-weight: 300;
+    font-size: larger;
+    background: #ddd;
+}
+
+.navbar select{
+    width: 220px;
+    font-size: medium;
+}
+
+.window{
+    border: solid 1px;
+}
+
+.window .side{
+	height: 50%;
+}
+
+.sidenavbar{
+	height: 40px;
+    padding: 8px;
+    background: #ddd;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.control{
+	height: 40px;
+	padding: 5px;
+	border-bottom: solid 1px;
+	cursor: pointer;
+}
+
+.sidebtnctrl{
+	float: right;
+}
+
+.sidebtns{
+	display: inline-block;
+    float: left;
+    border: solid 1px;
+    padding: 5px 9px;
+    margin: -6px 1px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.sidebtns:hover{
+	background: #aaa;
+	color: white;
+}
+
+.sidebtns:active{
+	background: black;
+	color: white;
+}
+
+.sideworkspace{
+	height: 250px;
+    overflow-y: scroll; /*added 20-oct-2018 by pranay*/
+}
+
+#sortcontrol{
+    height: 70px;
+    border-bottom: solid 1px;
+    text-align: center;
+    padding: 20px;
+}
+
+#selectioncontrol{
+	height: 150px;
+    border-bottom: solid 1px;
+    overflow: scroll;
+}

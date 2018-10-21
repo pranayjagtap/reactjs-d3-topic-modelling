@@ -12,9 +12,22 @@ class DocumentControl extends Component{
     render (){
         return (
 
-            <div style={{backgroundColor: '#F8F8F8',borderRadius: '15px'}}>
-                <h3 align="center">Document Control</h3>
-                <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            <div className="window side">
+                <div className="sidenavbar">Document Controls</div>
+                <div>
+                    <div className="control">
+                    Labelling by MetaData
+                    </div>
+                    <div className="control">
+                    Sorting
+                    </div>
+                    <div className="control">
+                    Selection
+                    </div>
+                    <div className="control">
+                    Coloring by MetaData
+                    </div>
+                </div>
             </div>
 
         );

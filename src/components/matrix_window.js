@@ -2,6 +2,8 @@ import {Component} from "react";
 import React from "react";
 import * as d3 from "d3-3";
 import  '../../style/style.css';
+import '../../style/serendip.css';
+
 class Matrix extends Component{
     constructor(props){
         super(props);
@@ -174,10 +176,11 @@ class Matrix extends Component{
     //Render will return svg elemen(id="matrix_canvas") where vsiualization will be rendered. Added on 17-Oct-2018.
     render (){
         return (
-
-            <div style={{backgroundColor: '#F8F8F8',borderRadius: '15px'}}>
-                <h3 align="center">This will be the matrix view</h3>
-                <svg id="matrix_canvas" width="500" height="500" style={{border:'solid 1px #eee',borderBottom:'solid 1px #ccc'}} />
+            <div className="window side">
+                <div className="window side">
+                    <div className="sidenavbar">Matrix View</div>
+                </div>
+                <svg id="matrix_canvas" width="100%" height="100%"/>
             </div>
 
         );
