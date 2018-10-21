@@ -1,3 +1,18 @@
+/*
+* Topic view contains bar graphs for topic frequencies.
+* Change#1:
+* Date: 20-Oct-2018
+* Author: Pranay Jagtap
+* Searchstring:"tvchng1"
+* Finished rendering bar chart with annotations for a topic. Currently file selection is hardcoded.
+*
+*
+*
+*
+*
+* */
+
+
 import {Component} from "react";
 import React from "react";
 import * as d3 from "d3-3";
@@ -15,7 +30,7 @@ class TopicView extends Component{
         this.plotBarGraph();
 
     }
-
+//tvchng1 starts
     plotBarGraph(){
         var data2={};
         //We will pass path as a variable with file name according to topic selected by user
@@ -34,24 +49,49 @@ class TopicView extends Component{
 
 
             var svg = d3.select("#topic_canvas");
-
+            var format = d3.format(".4f")
            svg
                 .selectAll("div")
                 .data(data2)
-                .enter().append("div")
-                .style("width", function(d) {
+                .enter()
+              /* If you need text outside the bar
+               .append("text")
+               .text(function(d){
+                   return d[0];
+               })
+               */
+               .append("div")
+               .on("mouseover", function() {
+                  // color=
+                   d3.select(this)
+                       .style("background-color", "orange")
+                       .append('text')
+                       .text(function (d) { return '    ='+format(d[1]) });
+               })
+               .on("mouseout", function(d, i) {
+                   d3.select(this).style("background-color", function() {
+                       return i%2==0?'#98d669':"#77bb43";
+                   }).select("text").remove();;
+               })
+               .style("width", function(d) {
                     return x(d[1]) + "px"; })
                 .style("background-color", function(d,i) {return i%2==0?'#98d669':"#77bb43"})
                 .text(function(d) {
-                    /*To avoid toomany words with no width at the bottom*/
+                    /*To avoid too many words with no width at the bottom*/
                     if(x(d[1])>1)
-                        return d[0]; });
+                        return d[0];
+                })
+               .style("font-weight","bold");
+
+
+
 
         });
 
     }
     /*Added div instead of svg on 20-Oct-2018. SVG didn't render div tags so letting it cascade inside parent div.
      * Also added enabled overflow in serendip.css file for sideworkspace
+     * -Pranay
      * */
 
 
@@ -79,5 +119,7 @@ class TopicView extends Component{
             </div>
         );
     }
+    //tvchng1 ends
+
 }
 export default TopicView;

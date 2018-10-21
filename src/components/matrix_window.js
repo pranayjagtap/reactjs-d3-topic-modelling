@@ -1,3 +1,16 @@
+/*
+* Matrix view contains bubble chart/matrix graph for topic vs document counts.
+* Change#1:
+* Date: 17-Oct-2018
+* Author: Pranay Jagtap
+* Searchstring:"mwchng1"
+* Finished rendering matrix. It is static and need to add interaction.
+*
+* 
+* */
+
+
+
 import {Component} from "react";
 import React from "react";
 import * as d3 from "d3-3";
@@ -16,7 +29,7 @@ class Matrix extends Component{
      //Call plotMatrix on page refresh/load to generate matrix plot based on existing data file.
         this.plotMatrix();
     }
-
+//mwchng1 starts
     //plotMatrix function will contain d3 code for encoding data into matrix visualization. Started 17-Oct-2018
     plotMatrix(){
 
@@ -188,6 +201,6 @@ class Matrix extends Component{
 
 
 
-
+//mwchng1 ends
 }
 export default Matrix;
