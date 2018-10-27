@@ -18,21 +18,51 @@ import React from "react";
 import * as d3 from "d3-3";
 import  '../../style/style.css';
 import  '../../style/serendip.css';
+import ReactFauxDom from 'react-faux-dom'
+import {withFauxDOM} from 'react-faux-dom'
 
-class TopicView extends Component{
-    constructor(props){
+class TopicView extends Component {
+    constructor(props) {
         super(props);
+        var bar=null;
+    }
+
+
+    componentDidMount() {
+         // this.plotBarGraph();
+
     }
 
 
 
-    componentDidMount(){
-        this.plotBarGraph();
-
-    }
 //tvchng1 starts
-    plotBarGraph(){
-        var data2={};
+    plotBarGraph() {
+
+
+//return el;
+
+    }
+
+    /*Added div instead of svg on 20-Oct-2018. SVG didn't render div tags so letting it cascade inside parent div.
+     * Also added enabled overflow in serendip.css file for sideworkspace
+     * -Pranay
+     * */
+
+
+    render() {
+
+        //console.log(e)
+        // var ele=this.plotBarGraph();
+        //  var topic = document.querySelector('#topic_canvas');
+        //console.log(topic)
+        //topic.appendChild(el);
+
+        var curr=this;
+        var data2 = {};
+        var el =  this.props.connectFauxDOM('div', 'chart');
+        var el2=document.querySelector('div');
+
+
         //We will pass path as a variable with file name according to topic selected by user
         d3.text('./Data/topic_0.csv', function (data) {
             data2 = d3.csv.parseRows(data);
@@ -44,61 +74,74 @@ class TopicView extends Component{
             * -Pranay
             * */
             var x = d3.scale.linear()
-                .domain([data2[data2.length-1][1],data2[0][1]])
+                .domain([data2[data2.length - 1][1], data2[0][1]])
                 .range([0, 100]);
 
 
-            var svg = d3.select("#topic_canvas");
+            //       console.log(el)
+            //console.log(svg1)
+            // el = new ReactFauxDOM.createElement('div')
+            var svg1 = d3.select("#topic_canvas");
             var format = d3.format(".4f")
-           svg
-                .selectAll("div")
+
+            var bar=d3
+                .select(el)
+                // console.log(svg)
+                .selectAll('div')
                 .data(data2)
                 .enter()
-              /* If you need text outside the bar
-               .append("text")
-               .text(function(d){
-                   return d[0];
-               })
-               */
-               .append("div")
-               .on("mouseover", function() {
-                  // color=
-                   d3.select(this)
-                       .style("background-color", "orange")
-                       .append('text')
-                       .text(function (d) { return '    ='+format(d[1]) });
-               })
-               .on("mouseout", function(d, i) {
-                   d3.select(this).style("background-color", function() {
-                       return i%2==0?'#98d669':"#77bb43";
-                   }).select("text").remove();;
-               })
-               .style("width", function(d) {
-                    return x(d[1]) + "px"; })
-                .style("background-color", function(d,i) {return i%2==0?'#98d669':"#77bb43"})
-                .text(function(d) {
+                /* If you need text outside the bar
+                 .append("text")
+                 .text(function(d){
+                     return d[0];
+                 })
+                 */
+                .append("div")
+                .on('mouseover',  ()=> {
+                    // color=
+
+                    curr.setState({"background": 'orange'});
+
+                    /*d3.select(this)
+                        .style("background", "orange")
+                        .append('text')
+                        .text(function (d) {
+                            return '    =' + format(d[1])
+                        });*/
+                })
+                .on("mouseout",  (d, i) =>{
+
+                    curr.setState({'background':i % 2 == 0 ? '#98d669' : "#77bb43"});
+                   /* d3.select(this).style("background-color", function () {
+                        return i % 2 == 0 ? '#98d669' : "#77bb43";
+                    }).select("text").remove();
+                    ;*/
+                })
+                .style("width", function (d) {
+                    return x(d[1]) + "px";
+                })
+                .style("background", function (d, i) {
+                    return i % 2 == 0 ? '#98d669' : "#77bb43"
+                })
+                .text(function (d) {
+
                     /*To avoid too many words with no width at the bottom*/
-                    if(x(d[1])>1)
+                    if (x(d[1]) > 1)
                         return d[0];
                 })
-               .style("font-weight","bold");
-
-
+                .style("font-weight", "bold");
 
 
         });
 
-    }
-    /*Added div instead of svg on 20-Oct-2018. SVG didn't render div tags so letting it cascade inside parent div.
-     * Also added enabled overflow in serendip.css file for sideworkspace
-     * -Pranay
-     * */
 
 
-    render (){ 
+
+        //console.log(el.toReact())
         return (
+
             <div className="window side">
-                <div className="sidenavbar">Topic View 
+                <div className="sidenavbar">Topic View
                     <div className="sidebtnctrl">
                         <div className="sidebtns">a</div>
                         <div className="sidebtns">b</div>
@@ -110,16 +153,27 @@ class TopicView extends Component{
                     <div className="row">
                         <div className="col-lg-1"/>
                         <div className="col-lg-2">
-                            <div id="topic_canvas" width="100%" height="100%"/>
+                            <div id="topic_canvas" width="100%" height="100%">
+                                {
+                                    this.props.chart
+                                }
+                            </div>
                         </div>
                         <div className="col-lg-1"/>
                     </div>
                 </div>
-
             </div>
+
         );
+
     }
-    //tvchng1 ends
 
 }
-export default TopicView;
+
+TopicView.defaultProps = {
+    chart: 'loading'
+}
+    //tvchng1 ends
+
+
+export default withFauxDOM(TopicView);

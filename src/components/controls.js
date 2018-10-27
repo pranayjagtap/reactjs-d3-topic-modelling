@@ -37,7 +37,9 @@ class Controls extends Component{
                     Sorting
                     </div>
                     <div id='sortcontrol' style={{display: this.state.sortcontrol}}>
-                    <select style={{width: '150px'}}></select>
+                    <select style={{width: '150px'}}>
+
+                    </select>
                     </div>
                     <div className="control" onClick={this.toggleselection}>
                     Selection

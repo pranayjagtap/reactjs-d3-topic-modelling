@@ -23,54 +23,53 @@ const title = {
 };
 
 export default class App extends Component {
-	constructor(props){
-		super(props);
-	}
+    constructor(props){
+        super(props);
+    }
 
-  render() {
-    return (
-	<div>
+    render() {
+        return (
+            <div>
 
+                <div  className="navbar">
+                    <span style={title}>Serendip</span>
 
-		<div  className="navbar">
-        <span style={title}>Serendip</span>
-
-        <select>
-            <option value="0">Select model</option>
-        </select>
-		</div>
-
-
-		<div style={m5}>
-			<div style={nopad} className="col-lg-2">
-                <div style={m5}>
-				    <Controls />
+                    <select>
+                        <option value="0">Select model</option>
+                    </select>
                 </div>
+
+
                 <div style={m5}>
-                    <DocumentControl />
-                </div>
-			</div>
-            <div style={m5}>
-                <div style={nopad} className="col-lg-8">
-                    <div style={m5}>
-        			    <Matrix />
+                    <div style={nopad} className="col-lg-2">
+                        <div style={m5}>
+                            <Controls />
+                        </div>
+                        <div style={m5}>
+                            <DocumentControl />
+                        </div>
                     </div>
+                    <div style={m5}>
+                        <div style={nopad} className="col-lg-8">
+                            <div style={m5}>
+                                <Matrix />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={nopad} className="col-lg-2">
+                        <div style={m5}>
+                            <TopicView />
+                        </div>
+                        <div style={m5}>
+                            <DocumentView />
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
-            <div style={nopad} className="col-lg-2">
-                <div style={m5}>
-                    <TopicView />
-                </div>
-                <div style={m5}>
-                    <DocumentView />
-                </div>
-            </div>
-
-        </div>
-	</div>
-    );
-  }
+        );
+    }
 }
 
 

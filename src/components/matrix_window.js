@@ -6,7 +6,7 @@
 * Searchstring:"mwchng1"
 * Finished rendering matrix. It is static and need to add interaction.
 *
-* 
+*
 * */
 
 
@@ -33,7 +33,7 @@ class Matrix extends Component{
     //plotMatrix function will contain d3 code for encoding data into matrix visualization. Started 17-Oct-2018
     plotMatrix(){
 
-        var totWidth = 500,
+        var totWidth = 2000,
             totHeight = totWidth * 1.2,
             margin = {top: 80, right: 30, bottom: 80, left: 80},
             width = totWidth - (margin.left + margin.right),
@@ -60,15 +60,15 @@ class Matrix extends Component{
             .attr("transform","translate("+margin.left+","+margin.top+")");
 
 
-        d3.tsv("../Data/igmat.tsv"/*, type*/, function(error, data) {
+        d3.csv("../Data/theta.csv"/*, type*/, function(error, data) {
 
-            var grpNames = d3.keys(data[0]).filter(function(key) { return key !== "Industry"; });
+            var grpNames = d3.keys(data[0]).filter(function(key) { return key !== "Document"; });
 
             data.forEach(function(d) {
                 d.groups = grpNames.map(function(name) { return {name: name, value: +d[name]}; });
             });
 
-            y.domain(data.map(function(d) { return d.Industry; }));
+            y.domain(data.map(function(d) { return d.Document; }));
             var allcols = Object.keys(data[0]),
                 cols = allcols.slice(1,allcols.length);
             x.domain(grpNames);
@@ -93,13 +93,16 @@ class Matrix extends Component{
                 .data(data)
                 .enter().append("g")
                 .attr("class","grow")
-                .attr("transform", function(d) { return "translate(0," + y(d.Industry) + ")"; })
+                .attr("transform", function(d) { return "translate(0," + y(d.Document) + ")"; })
             ;
 
             var gcells = grows.selectAll(".gcell")
                 .data(function(d) { return d.groups; })
                 .enter() .append("g")
-                .attr("transform", function(d,i,j) {return "translate(" + i*x.rangeBand() + ",0)" ; } )
+                .attr("transform", function(d,i,j) {
+
+
+                    return "translate(" + i*x.rangeBand() + ",0)" ; } )
                 .attr("class","gcell")
             ;
 
@@ -122,12 +125,35 @@ class Matrix extends Component{
             ;
 
             var rmax = Math.min(y.rangeBand()/2-4,x.rangeBand()/2-4)
+            //6.5
             gcells.append("circle")
+                .on('drag',()=>{
+
+
+            })
+                .on('mouseover', function() {
+                    d3.select(this).attr("r", function(d) {
+                            var rind = d.value;
+                            return Math.abs((rind))+5;
+                        })
+                })
+                .on('mouseout', function(d) {
+                  //  console.log(d)
+                    d3.select(this)
+                        .attr("r", function(d) {
+                            var rind = d.value;
+                            return Math.abs((rind));
+                        })
+
+                })
+                .on('click',(d)=>{
+                    
+                })
                 .attr("cy",y.rangeBand()/2)
                 .attr("cx",x.rangeBand()/2)
                 .attr("r", function(d) {
                         var rind = d.value;
-                        return rmax / ((-1)*(rind - 5));
+                        return Math.abs((rind));  //Made radius value rind on 26-Oct-2018-Pranay
                     }
                 )
                 .style("fill", function(d) {
@@ -138,26 +164,28 @@ class Matrix extends Component{
                 .style("stroke","black")
             ;
 
+            //Commented by Pranay below code to avoid legend on 26-Oct-2018
+/*
             var legend = chart
                 .append("g")
                 .attr("transform", "translate(0," + (height + 0) + ")")
                 .attr("class","legend")
                 .style("font-weight","bold")
             ;
-            var legwidths = [0,55,135,235];
+            var legwidths = [0,1,5,10];
             var legsymbols = legend.selectAll(".legsymbols")
-                .data(["0-500","500-5,000","5,000-50,000",">50,000"])
+                .data(["0.00-0.01","0.01-0.05","0.05-0.10",">0.10"])
                 .enter()
                 .append("g")
                 .attr("class","legsymbols")
                 .attr("transform",function(d,i) {return "translate(" + (150 + legwidths[i]) + ",0)";})
             ;
 
-            var legendspace = 5;
+            var legendspace = 50;
 
             legsymbols.append("circle")
-                .attr("cx", function(d,i) {return rmax / ((-1)*((i+1) - 5)) ;})
-                .attr("cy", function(d,i) {return (legendspace+2*rmax) - (rmax / ((-1)*((i+1) - 5))) ;})
+                .attr("cx", function(d,i) {return (i+1) ;})
+                .attr("cy", function(d,i) {return (legendspace+2*rmax) - (((i+1))) ;})
                 .style("fill", function(d,i) {
                         var gbval = 1+Math.floor(255 - (255/4*((i+1)-1)));
                         return "rgb(" + 255 + "," + gbval + "," + gbval + ")";
@@ -165,24 +193,24 @@ class Matrix extends Component{
                 )
                 .style("stroke","black")
                 .attr("r", function(d,i) {
-                        return rmax / ((-1)*((i+1) - 5));
+                        return Math.abs(((i+1)));
                     }
                 )
             ;
 
 
             legsymbols.append("text")
-                .attr("x", function(d,i) {return 5+2*rmax / ((-1)*((i+1) - 5)) ;})
+                .attr("x", function(d,i) {return 10+2*((i+1));})
                 .attr("y", legendspace + 2*rmax)
                 .style("text-anchor", "start")
                 .text(function(d) { return d; });
 
             legend
                 .append("text")
-                .text("Wisconsin Employment:")
+                .text("Similarity:")
                 .attr("y", rmax*2+ legendspace)
             ;
-
+*/
         });
 
     }
@@ -193,7 +221,9 @@ class Matrix extends Component{
                 <div className="window side">
                     <div className="sidenavbar">Matrix View</div>
                 </div>
-                <svg id="matrix_canvas" width="100%" height="100%"/>
+                <div className="matrixcanvas" style={{height: '550px'}}>
+                    <svg id="matrix_canvas" width="100%" height="100%"/>
+                </div>
             </div>
 
         );

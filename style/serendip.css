@@ -76,3 +76,8 @@
     border-bottom: solid 1px;
     overflow: scroll;
 }
+
+.matrixcanvas{
+    overflow-y: scroll;
+    overflow-x: scroll;
+}
