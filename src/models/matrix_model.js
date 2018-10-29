@@ -38,7 +38,7 @@ var read_data = function(){
             //read topic names
             if(topicids.length == 0){
                 for(var k in row) topicids.push(k);
-                topicids.shift();
+                topicids.shift();  //removes first element
                 console.log("i should only get called once");
             }
 

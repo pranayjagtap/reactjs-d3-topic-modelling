@@ -16,7 +16,7 @@ import React from "react";
 import * as d3 from "d3-3";
 import  '../../style/style.css';
 import '../../style/serendip.css';
-import * as matrix_model from '../models/matrix_model.js'
+import * as matrix_model from '../models/sofarworking.js'
 
 class Matrix extends Component{
     constructor(props){
