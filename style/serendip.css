@@ -77,6 +77,31 @@
     overflow: scroll;
 }
 
+#selectedtopicslist{
+    width: 95%;
+    min-height: 70px;
+    margin: 5px;
+    background: black;
+    color: white;
+}
+
+#selectionbuttonscontainer{
+    width: 95%;
+    min-height: 40px;
+    border: 1px solid;
+    margin: 5px;
+    padding: 0px 6px;
+}
+.selbtns{
+    padding: 7px 20px;
+    width: 30px;
+    float: left;
+    cursor: pointer;
+}
+.selbtns:hover{
+    background: black;
+    color: white;
+}
 .matrixcanvas{
     overflow-y: scroll;
     overflow-x: scroll;

@@ -16,26 +16,27 @@ import React from "react";
 import * as d3 from "d3-3";
 import  '../../style/style.css';
 import '../../style/serendip.css';
+import * as matrix_model from '../models/matrix_model.js'
 
 class Matrix extends Component{
     constructor(props){
         super(props);
-
-        this.state={term:''};
-
     }
 
     componentDidMount(){
-     //Call plotMatrix on page refresh/load to generate matrix plot based on existing data file.
-        this.plotMatrix();
+        //Call plotMatrix on page refresh/load to generate matrix plot based on existing data file.
+        //this.plotMatrix();
+        matrix_model.render_matrix();
+
     }
+
 //mwchng1 starts
     //plotMatrix function will contain d3 code for encoding data into matrix visualization. Started 17-Oct-2018
     plotMatrix(){
 
-        var totWidth = 2000,
-            totHeight = totWidth * 1.2,
-            margin = {top: 80, right: 30, bottom: 80, left: 80},
+        var totWidth = 1400,
+            totHeight = totWidth,
+            margin = {top: 80, right: 80, bottom: 80, left: 80},
             width = totWidth - (margin.left + margin.right),
             height = totHeight - (margin.top + margin.bottom);
 
@@ -61,7 +62,6 @@ class Matrix extends Component{
 
 
         d3.csv("../Data/theta.csv"/*, type*/, function(error, data) {
-
             var grpNames = d3.keys(data[0]).filter(function(key) { return key !== "Document"; });
 
             data.forEach(function(d) {
@@ -73,55 +73,57 @@ class Matrix extends Component{
                 cols = allcols.slice(1,allcols.length);
             x.domain(grpNames);
 
+            // vj - add x axis and tilt it by 45 degree and move it on top of the line
             chart.append("g")
                 .attr("class","x axis")
                 .attr("transform","translate(0,0)")
                 .call(xAxis)
                 .selectAll("text")
                 .style("text-anchor","start")
-                .attr("transform","rotate(-90)")
-                .attr("dx","0.5em")
-                .attr("dy",x.rangeBand()/2-10)
+                .attr("transform","rotate(-45)")
+                .attr("dx","-15px")
+                .attr("dy",x.rangeBand()/2 - 10)
             ;
 
+            // vj - add y axis and move it on top of the line
             chart.append("g")
                 .attr("class","y axis")
+                .attr("transform","translate(0,0)")
                 .call(yAxis)
+                .selectAll("text")
+                .attr("dx","0px")
+                .attr("dy",x.rangeBand()/2 + 10)
             ;
 
+            // vj - add id to row, makes it easy to select it
             var grows = chart.selectAll(".grow")
                 .data(data)
                 .enter().append("g")
                 .attr("class","grow")
                 .attr("transform", function(d) { return "translate(0," + y(d.Document) + ")"; })
+                .attr("row_id", function(d, i) {return "row_"+i})
             ;
 
             var gcells = grows.selectAll(".gcell")
                 .data(function(d) { return d.groups; })
-                .enter() .append("g")
+                .enter() 
+                .append("g")
                 .attr("transform", function(d,i,j) {
-
-
                     return "translate(" + i*x.rangeBand() + ",0)" ; } )
                 .attr("class","gcell")
             ;
 
+            // vj - add id to col, makes it easy to select it
+            // vj - remove color of grid
             gcells
                 .append("rect")
                 .attr("x",0)
                 .attr("y",0)
+                .attr("col_id", function(d, i){return "col_"+i})
                 .attr("height",y.rangeBand())
                 .attr("width",x.rangeBand())
-                .style("fill-opacity",1)
-                .style("fill", function(d,i,j) {
-                        if ((i % 2 != 0 && j % 2 == 0))
-                        {return "#dddddd";}
-                        else if (i % 2 != 0 || j % 2 == 0)
-                        {return "#eeeeee";}
-                        else
-                        {return "#ffffff";}
-                    }
-                )
+                .style("stroke-opacity",0)
+                .style("stroke", "#fff")
             ;
 
             var rmax = Math.min(y.rangeBand()/2-4,x.rangeBand()/2-4)
@@ -131,26 +133,26 @@ class Matrix extends Component{
 
 
             })
-                .on('mouseover', function() {
-                    d3.select(this).attr("r", function(d) {
-                            var rind = d.value;
-                            return Math.abs((rind))+5;
-                        })
+                .on('mouseover', function(doc) {
+                    let colid = d3.select(this.parentNode).select("rect").attr("col_id")
+                    let rowid = d3.select(this.parentNode.parentNode).attr("row_id")
+                    d3.select(this).transition()
+                    .duration(100)
+                    .style('stroke-width', 3)
+                    
+
                 })
                 .on('mouseout', function(d) {
-                  //  console.log(d)
-                    d3.select(this)
-                        .attr("r", function(d) {
-                            var rind = d.value;
-                            return Math.abs((rind));
-                        })
+                    d3.select(this).transition()
+                    .duration(100)
+                    .style('stroke-width', 1);
 
                 })
                 .on('click',(d)=>{
                     
                 })
-                .attr("cy",y.rangeBand()/2)
-                .attr("cx",x.rangeBand()/2)
+                .attr("cy",y.rangeBand())
+                .attr("cx",x.rangeBand())
                 .attr("r", function(d) {
                         var rind = d.value;
                         return Math.abs((rind));  //Made radius value rind on 26-Oct-2018-Pranay
