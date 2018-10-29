@@ -226,29 +226,36 @@ export function test_matrix(){
 
             topicno="Topic"+(j+1);
 
-            return {x: j, y: i, z: matrix_data[i][topicno]}; });
+            return {x: i, y: j, z: matrix_data[i][topicno]}; });
 
     });
     nodes.forEach(function(node,i){
         matrixB[i] = d3.range(m).map((j) => {
 
-            topicno="Topic"+(i);
+            topicno="Topic"+(i+1);
 
             return {x: i, y: j, z: matrix_data[j][topicno]}; });
 
     })
-
+  //  matrixB[0].map((col, i) => matrixB.map(row => row[i]));
+   // matrixB=matrixB[0].map(function (_, c) { return matrixB.map(function (r) { return r[c]; }); });
     console.log(matrixA)
     console.log(matrixB)
+    console.log(nodes)
 
     // Default order
+    //50
     var orders = {
-        name: d3.range(m).sort(function(a, b) { return d3.ascending(nodes[a].name, nodes[b].name); })
+        name: d3.range(n).sort(function(a, b) { return d3.ascending(nodes[a].name, nodes[b].name); })
+    };
+    //36
+    var orders2 = {
+        Document: d3.range(m).sort(function(a, b) { return d3.ascending(matrix_data[a].Document, matrix_data[b].Document); })
     };
 
     // The default sort order.
-    y.domain(orders.name);
     x.domain(orders.name);
+    y.domain(orders2.Document);
 
 
     svg.append("rect")
