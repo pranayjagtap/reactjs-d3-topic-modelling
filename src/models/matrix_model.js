@@ -255,12 +255,12 @@ export function test_matrix(){
 
     // Default order
     var top_orders = {
-        name: d3.range(t_cnt)
-        //name: d3.range(t_cnt).sort(function(a, b) { return d3.ascending(t_nodes[a].name, t_nodes[b].name); })
+        // name: d3.range(t_cnt)
+        name: d3.range(t_cnt).sort(function(a, b) { return d3.ascending(t_nodes[a].name, t_nodes[b].name); })
     };
     var doc_orders = {
-        name: d3.range(d_cnt)
-        //name: d3.range(d_cnt).sort(function(a, b) { return d3.ascending(d_nodes[a].name, d_nodes[b].name); })
+        // name: d3.range(d_cnt)
+        name: d3.range(d_cnt).sort(function(a, b) { return d3.ascending(d_nodes[a].name, d_nodes[b].name); })
     };
 
     // The default sort order.
@@ -290,45 +290,43 @@ export function test_matrix(){
 
 
     d3.selectAll(".row").call(d3.behavior.drag()
-        .origin(function(d) { 
-            return {y: y(d[0].y)}; 
-        })
-        .on("dragstart", function(d) {
+        // .origin(function(d, i) { 
+        //     return {y: y(d[i].y)}; 
+        // })
+        .on("dragstart", function(d, i) {
 
             trigger = d3.event.sourceEvent.target.className.baseVal;
             
             if (trigger == "label") {
                 d3.selectAll(".cellrow").attr("opacity", 1);
-                dragging[d[0].y] = y(d[0].y);
+                dragging[d[i].y] = y(d[i].y);
 
                 // Move the row that is moving on the front
                 var sel = d3.select(this);
                 sel.moveToFront();
             }
         })
-        .on("drag", function(d) {
+        .on("drag", function(d, i) {
             // Hide what is in the back
 
             if (trigger == "label") {
 
                 d3.selectAll(".cellcolumn").attr("opacity", 0);
 
-                dragging[d[0].y] = Math.min(height, Math.max(0, d3.event.y));
+                dragging[d[i].y] = Math.min(height, Math.max(0, d3.event.y));
                 top_orders.name.sort(function(a, b) { return position(a) - position(b); });
                 y.domain(top_orders.name);
 
                 d3.selectAll(".row").attr("transform", function(d, i) { 
-                    if(d){
-                        return "translate(0," + position(d[0].y) + ")"; 
-                    }
+                    return "translate(0," + (y(i)) + ")"; 
                 });
             }
         })
-        .on("dragend", function(d) {
+        .on("dragend", function(d, i) {
 
             if (trigger == "label") {
-                delete dragging[d[0].y];
-                transition(d3.select(this)).attr("transform", "translate(0," + y(d[0].y) + ")");
+                delete dragging[d[i].y];
+                transition(d3.select(this)).attr("transform", "translate(0," + y(d[i].y) + ")");
 
                 d3.selectAll(".column").each(function(d) {
                     d3.select(this).selectAll(".cellcolumn").attr("x", function(d) { 
@@ -348,48 +346,49 @@ export function test_matrix(){
 
 
     d3.selectAll(".column").call(d3.behavior.drag()
-        .origin(function(d) {
-            return {x: x(d[0].x)}; 
+        .origin(function(d, i) {
+            return {x: x(d[i].x)}; 
         })
-        .on("dragstart", function(d) {
-
+        .on("dragstart", function(d, i) {
             trigger = d3.event.sourceEvent.target.className.baseVal;
 
             if (trigger == "label") {
 
                 d3.selectAll(".cellcolumn").attr("opacity", 1);
 
-                dragging[d[0].x] = x(d[0].x);
+                dragging[d[i].x] = x(d[i].x);
 
                 // Move the column that is moving on the front
                 var sel = d3.select(this);
                 sel.moveToFront();
             }
         })
-        .on("drag", function(d) {
+        .on("drag", function(d, i) {
             // Hide what is in the back
             // console.log(d3.event.x);
             // console.log(d3.event.y);
             if (trigger == "label") {
                 d3.selectAll(".cellrow").attr("opacity", 0);
 
-                dragging[d[0].x] = Math.min(width, Math.max(0, d3.event.x));
+                dragging[d[i].x] = Math.min(width, Math.max(0, d3.event.x));
+                console.log(dragging);
                 doc_orders.name.sort(function(a, b) { return cPosition(a) - cPosition(b); });
                 x.domain(doc_orders.name);
 
                 d3.selectAll(".column").attr("transform", function(d, i) { 
-                    return "translate(" + cPosition(d[0].x) + ")rotate(-90)"; 
+                    return "translate(" + cPosition(d[i].x) + ")rotate(-90)"; 
                 });
             }
       
 
         })
-        .on("dragend", function(d) {
-            delete dragging[d[0].x];
-            transition(d3.select(this)).attr("transform", "translate(" + x(d[0].x) + ")rotate(-90)");
+        .on("dragend", function(d, i) {
+            delete dragging[d[i].x];
+            transition(d3.select(this)).attr("transform", "translate(" + x(d[i].x) + ")rotate(-90)");
             d3.selectAll(".row").each(function(d, i) {
-            d3.select(this).selectAll(".cellrow").attr("x", function(d) { 
-                return x(d.x); });
+                d3.select(this).selectAll(".cellrow").attr("x", function(d) { 
+                    return x(d.x);
+                });
             });
 
         })
@@ -411,16 +410,12 @@ export function test_matrix(){
             .enter().append("circle")
             .attr("class", "cellrow")
             .attr("cx", function(d) { 
-                if(y(d.y))
-                    return y(d.y); 
+                if(x(d.y))
+                    return x(d.y); 
             })
-            .attr("width", y.rangeBand())
-            .attr("height", y.rangeBand())
             .attr("fill", "#000")
-            // .style("stroke","black")
-            // .style("stroke-width", 1)
             .style("r", function(d, i) { 
-                return 2;
+                return d.z;
             });
     }
 
@@ -435,13 +430,9 @@ export function test_matrix(){
             .attr("cx", function(d) { 
                 return -y(d.x); 
             })
-            .attr("width", x.rangeBand())
-            .attr("height", x.rangeBand())
             .attr("fill", "#f99")
-            // .style("stroke","black")
-            // .style("stroke-width", 1)
             .style("r", function(d,i,j) { 
-                return 2;
+                return d.z;
             })
             .on("mouseover", function(d){
                 var pos_id = d3.select(this).attr("pos_id");
