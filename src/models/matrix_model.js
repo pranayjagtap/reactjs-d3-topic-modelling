@@ -10,8 +10,8 @@ var x,xAxis;
 var y,yAxis;
 
 var dimensions = {
-    w_width: 1500,
-    w_height: 1500,
+    w_width: 2000,
+    w_height: 2000,
     margin: {
         top: 80,
         right: 80,
@@ -232,9 +232,12 @@ export function test_matrix(){
 
     var t_nodes=[], d_nodes=[];
 
+
+    //Topic names
     for(var i=0; i<t_cnt; i++){
         t_nodes.push({"name": top_nodes[i]});
     }
+    //Document names
     for(var i=0; i<d_cnt; i++){
         d_nodes.push({"name": doc_nodes[i]});
     }
