@@ -38,7 +38,7 @@ var read_data = function(){
             //read topic names
             if(topicids.length == 0){
                 for(var k in row) topicids.push(k);
-                topicids.shift();
+                topicids.shift();  //removes first element
                 console.log("i should only get called once");
             }
 
@@ -202,13 +202,13 @@ var circle_mouseout = function(d) {
 }
 
 export function test_matrix(){
-    var margin = {top: 50, right: 50, bottom: 50, left: 50},
+    var margin = {top: 50, right: 50, bottom: 50, left: 150},
         width = 800 - margin.left - margin.right,
         height = 800 - margin.top - margin.bottom;
 
 
-    var y = d3.scale.ordinal().rangeBands([0, height],0,1),
-        x = d3.scale.ordinal().rangeBands([0, width],0,1);
+    var y = d3.scale.ordinal().rangeBands([0, height],0,2),
+        x = d3.scale.ordinal().rangeBands([0, width],0,2);
 
     var dragging = {};
 
@@ -263,6 +263,7 @@ export function test_matrix(){
         //name: d3.range(d_cnt).sort(function(a, b) { return d3.ascending(d_nodes[a].name, d_nodes[b].name); })
     };
 
+    // console.log(doc_orders, top_orders)
     // The default sort order.
     y.domain(doc_orders.name);
     x.domain(top_orders.name);
@@ -291,48 +292,35 @@ export function test_matrix(){
 
     d3.selectAll(".row").call(d3.behavior.drag()
         .origin(function(d) { 
-            return {y: y(d[0].y)}; 
+            return {y: y(d[0].x)}; 
         })
         .on("dragstart", function(d) {
-
             trigger = d3.event.sourceEvent.target.className.baseVal;
-            
             if (trigger == "label") {
                 d3.selectAll(".cellrow").attr("opacity", 1);
-                dragging[d[0].y] = y(d[0].y);
-
-                // Move the row that is moving on the front
+                dragging[d[0].x] = y(d[0].x);
                 var sel = d3.select(this);
                 sel.moveToFront();
             }
         })
         .on("drag", function(d) {
-            // Hide what is in the back
-
             if (trigger == "label") {
-
                 d3.selectAll(".cellcolumn").attr("opacity", 0);
-
-                dragging[d[0].y] = Math.min(height, Math.max(0, d3.event.y));
-                top_orders.name.sort(function(a, b) { return position(a) - position(b); });
-                y.domain(top_orders.name);
-
-                d3.selectAll(".row").attr("transform", function(d, i) { 
-                    if(d){
-                        return "translate(0," + position(d[0].y) + ")"; 
-                    }
+                dragging[d[0].x] = Math.min(height, Math.max(0, d3.event.y));
+                doc_orders.name.sort(function(a, b) { return position(a) - position(b); });
+                y.domain(doc_orders.name);
+                d3.selectAll(".row").attr("transform", function(d) { 
+                    return "translate(0," + position(d[0].x) + ")";
                 });
             }
         })
         .on("dragend", function(d) {
-
             if (trigger == "label") {
-                delete dragging[d[0].y];
-                transition(d3.select(this)).attr("transform", "translate(0," + y(d[0].y) + ")");
-
+                delete dragging[d[0].x];
+                transition(d3.select(this)).attr("transform", "translate(0," + y(d[0].x) + ")");
                 d3.selectAll(".column").each(function(d) {
                     d3.select(this).selectAll(".cellcolumn").attr("x", function(d) { 
-                        return -y(d.y); });
+                        return -y(d.x); });
                 });
             }
         })
@@ -349,47 +337,36 @@ export function test_matrix(){
 
     d3.selectAll(".column").call(d3.behavior.drag()
         .origin(function(d) {
-            return {x: x(d[0].x)}; 
+            return {x: x(d[0].y)}; 
         })
         .on("dragstart", function(d) {
-
             trigger = d3.event.sourceEvent.target.className.baseVal;
-
             if (trigger == "label") {
-
                 d3.selectAll(".cellcolumn").attr("opacity", 1);
-
-                dragging[d[0].x] = x(d[0].x);
-
-                // Move the column that is moving on the front
+                dragging[d[0].y] = x(d[0].y);
                 var sel = d3.select(this);
                 sel.moveToFront();
             }
         })
-        .on("drag", function(d) {
-            // Hide what is in the back
-            // console.log(d3.event.x);
-            // console.log(d3.event.y);
+        .on("drag", function(d, i) {
             if (trigger == "label") {
                 d3.selectAll(".cellrow").attr("opacity", 0);
-
-                dragging[d[0].x] = Math.min(width, Math.max(0, d3.event.x));
-                doc_orders.name.sort(function(a, b) { return cPosition(a) - cPosition(b); });
-                x.domain(doc_orders.name);
-
-                d3.selectAll(".column").attr("transform", function(d, i) { 
-                    return "translate(" + cPosition(d[0].x) + ")rotate(-90)"; 
+                dragging[d[0].y] = Math.min(width, Math.max(0, d3.event.x));
+                top_orders.name.sort(function(a, b) { return cPosition(a) - cPosition(b); });
+                x.domain(top_orders.name);
+                d3.selectAll(".column").attr("transform", function(d) { 
+                    return "translate(" + cPosition(d[0].y) + ")rotate(-90)"; 
                 });
             }
-      
 
         })
-        .on("dragend", function(d) {
-            delete dragging[d[0].x];
-            transition(d3.select(this)).attr("transform", "translate(" + x(d[0].x) + ")rotate(-90)");
+        .on("dragend", function(d, i) {
+            delete dragging[d[0].y];
+            transition(d3.select(this)).attr("transform", "translate(" + x(d[0].y) + ")rotate(-90)");
             d3.selectAll(".row").each(function(d, i) {
-            d3.select(this).selectAll(".cellrow").attr("x", function(d) { 
-                return x(d.x); });
+                d3.select(this).selectAll(".cellrow").attr("x", function(d) { 
+                    return x(d.y);
+                });
             });
 
         })
@@ -411,16 +388,12 @@ export function test_matrix(){
             .enter().append("circle")
             .attr("class", "cellrow")
             .attr("cx", function(d) { 
-                if(y(d.y))
-                    return y(d.y); 
+                if(x(d.y))
+                    return x(d.y); 
             })
-            .attr("width", y.rangeBand())
-            .attr("height", y.rangeBand())
             .attr("fill", "#000")
-            // .style("stroke","black")
-            // .style("stroke-width", 1)
             .style("r", function(d, i) { 
-                return 2;
+                return d.z;
             });
     }
 
@@ -435,13 +408,9 @@ export function test_matrix(){
             .attr("cx", function(d) { 
                 return -y(d.x); 
             })
-            .attr("width", x.rangeBand())
-            .attr("height", x.rangeBand())
             .attr("fill", "#f99")
-            // .style("stroke","black")
-            // .style("stroke-width", 1)
             .style("r", function(d,i,j) { 
-                return 2;
+                return d.z;
             })
             .on("mouseover", function(d){
                 var pos_id = d3.select(this).attr("pos_id");
@@ -472,6 +441,10 @@ export function test_matrix(){
     function transition(g) {
         return g.transition().duration(500);
     }
+}
+
+function new_matrix(){
+
 }
 export function render_matrix(){
     read_data();
