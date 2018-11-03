@@ -15,7 +15,7 @@ export default class App extends Component {
                 <div>
                     <Link to="/">Home</Link>
                     <Route exact path="/" component={Home} />
-                    <Route path="/Document" component={Document} />
+                    <Route path="/Document" component={DocumentScreen} />
 
                 </div>
             </Router>

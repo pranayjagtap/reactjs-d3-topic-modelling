@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 import { browserHistory } from 'react-router';
-import TopicView from './components/topic_view';
 import DocumentControl from './components/document_control';
 import Controls from './components/controls';
-import Home from "./home";
 import {Router, BrowserRouter, Link} from 'react-router-dom';
 //stylesheet
 import  '../style/serendip.css';
@@ -53,7 +50,7 @@ export default class DocumentScreen extends Component {
                     <div style={m5}>
                         <div style={nopad} className="col-lg-8">
                             <div style={m5}>
-                                <Link to="/">Home</Link>
+
                             </div>
                         </div>
                     </div>

@@ -4,11 +4,12 @@ import Matrix from './components/matrix_window';
 import TopicView from './components/topic_view';
 import DocumentControl from './components/document_control';
 import Controls from './components/controls';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import DocumentScreen from './document';
+
 
 //stylesheet
 import  '../style/serendip.css';
-
+import {Router, BrowserRouter, Link, Route} from 'react-router-dom';
 
 const m5 = {
     margin: '5px'
@@ -67,15 +68,13 @@ class Home extends Component {
                             <TopicView />
                         </div>
                         <div style={m5}>
-                            <Router>
+
                                 <div>
                                     <Link to="/Document">Document</Link>
-                                    <Route  path="/" component={Home} />
-                                    <Route exact path="/Document" component={Document} />
-
                                 </div>
-                            </Router>
-                            <Link to="/Document">DocumentScreen</Link>
+
+
+
                         </div>
                     </div>
 
