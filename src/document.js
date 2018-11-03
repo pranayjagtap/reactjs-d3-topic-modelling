@@ -3,6 +3,7 @@ import { browserHistory } from 'react-router';
 import DocumentControl from './components/document_control';
 import Controls from './components/controls';
 import {Router, BrowserRouter, Link} from 'react-router-dom';
+import TopicList from  './components/topic_list';
 //stylesheet
 import  '../style/serendip.css';
 
@@ -41,23 +42,26 @@ export default class DocumentScreen extends Component {
                 <div style={m5}>
                     <div style={nopad} className="col-lg-2">
                         <div style={m5}>
-                            <Controls />
+                            <TopicList />
                         </div>
-                        <div style={m5}>
-                            <DocumentControl />
-                        </div>
+
                     </div>
                     <div style={m5}>
                         <div style={nopad} className="col-lg-8">
                             <div style={m5}>
+                                <div className="window side">
 
+                                    <div className="documentcanvas" style={{height: '550px'}}>
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div style={nopad} className="col-lg-2">
                         <div style={m5}>
-
+                                line graph
                         </div>
 
                     </div>
