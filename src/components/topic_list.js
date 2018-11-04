@@ -69,7 +69,7 @@ class TopicList extends Component {
                 })
                 .on("mouseout",  (d, i) =>{
 
-                    curr.setState({'background':i % 2 == 0 ? '#98d669' : "#77bb43"});
+                    curr.setState({'background':i % 2 == 0 ? '#8B9FFC  ' : "#AEBCFC"});
                     /* d3.select(this).style("background-color", function () {
                          return i % 2 == 0 ? '#98d669' : "#77bb43";
                      }).select("text").remove();
@@ -80,7 +80,7 @@ class TopicList extends Component {
                     return x(d[1]) + "px";
                 })
                 .style("background", function (d, i) {
-                    return i % 2 == 0 ? '#98d669' : "#77bb43"
+                    return i % 2 == 0 ? '#8B9FFC  ' : "#AEBCFC"
                 })
                 .text(function (d) {
 

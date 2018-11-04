@@ -114,3 +114,9 @@
     overflow-y: scroll;
     overflow-x: scroll;
 }
+.Active {
+    background-color: #f48f42;
+}
+.Highlight {
+    background-color: #ffd54f;
+}

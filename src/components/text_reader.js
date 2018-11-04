@@ -1,7 +1,7 @@
 import React from "react";
 import {Component} from "react";
-
-
+import Highlighter from "react-highlight-words";
+import styles from '../../style/serendip.css'
 import  '../../style/style.css';
 import  '../../style/serendip.css';
 
@@ -24,11 +24,22 @@ class TextReader extends Component {
 
 
     render() {
+
         return (
             <div>
-                {this.props.txt.split("\n").map((item, key) => {
-                    return <span key={key}>{item}<br /></span>;
-                })}
+                <Highlighter
+                    activeClassName={styles.Active}
+                    highlightClassName={styles.Highlight}
+                    activeIndex={2}
+                    searchWords={["and", "or", "the"]}
+                    highlightStyle={{ fontWeight: 'bold' }}
+
+                    autoEscape={false}
+                    textToHighlight={this.props.txt.split("\n").toString()}
+
+
+                />
+
             </div>
         );
     }
