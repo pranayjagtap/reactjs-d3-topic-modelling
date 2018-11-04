@@ -5,7 +5,7 @@ module.exports = {
     publicPath: '/',
     filename: 'bundle.js'
   },
-  
+ 
   module: {
     loaders: [
       {
@@ -15,14 +15,19 @@ module.exports = {
           presets: ['react', 'es2015', 'stage-1']
         }
       },
-        {                                                                           //Added to load css files
+      {                                                                           //Added to load css files
             test: /\.css$/,
             loader: "style-loader!css-loader"
-        }
+      },
+		{
+			test: /\.txt$/,
+			loader: "raw-loader"
+		}
+		
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx','.css']
+    extensions: ['', '.js', '.jsx','.css','.txt']
   },
   devServer: {
     historyApiFallback: true,

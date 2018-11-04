@@ -7,9 +7,11 @@ import Controls from './components/controls';
 import DocumentScreen from './document';
 
 
+
 //stylesheet
 import  '../style/serendip.css';
 import {Router, BrowserRouter, Link, Route} from 'react-router-dom';
+import TextReader from "./components/text_reader";
 
 const m5 = {
     margin: '5px'
@@ -29,11 +31,30 @@ class Home extends Component {
         super(props);
         console.log("Hello1")
     }
+    fetchFile(){
+        var docs="";
+        var rawFile = new XMLHttpRequest();
+        rawFile.open("GET", '../Data/1KINGHENRYIV.txt', false);
+        rawFile.onreadystatechange = function ()
+        {
+            if(rawFile.readyState === 4)
+            {
+                if(rawFile.status === 200 || rawFile.status == 0)
+                {
+                    var allText = rawFile.responseText;
+                    docs=allText;
+                }
+            }
+        }
+        rawFile.send(null);
+        return docs;
+    }
     onClick(){
         //Your code to add user to the lst of users
         BrowserRouter.push("/Document");
     }
     render() {
+        var docs=this.fetchFile();
         return (
             <div>
 
@@ -52,7 +73,7 @@ class Home extends Component {
                             <Controls />
                         </div>
                         <div style={m5}>
-                            <DocumentControl />
+                            <DocumentControl/>
                         </div>
                     </div>
                     <div style={m5}>
@@ -68,10 +89,17 @@ class Home extends Component {
                             <TopicView />
                         </div>
                         <div style={m5}>
+                            <div className="window side">
+                                <div className="sidenavbar"><Link to="/Document">Document</Link></div>
 
-                                <div>
-                                    <Link to="/Document">Document</Link>
-                                </div>
+
+                            <div className="sideworkspace">
+
+                                    <TextReader
+                                        txt={docs}/>
+                            </div>
+                            </div>
+
 
 
 

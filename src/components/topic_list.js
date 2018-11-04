@@ -6,34 +6,34 @@ import  '../../style/serendip.css';
 import ReactFauxDom from 'react-faux-dom'
 import {withFauxDOM} from 'react-faux-dom'
 
-class Topic_list extends Component {
+class TopicList extends Component {
     constructor(props) {
         super(props);
-        var list = null;
+        var list_g = null;
 
     }
 
     render() {
 
-        var curr = this;
+        var curr=this;
         var data2 = {};
-        var el = this.props.connectFauxDOM('div', 'List');
-        var el2 = document.querySelector('div');
+        var el =  this.props.connectFauxDOM('div', 'List');
+        var el2=document.querySelector('div');
+        var topic_count=[];
+
+            //We will pass path as a variable with file name according to topic selected by user
+        d3.json('./Data/rules.json', function (data) {
+
+        var json_data=data;
+        for (var i in json_data) {
+           topic_count.push([i, json_data[i].num_tags]);
+       }
 
 
-        //We will pass path as a variable with file name according to topic selected by user
-        d3.text('./Data/topic_0.csv', function (data) {
-            data2 = d3.csv.parseRows(data);
 
-            /*17-Oct-2018
-            Keeping range from 0 to 100 sooutput will be percentile representation with highest freq word being 100
-            * Domain stays between last data(minimum) to first data(max).
-            * Data is in descending order of frequency
-            * -Pranay
-            * */
             var x = d3.scale.linear()
-                .domain([data2[data2.length - 1][1], data2[0][1]])
-                .range([0, 100]);
+                .domain([0,300])
+                .range([0,100]);
 
 
             //       console.log(el)
@@ -42,11 +42,11 @@ class Topic_list extends Component {
             var svg1 = d3.select("#topic_canvas");
             var format = d3.format(".4f")
 
-            var list = d3
+            var list_g=d3
                 .select(el)
                 // console.log(svg)
                 .selectAll('div')
-                .data(data2)
+                .data(topic_count)
                 .enter()
                 /* If you need text outside the bar
                  .append("text")
@@ -55,7 +55,7 @@ class Topic_list extends Component {
                  })
                  */
                 .append("div")
-                .on('mouseover', () => {
+                .on('mouseover',  ()=> {
                     // color=
 
                     curr.setState({"background": 'orange'});
@@ -67,15 +67,16 @@ class Topic_list extends Component {
                             return '    =' + format(d[1])
                         });*/
                 })
-                .on("mouseout", (d, i) => {
+                .on("mouseout",  (d, i) =>{
 
-                    curr.setState({'background': i % 2 == 0 ? '#98d669' : "#77bb43"});
+                    curr.setState({'background':i % 2 == 0 ? '#98d669' : "#77bb43"});
                     /* d3.select(this).style("background-color", function () {
                          return i % 2 == 0 ? '#98d669' : "#77bb43";
                      }).select("text").remove();
                      ;*/
                 })
                 .style("width", function (d) {
+                    console.log(x(d[1]))
                     return x(d[1]) + "px";
                 })
                 .style("background", function (d, i) {
@@ -99,11 +100,11 @@ class Topic_list extends Component {
 
                 </div>
 
-                <div className="sideworkspace">
+                <div className="topic_workspace">
                     <div className="row">
-                        <div className="col-lg-1"/>
-                        <div className="col-lg-2">
-                            <div id="topic_canvas" width="100%" height="100%">
+
+                        <div className="col-lg-2" style={{height: '550px'}}>
+                            <div id="topic_list" width="100%" height="100%">
                                 {
                                     this.props.List
                                 }
@@ -115,15 +116,16 @@ class Topic_list extends Component {
             </div>
 
 
+
         );
 
 
     }
 }
-Topic_list.defaultProps = {
+TopicList.defaultProps = {
     List: 'loading'
 }
 //tvchng1 ends
 
 
-export default withFauxDOM(Topic_list);
+export default withFauxDOM(TopicList);

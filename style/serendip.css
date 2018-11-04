@@ -63,6 +63,14 @@
 	height: 250px;
     overflow-y: scroll; /*added 20-oct-2018 by pranay*/
 }
+.topic_workspace{
+    height: 550px;
+    overflow-y: scroll;
+}
+.documentcanvas{
+    height: 550px;
+    overflow-y: scroll;
+}
 
 #sortcontrol{
     height: 70px;
