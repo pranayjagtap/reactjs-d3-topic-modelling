@@ -1,24 +1,45 @@
 import React from "react";
 import {Component} from "react";
-import Highlighter from "react-highlight-words";
-import styles from '../../style/serendip.css'
 import  '../../style/style.css';
 import  '../../style/serendip.css';
-
+var tag_words=[];
 class TextReader extends Component {
     constructor(props) {
         super(props);
-        console.log("It is here"+props.txt)
-        var mytext=props.txt;
+
         this.state = {
-            text: ""
+          tag_words:[]
         };
+
+
+        tag_words=props.tags;
+
+
     }
 
-    componentDidMount() {
+    componentDidMount(props){
 
 
-        this.DynamicHighlighter()
+
+       // this.DynamicHighlighter()
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            tags: nextProps.tags
+        });
+
+
+
+
+        tag_words=nextProps.tags;
+
+
+        console.log("Child 2: I got invoked by Parent");
+        console.log("Child 2: Data I received was:");
+
+
+        this.DynamicHighlighter();
     }
 
     //override findChunks function in react-highlight-words
@@ -85,15 +106,19 @@ class TextReader extends Component {
     };
 
     DynamicHighlighter(){
+        //console.log(tag_words)
 
-        let tags=["and","or","the"];
-        let density=[0.5,1,0.2];
+        //console.log("DynamicHighligher")
+        let tags=tag_words;
+        let density=tag_words;
+        //console.log(tags)
         var text=this.props.txt.split("\n").toString();
+
         for(var i=0;i<tags.length;i++) {
             var docText = document.querySelector('#TextBox');
 
-            var regex = new RegExp('(\\s' + tags[i] + '\\s)', 'ig');
-            text = text.replace(regex, '<span id="highlight" class="highlight" style="opacity:' + density[i] + '">$1</span>');
+            var regex = new RegExp('(\\s' + tags[i][0] + '\\s)', 'ig');
+            text = text.replace(regex, '<span id="highlight" class="highlight" style="opacity:' + (density[i][1]*1000) + '">$1</span>');
             docText.innerHTML = text;
         }
 
@@ -115,6 +140,7 @@ class TextReader extends Component {
 
     }
     render() {
+        //console.log("Render of child2")
 // {this.DynamicHighlighter()}
         return (
 
@@ -122,6 +148,8 @@ class TextReader extends Component {
             <div >
                 <div id="TextBox">
                 {
+
+
                     this.props.txt.split("\n").toString()
 
                 }

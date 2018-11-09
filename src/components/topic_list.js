@@ -11,7 +11,10 @@ class TopicList extends Component {
         super(props);
         var list_g = null;
 
+
     }
+
+
 
     render() {
 
@@ -55,26 +58,16 @@ class TopicList extends Component {
                  })
                  */
                 .append("div")
-                .on('mouseover',  ()=> {
-                    // color=
+                .on('click',  (d)=> {
 
-                    curr.setState({"background": 'orange'});
+                    var topic_name=(d[0].toString())
+                    console.log("Child 1 :Callback to Parent with-->"+topic_name)
 
-                    /*d3.select(this)
-                        .style("background", "orange")
-                        .append('text')
-                        .text(function (d) {
-                            return '    =' + format(d[1])
-                        });*/
+
+                    curr.props.callbackFromParent(topic_name);
+                    console.log("Child 1: My work is done");
                 })
-                .on("mouseout",  (d, i) =>{
 
-                    curr.setState({'background':i % 2 == 0 ? '#8B9FFC  ' : "#AEBCFC"});
-                    /* d3.select(this).style("background-color", function () {
-                         return i % 2 == 0 ? '#98d669' : "#77bb43";
-                     }).select("text").remove();
-                     ;*/
-                })
                 .style("width", function (d) {
                     console.log(x(d[1]))
                     return x(d[1]) + "px";

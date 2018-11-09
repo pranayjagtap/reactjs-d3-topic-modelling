@@ -34,7 +34,7 @@ class Home extends Component {
     fetchFile(){
         var docs="";
         var rawFile = new XMLHttpRequest();
-        rawFile.open("GET", '../Data/1KINGHENRYIV.txt', false);
+        rawFile.open("GET", '../Data/1KINGHENRYIV.txt', false);  //Make chnages for dynamically picking file
         rawFile.onreadystatechange = function ()
         {
             if(rawFile.readyState === 4)
@@ -62,17 +62,18 @@ class Home extends Component {
                     <span style={title}>Serendip</span>
 
                     <select>
-                        <option value="0">Select model</option>
+                    <option value="0">Select model</option>
                     </select>
-                </div>
+                    </div>
 
 
-                <div style={m5}>
+                    <div style={m5}>
                     <div style={nopad} className="col-lg-2">
                         <div style={m5}>
                             <Controls />
                         </div>
                         <div style={m5}>
+
                             <DocumentControl/>
                         </div>
                     </div>

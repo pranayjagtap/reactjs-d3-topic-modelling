@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 
-import routes from './routes';
+
 import Home from "./home";
 import DocumentScreen from './document';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";

@@ -8,6 +8,7 @@ import TopicList from  './components/topic_list';
 import TextReader from  './components/text_reader';
 //stylesheet
 import  '../style/serendip.css';
+import * as d3 from "d3-3";
 
 const m5 = {
     margin: '5px'
@@ -23,21 +24,30 @@ const title = {
     fontWeight: '700',
     margin: '0px 15px',
 };
-
+var tag_word;
+var curr = this;
+var items = [];
 export default class DocumentScreen extends Component {
 
     constructor(props){
         super(props);
 
+        this.state = {
+            tag_word_list:["p",0.5],
+            tag_topic_sel: "",
+            items:[],
+            tags:[]
+       };
+        curr=this;
+
+
+
 
 
     }
-    onClick(){
-        //Your code to add user to the lst of users
-        BrowserRouter.push("/");
-    }
 
-    fetchFile(){
+
+    fetchFile=(dataFromChild) => {
 var docs="";
          var rawFile = new XMLHttpRequest();
          rawFile.open("GET", '../Data/1KINGHENRYIV.txt', false);
@@ -55,6 +65,23 @@ var docs="";
          rawFile.send(null);
          return docs;
       }
+
+    getTags=(topic_name)=>{
+
+        if(topic_name!=null){
+            d3.text('./Datamodel/Metadata/Shake_50/TopicModel/topics_freq/'+topic_name+'.csv', function (text) {
+                var data=d3.csv.parseRows(text);
+                console.log("Parent: State of item changed");
+                curr.setState({tags:data})
+                console.log("Parent: State of item changed");
+
+            });
+
+
+           // console.log("p"+tag_word_list);
+        }
+
+    }
     render() {
 
         document=this.fetchFile();
@@ -74,7 +101,10 @@ var docs="";
                 <div style={m5}>
                     <div style={nopad} className="col-lg-2" style={{height: '550px'}}>
                         <div style={m5}>
-                            <TopicList />
+                            <TopicList
+                                callbackFromParent={this.getTags}
+
+                            />
                         </div>
 
                     </div>
@@ -86,6 +116,8 @@ var docs="";
                                     <div className="documentcanvas" style={{height: '550px'}}>
                                        <TextReader
                                            txt={document}
+                                           tags={this.state.tags}
+
                                         />
                                     </div>
                                 </div>
