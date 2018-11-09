@@ -3,18 +3,13 @@ import React from "react";
 import * as d3 from "d3-3";
 import  '../../style/style.css';
 import  '../../style/serendip.css';
-import ReactFauxDom from 'react-faux-dom'
 import {withFauxDOM} from 'react-faux-dom'
 
 class TopicList extends Component {
     constructor(props) {
         super(props);
         var list_g = null;
-
-
     }
-
-
 
     render() {
 

@@ -39,11 +39,6 @@ export default class DocumentScreen extends Component {
             tags:[]
        };
         curr=this;
-
-
-
-
-
     }
 
 
