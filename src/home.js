@@ -5,6 +5,7 @@ import TopicView from './components/topic_view';
 import DocumentControl from './components/document_control';
 import Controls from './components/controls';
 import DocumentScreen from './document';
+import RankView from './rank_view';
 
 
 
@@ -64,6 +65,9 @@ class Home extends Component {
                     <select>
                     <option value="0">Select model</option>
                     </select>
+                    <div className="sidebtnctrl">
+                            <div className="sidebtns"><Link to="/Rank">RankViewer</Link></div>
+                        </div>
                     </div>
 
 

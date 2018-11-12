@@ -63,9 +63,28 @@
 	height: 250px;
     overflow-y: scroll; /*added 20-oct-2018 by pranay*/
 }
+.sideworkspace1{
+    height: 250px;
+    width: 200px;
+    overflow-y: scroll; /*added 20-oct-2018 by pranay*/
+    overflow-x: hidden; 
+}
 .topic_workspace{
     height: 550px;
     overflow-y: scroll;
+}
+
+.search{
+    margin: 25px;
+}
+.topic_rotated_workspace{
+    height: 200px;
+    width: 555px;
+    overflow-y: hidden;
+    overflow-x: scroll; 
+    background-color: #D3D3D3;
+    padding-left: 8px;
+    padding-right: 8px; 
 }
 .documentcanvas{
     height: 550px;

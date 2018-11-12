@@ -4,8 +4,9 @@ import { browserHistory } from 'react-router';
 
 import {Router, BrowserRouter, Link} from 'react-router-dom';
 
-import TopicList from  './components/topic_list';
+import TopicList from  './components/topic_list_rotated';
 import TextReader from  './components/text_reader';
+import TopicView from './components/topic_view.1';
 //stylesheet
 import  '../style/serendip.css';
 import * as d3 from "d3-3";
@@ -87,11 +88,27 @@ var docs="";
             <div>
 
                 <div  className="navbar">
-                    <span style={title}>Document View</span>
+                    <span style={title}>RankViewer</span>
+
 
 
                 </div>
 
+                <form class = "search">
+
+                    <input type="text" name="name" placeholder="Enter words separated by a space" style={{ width:"300px" }}/>
+                    {" "}
+                    <select style={{ height:"30px" }}> 
+                    <option value="red">Red</option>
+                    <option value="blue">Blue</option>
+                    <option value="green">Green</option>
+                    <option value="purple">Purple</option>
+                    <option value="orange">Orange</option>
+                    <option value="pink">Pink</option>
+                    </select>
+                    {" "}
+                    <input type="submit" value="Add" />
+                </form>
 
                 <div style={m5}>
                     <div style={nopad} className="col-lg-2" style={{height: '550px'}}>
@@ -103,29 +120,25 @@ var docs="";
                         </div>
 
                     </div>
-                    <div style={m5}>
+                   {/* <div style={m5}>
                         <div style={nopad} className="col-lg-8">
                             <div style={m5}>
                                 <div className="window side">
 
                                     <div className="documentcanvas" style={{height: '550px'}}>
-                                       <TextReader
-                                           txt={document}
-                                           tags={this.state.tags}
-
-                                        />
+                                       <TopicView />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div style={nopad} className="col-lg-2">
+        </div>*/}
+<div style={m5}>
+                    <div style={{float: "right", width:"500px", nopad}} className="col-lg-2">
                         <div style={m5}>
-                                line graph
+                        <TopicView />
                         </div>
 
-                    </div>
+        </div></div>
 
                 </div>
             </div>
