@@ -101,7 +101,7 @@ class TextReader extends Component {
             .range([0, 1]);
 
         for(var i=0;i<tags.length;i++) {
-            if(x(density[i][1])*10>0.4) {
+            if(x(density[i][1])*10>0.5) {
                 console.log("hello")
                 var docText = document.querySelector('#TextBox');
 
