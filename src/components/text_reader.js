@@ -22,6 +22,7 @@ class TextReader extends Component {
         this.setState({
             tags: nextProps.tags
         });
+
         tag_words=nextProps.tags;
         console.log("Child 2: I got invoked by Parent");
         console.log("Child 2: Data I received was:");

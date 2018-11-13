@@ -39,6 +39,7 @@
     "react-dom": "16.3.2",
     "react-faux-dom": "^4.2.0",
     "react-highlight-words": "^0.14.0",
+    "react-linechart": "^1.1.12",
     "react-navigation": "^2.18.2",
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",

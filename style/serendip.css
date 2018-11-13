@@ -17,7 +17,7 @@
 }
 
 .window .side{
-	height: 50%;
+	height: 100%;
 }
 
 .sidenavbar{
@@ -122,4 +122,12 @@
 }
 .highlight {
     background-color: #ffc966;
+}
+.lineworkspace{
+    height: 550px;
+    overflow-y: scroll;
+}
+.line_workspace{
+    height: 550px;
+    overflow-y: scroll;
 }

@@ -6,6 +6,7 @@ import {Router, BrowserRouter, Link} from 'react-router-dom';
 
 import TopicList from  './components/topic_list';
 import TextReader from  './components/text_reader';
+import LineGraph from './components/line_graph';
 //stylesheet
 import  '../style/serendip.css';
 import * as d3 from "d3-3";
@@ -36,7 +37,8 @@ export default class DocumentScreen extends Component {
             tag_word_list:["p",0.5],
             tag_topic_sel: "",
             items:[],
-            tags:[]
+            tags:[],
+            topicname: ""
        };
         curr=this;
     }
@@ -67,7 +69,7 @@ var docs="";
             d3.text('./Datamodel/Metadata/Shake_50/TopicModel/topics_freq/'+topic_name+'.csv', function (text) {
                 var data=d3.csv.parseRows(text);
                 console.log("Parent: State of item changed");
-                curr.setState({tags:data})
+                curr.setState({tags:data,topicname:topic_name})
                 console.log("Parent: State of item changed");
 
             });
@@ -122,7 +124,13 @@ var docs="";
 
                     <div style={nopad} className="col-lg-2">
                         <div style={m5}>
-                                line graph
+
+                            <LineGraph
+
+                                       topicname={this.state.topicname}
+                            />
+
+
                         </div>
 
                     </div>
