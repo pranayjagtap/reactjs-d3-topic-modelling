@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { browserHistory } from 'react-router';
+import Popup from './components/popup'
 
 
 import {Router, BrowserRouter, Link} from 'react-router-dom';
@@ -7,6 +8,7 @@ import {Router, BrowserRouter, Link} from 'react-router-dom';
 import TopicList from  './components/topic_list';
 import TextReader from  './components/text_reader';
 import LineGraph from './components/line_graph';
+import SearchBar from './components/search_bar';
 //stylesheet
 import  '../style/serendip.css';
 import * as d3 from "d3-3";
@@ -38,12 +40,23 @@ export default class DocumentScreen extends Component {
             tag_topic_sel: "",
             items:[],
             tags:[],
-            topicname: ""
+            topicname: "",
+            searchword:"",
+            json_tokens:[],
+            showPopup: false,
+            popup:false,
+            textreader:false
        };
         curr=this;
     }
 
-
+    togglePopup() {
+        console.log("yes toggle works")
+        this.setState({
+            showPopup: !this.state.showPopup,
+            childname:'popup'
+        });
+    }
     fetchFile=(dataFromChild) => {
 var docs="";
          var rawFile = new XMLHttpRequest();
@@ -105,8 +118,16 @@ var docs="";
                         </div>
 
                     </div>
+
                     <div style={m5}>
                         <div style={nopad} className="col-lg-8">
+
+                            <SearchBar className="col-lg-8" callBackForTopic={this.getTopics} />
+
+
+
+
+
                             <div style={m5}>
                                 <div className="window side">
 
@@ -119,6 +140,7 @@ var docs="";
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 

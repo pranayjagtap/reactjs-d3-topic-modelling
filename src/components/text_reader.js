@@ -15,18 +15,20 @@ class TextReader extends Component {
         tag_words=props.tags;
     }
 
-    componentDidMount(props){
-    }
+
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            tags: nextProps.tags
-        });
 
-        tag_words=nextProps.tags;
-        console.log("Child 2: I got invoked by Parent");
-        console.log("Child 2: Data I received was:");
-        this.DynamicHighlighter();
+    //    if(nextProps.textreader) {
+            this.setState({
+                tags: nextProps.tags
+            });
+
+            tag_words = nextProps.tags;
+            console.log("Child 2: I got invoked by Parent");
+            console.log("Child 2: Data I received was:");
+            this.DynamicHighlighter();
+     //   }
     }
 
     //override findChunks function in react-highlight-words
