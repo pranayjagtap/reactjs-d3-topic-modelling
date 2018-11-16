@@ -22,9 +22,12 @@ class SearchBar extends Component{
 
     }
     getTopics(term) {
-
         console.log("Current word   "+term)
         var termcheck="";
+
+        if(!this.state.showPopup){
+            this.togglePopup();
+        }
 
         this.setState({term},function(){
             d3.text('./Datamodel/Metadata/Shake_50/TopicModel/HTML/1KINGHENRYIV/tokens.csv', function (text) {
@@ -42,18 +45,14 @@ class SearchBar extends Component{
                     if(!topics.includes(topic_matrix[i][3]))
                         topics.push(topic_matrix[i][3]);
                 }
-
             });
             console.log(topics)
             console.log("yes toggle works")
             console.log(this.state.term)
-            this.togglePopup();
 
-
+            this.forceUpdate()
         });
-        if(!this.state.showPopup){
-            this.togglePopup();
-        }
+
 
        /* flag=true;
         this.togglePopup(term,flag);

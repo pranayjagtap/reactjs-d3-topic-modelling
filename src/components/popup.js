@@ -13,6 +13,7 @@ class Popup extends React.Component {
     }
     render() {
         topics=this.props.list;
+        console.log("Inside child-Popup:"+topics)
         return (
             <div className='popup'>
                 <div className='popup_inner'>
