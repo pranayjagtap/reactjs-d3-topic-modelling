@@ -1,14 +1,21 @@
 import React, {Component} from 'react';
+import Document from '../document.js';
 var topics=[];
+
 class Popup extends React.Component {
 
     generateList(){
+        console.log(this.props)
+        var curr=this;
         console.log("Hi")
         var result_list=[]
+
         topics.forEach(function(data,i){
-            console.log(i)
-           result_list.push (<li>{topics[i]}</li>);
-        })
+
+            result_list.push (<li><button type="button" className="btn btn-light" onClick={() =>curr.props.callFromPop(topics[i])}>{topics[i]}</button></li>);
+            result_list.push(<br/>)
+        });
+
         return result_list;
     }
     render() {

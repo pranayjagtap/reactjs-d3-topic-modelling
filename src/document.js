@@ -122,7 +122,7 @@ var docs="";
                     <div style={m5}>
                         <div style={nopad} className="col-lg-8">
 
-                            <SearchBar className="col-lg-8" callBackForTopic={this.getTopics} />
+                            <SearchBar className="col-lg-8" callBackForTopic={this.getTopics} callbackFromParent={this.getTags} />
 
 
 

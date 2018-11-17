@@ -17,9 +17,14 @@ class SearchBar extends Component{
             topic_list_map:[]
 
         };
+
         this.getTopics.bind(this)
 
 
+    }
+    static callParent(topic_name){
+        console.log(topic_name)
+        this.props.callbackFromParent(topic_name);
     }
     getTopics(term) {
         console.log("Current word   "+term)
@@ -110,7 +115,7 @@ class SearchBar extends Component{
             <Popup
                 text={"Showing suggestions for: \n"+this.state.term}
                 list={topics}
-              //  topic={}
+                callFromPop={this.props.callbackFromParent}
                 closePopup={this.togglePopup.bind(this)}
             />
             : null
