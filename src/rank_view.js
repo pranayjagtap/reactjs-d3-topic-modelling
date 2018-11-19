@@ -89,13 +89,9 @@ var docs="";
 
                 <div  className="navbar">
                     <span style={title}>RankViewer</span>
-
-
-
                 </div>
 
                 <form class = "search">
-
                     <input type="text" name="name" placeholder="Enter words separated by a space" style={{ width:"300px" }}/>
                     {" "}
                     <select style={{ height:"30px" }}> 
@@ -115,24 +111,11 @@ var docs="";
                         <div style={m5}>
                             <TopicList
                                 callbackFromParent={this.getTags}
-
-                            />
+                                 />
                         </div>
-
                     </div>
-                   {/* <div style={m5}>
-                        <div style={nopad} className="col-lg-8">
-                            <div style={m5}>
-                                <div className="window side">
-
-                                    <div className="documentcanvas" style={{height: '550px'}}>
-                                       <TopicView />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-        </div>*/}
-<div style={m5}>
+                
+                <div style={m5}>
                     <div style={{float: "right", width:"500px", nopad}} className="col-lg-2">
                         <div style={m5}>
                         <TopicView />

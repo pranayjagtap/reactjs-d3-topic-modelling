@@ -41,7 +41,6 @@
 
 .sidebtns{
 	display: inline-block;
-    float: left;
     border: solid 1px;
     padding: 5px 9px;
     margin: -6px 1px;
@@ -65,9 +64,11 @@
 }
 .sideworkspace1{
     height: 250px;
-    width: 200px;
+    width: 203px;
     overflow-y: scroll; /*added 20-oct-2018 by pranay*/
     overflow-x: hidden; 
+    padding-bottom:2; 
+    padding-top:2;
 }
 .topic_workspace{
     height: 550px;
@@ -82,7 +83,6 @@
     width: 555px;
     overflow-y: hidden;
     overflow-x: scroll; 
-    background-color: #D3D3D3;
     padding-left: 8px;
     padding-right: 8px; 
 }
