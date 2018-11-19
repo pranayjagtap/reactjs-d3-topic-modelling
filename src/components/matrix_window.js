@@ -21,12 +21,18 @@ import * as matrix_model from '../models/matrix_model.js'
 class Matrix extends Component{
     constructor(props){
         super(props);
+        console.log("in matrix_window:", props);
+        this.state = {
+            handleTopicChange: props.handleTopicChange,
+        }
     }
 
     componentDidMount(){
         //Call plotMatrix on page refresh/load to generate matrix plot based on existing data file.
         //this.plotMatrix();
-        matrix_model.render_matrix();
+        var model = matrix_model.render_matrix(this.state);
+        // console.log("model is:", model);
+        // setTimeout(()=>{model.sort_matrix("min");}, 5000)
 
     }
 
@@ -106,7 +112,7 @@ class Matrix extends Component{
 
             var gcells = grows.selectAll(".gcell")
                 .data(function(d) { return d.groups; })
-                .enter() 
+                .enter()
                 .append("g")
                 .attr("transform", function(d,i,j) {
                     return "translate(" + i*x.rangeBand() + ",0)" ; } )
@@ -139,7 +145,7 @@ class Matrix extends Component{
                     d3.select(this).transition()
                     .duration(100)
                     .style('stroke-width', 3)
-                    
+
 
                 })
                 .on('mouseout', function(d) {
@@ -149,7 +155,7 @@ class Matrix extends Component{
 
                 })
                 .on('click',(d)=>{
-                    
+
                 })
                 .attr("cy",y.rangeBand())
                 .attr("cx",x.rangeBand())

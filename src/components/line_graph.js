@@ -184,7 +184,7 @@ class LineGraph extends Component {
                             }
 
 
-                            var DataObj=new curr.DataObj(topic_name,"steelblue",point);
+                            var DataObj=new curr.DataObj(topic_name,"grey",point);
 
                             data_mat.push(DataObj);
 
@@ -224,7 +224,7 @@ class LineGraph extends Component {
 
     render() {
 
-        
+
         return (
 
 
@@ -241,8 +241,8 @@ class LineGraph extends Component {
 
                                 <LineChart id = "root"
                                     //hidePoints={true}
-                                           width={500}
-                                           height={1000}
+                                           width={300}
+                                           height={10000}
                                            xMax={20}
                                            hideXAxis={true}
                                            hideYAxis={true}
@@ -254,10 +254,10 @@ class LineGraph extends Component {
                                                console.log(point);
                                                for(var i = 0; i < data_mat.length; i++) {
                                                    // console.log(data[i].points.length);
-                                                   for(var j =0; j < data_mat.points.length; j++) {
+                                                   for(var j =0; j < data_mat[i].points.length; j++) {
                                                        // console.log(data[i].points[j]);
-                                                       if(point.x === data_mat.points[j].x && point.y === data_mat.points[j].y ){
-                                                           data_mat.color = "blue";
+                                                       if(point.x === data_mat[i].points[j].x && point.y === data_mat[i].points[j].y ){
+                                                           data_mat.color = "black";
                                                            this.forceUpdate()
 
                                                        }

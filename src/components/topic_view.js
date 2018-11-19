@@ -26,32 +26,47 @@ class TopicView extends Component {
         super(props);
         var bar = null;
 
+        console.log("in topic_view:", props);
+        this.state = {
+            topic_id : props.topic_view_id,
+            topic_title: "Topic View"
+        }
     }
+    componentDidMount(){
+        console.log("did mount");
+    };
+    componentWillReceiveProps(newProps) {
+        console.log("new props in topic_view", newProps);
+        if(! newProps.topic_view_id <= 0){
 
+            this.setState({topic_id: newProps.topic_view_id,topic_title: "topic_"+(newProps.topic_view_id/*+1*/)}, //removed +1 for topic view issue
+               function(){
+            
+                   this.draw_d3();
+            });
 
+        }
+    };
 
-        /*Added div instead of svg on 20-Oct-2018. SVG didn't render div tags so letting it cascade inside parent div.
-         * Also added enabled overflow in serendip.css file for sideworkspace
-         * -Pranay
-         * */
+    draw_d3(){
+        console.log("H")
+        // var ele=this.plotBarGraph();
+        //  var topic = document.querySelector('#topic_canvas');
+        //console.log(topic)
+        //topic.appendChild(el);
+        var curr=this;
+        var data2 = {};
+        var el =  this.props.connectFauxDOM('div', 'chart');
+        var el2=document.querySelector('div');
 
+        if(this.props.topic_view_id <= 0){
 
-        render() {
-
-            //console.log(e)
-            // var ele=this.plotBarGraph();
-            //  var topic = document.querySelector('#topic_canvas');
-            //console.log(topic)
-            //topic.appendChild(el);
-
-            var curr=this;
-            var data2 = {};
-            var el =  this.props.connectFauxDOM('div', 'chart');
-            var el2=document.querySelector('div');
-
-
+        }else{
+            console.log("calling remove");
+            d3.select('#topic_canvas').selectAll('div').remove();
+            var filepath = "./Datamodel/Metadata/Shake_50/TopicModel/topics_freq/topic_"+(this.props.topic_view_id-1)+".csv";
             //We will pass path as a variable with file name according to topic selected by user
-            d3.text('./Data/topic_0.csv', function (data) {
+            d3.text(filepath, function (data) {
                 data2 = d3.csv.parseRows(data);
 
                 /*17-Oct-2018
@@ -63,17 +78,15 @@ class TopicView extends Component {
                 var x = d3.scale.linear()
                     .domain([data2[data2.length - 1][1], data2[0][1]])
                     .range([0, 100]);
-
-
                 //       console.log(el)
                 //console.log(svg1)
                 // el = new ReactFauxDOM.createElement('div')
                 var svg1 = d3.select("#topic_canvas");
                 var format = d3.format(".4f")
 
-                var bar=d3
-                    .select(el)
-                    // console.log(svg)
+                var bar=svg1
+                // .select(el)
+                // console.log(svg)
                     .selectAll('div')
                     .data(data2)
                     .enter()
@@ -87,7 +100,7 @@ class TopicView extends Component {
                     .on('mouseover',  ()=> {
                         // color=
 
-                        curr.setState({"background": 'orange'});
+                        //curr.setState({"background": 'orange'});
 
                         /*d3.select(this)
                             .style("background", "orange")
@@ -98,7 +111,7 @@ class TopicView extends Component {
                     })
                     .on("mouseout",  (d, i) =>{
 
-                        curr.setState({'background':i % 2 == 0 ? '#98d669' : "#77bb43"});
+                        //curr.setState({'background':i % 2 == 0 ? '#98d669' : "#77bb43"});
                         /* d3.select(this).style("background-color", function () {
                              return i % 2 == 0 ? '#98d669' : "#77bb43";
                          }).select("text").remove();
@@ -110,25 +123,34 @@ class TopicView extends Component {
                     .style("background", function (d, i) {
                         return i % 2 == 0 ? '#98d669' : "#77bb43"
                     })
+                    .style("margin", "2px")
+                    .style("border-radius", "0 10px 10px 0")
+                    .style("padding", "2px")
+                    .style("font-weight", 400)
+                    .style("font-size", "12px")
                     .text(function (d) {
 
                         /*To avoid too many words with no width at the bottom*/
                         if (x(d[1]) > 1)
                             return d[0];
                     })
-                    .style("font-weight", "bold");
 
 
             });
+        }
+        this.forceUpdate();
+    }
+        /*Added div instead of svg on 20-Oct-2018. SVG didn't render div tags so letting it cascade inside parent div.
+         * Also added enabled overflow in serendip.css file for sideworkspace
+         * -Pranay
+         * */
 
 
-
-
-            //console.log(el.toReact())
+        render() {
+            console.log("Pranay")
             return (
-
                 <div className="window side">
-                    <div className="sidenavbar">Topic View
+                    <div className="sidenavbar">{this.state.topic_title}
                         <div className="sidebtnctrl">
                             <div className="sidebtns">a</div>
                             <div className="sidebtns">b</div>
@@ -158,8 +180,8 @@ class TopicView extends Component {
     }
 
     TopicView.defaultProps = {
-    chart: 'loading'
-}
+        chart: 'No Topic Selected'
+    };
     //tvchng1 ends
 
 

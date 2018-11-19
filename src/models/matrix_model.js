@@ -6,6 +6,8 @@ var matrix_data = {
     weights:""
 }; //holds data to render matrix read from csv
 
+//variable to store react functions and callbacks
+var globalfns;
 var x,y;
 
 var dimensions = {
@@ -13,10 +15,10 @@ var dimensions = {
     w_width: 1200,
     w_height: 1200,
     margin: {
-        top: 50,
+        top: 150,
         right: 50,
         bottom: 50,
-        left: 170
+        left: 220
     },
     width: function(){
         return this.w_width - (this.margin.left + this.margin.right)
@@ -40,8 +42,12 @@ var t_nodes=[], d_nodes=[];
 var top_orders = {};
 var doc_orders = {};
 
+
+var sel_topics = [];
+var sel_docs = [];
+
 var read_data = function(){
-    d3.csv("../Data/theta.csv", function(error, data) {
+    d3.csv("../Data/theta__.csv", function(error, data) {
         // console.log("in callback");
         var topicids = [];
         var docids = [];
@@ -64,7 +70,7 @@ var read_data = function(){
             row_data.shift();
             weights.push(row_data);
         });
-        
+
         matrix_data["docids"] = docids;
         matrix_data["topicids"] = topicids;
         matrix_data["weights"] = weights;
@@ -85,8 +91,47 @@ var read_data = function(){
 };
 
 function init(){
+    let i;
     y = d3.scale.ordinal().rangeBands([0, dimensions.w_height],0,1);
     x = d3.scale.ordinal().rangeBands([0, dimensions.w_width],0,1);
+
+    top_nodes = matrix_data.topicids;
+    doc_nodes = matrix_data.docids;
+    t_cnt = top_nodes.length;
+    d_cnt = doc_nodes.length;
+    var weights = matrix_data.weights;
+    // get sort order for names
+    top_orders.name = d3.range(t_cnt).sort(function(a, b) { return d3.ascending(top_nodes[a], top_nodes[b]); });
+    doc_orders.name = d3.range(d_cnt).sort(function(a, b) { return d3.ascending(doc_nodes[a], doc_nodes[b]); });
+
+    // get two matrix representations
+    // Topics
+    let top_matrix = [],doc_matrix = [];
+    for(i = 0; i<matrix_data.topicids.length; i++){
+        top_matrix[i] = d3.range(d_cnt).map((j) => {return matrix_data["weights"][j][i]});
+    }
+    // Documents
+    for(i = 0; i<matrix_data.docids.length; i++){
+        doc_matrix[i] = d3.range(t_cnt).map((j) => {return matrix_data["weights"][i][j]});
+    }
+    // get sort order for values
+    top_orders.sort = {"max":[], "min":[]};
+    doc_orders.sort = {"max":[], "min":[]};
+    // Topics
+    var doc_means = d3.range(t_cnt).sort(function(a, b) { return d3.ascending(doc_matrix[a], doc_matrix[b])});
+    for(i = 0; i<matrix_data.docids.length; i++){
+        top_orders.sort.max[i] = d3.range(t_cnt).sort(function(a, b) { return d3.descending(doc_matrix[i][a], doc_matrix[i][b]); });
+        top_orders.sort.min[i] = top_orders.sort.max.reverse();
+    }
+    // Documents
+    for(i = 0; i<matrix_data.topicids.length; i++){
+        console.log("orig matrix is : ", top_matrix[i]);
+        doc_orders.sort.max[i] = d3.range(d_cnt).sort(function(a, b) { return d3.descending(top_matrix[i][a], top_matrix[i][b]); });
+        doc_orders.sort.min[i] = doc_orders.sort.max.reverse();
+        console.log("order is :", doc_orders.sort.max[i]);
+    }
+
+    console.log("top_orders is :", top_orders);
 }
 
 function draw_matrix(data){
@@ -100,7 +145,7 @@ function draw_matrix(data){
         .attr("transform", "translate(" + (dimensions.margin.left) + "," + dimensions.margin.top + ")");
 
     // Maintain two matrix for doc view and topic view drag
-    top_matrix = [],doc_matrix = [];
+    top_matrix = [], doc_matrix = [];
     top_nodes = data.topicids;
     doc_nodes = data.docids;
     t_cnt = top_nodes.length;
@@ -119,29 +164,22 @@ function draw_matrix(data){
 
     t_nodes.forEach(function(node, i) {
         node.index = i;
-        node.count = 0;
-        top_matrix[i] = d3.range(d_cnt).map((j) => { 
-            return {x: j, y: i, z: scale_radius(data["weights"][j][i], 0, 20)}; 
+        top_matrix[i] = d3.range(d_cnt).map((j) => {
+            return {x: j, y: i, z: scale_radius(data["weights"][j][i], 0, 20)};
         });
-    }); //50x36 matrix
+    });
 
     d_nodes.forEach(function(node, i) {
         node.index = i;
-        node.count = 0;
-        doc_matrix[i] = d3.range(t_cnt).map((j) => { 
-            return {x: i, y: j, z: scale_radius(data["weights"][i][j], 0, 20)}; 
+        doc_matrix[i] = d3.range(t_cnt).map((j) => {
+            return {x: i, y: j, z: scale_radius(data["weights"][i][j], 0, 20)};
         });
-    }); //36x50 matrix
+    });
 
-    // Default order
-    top_orders = {
-        id: d3.range(t_cnt),
-        name: d3.range(t_cnt).sort(function(a, b) { return d3.ascending(t_nodes[a].name, t_nodes[b].name); }),
-    };
-    doc_orders = {
-        id: d3.range(d_cnt),
-        name: d3.range(d_cnt).sort(function(a, b) { return d3.ascending(d_nodes[a].name, d_nodes[b].name); }),
-    };
+    top_orders.id = d3.range(t_cnt);
+    doc_orders.id = d3.range(d_cnt);
+
+    // console.log(top_orders, doc_orders);
 
     // console.log(doc_orders, top_orders)
 
@@ -154,7 +192,7 @@ function draw_matrix(data){
         .enter().append("g")
         .attr("class", "row")
         .attr("row_id", function(d, i){return "row_"+i;})
-        .attr("transform", function(d, i) { 
+        .attr("transform", function(d, i) {
             return "translate(0," + y(i) + ")"; })
         .each(row_fn);
 
@@ -163,7 +201,7 @@ function draw_matrix(data){
         .enter().append("g")
         .attr("class", "column")
         .attr("col_id", function(d, i){return "col_"+i;})
-        .attr("transform", function(d, i) { 
+        .attr("transform", function(d, i) {
             return "translate(" + x(i) + ")rotate(-90)"; })
         .each(column_fn);
 
@@ -172,7 +210,7 @@ function draw_matrix(data){
         .enter().append("g")
         .attr("class", "gbox")
         .attr("col_id", function(d, i){return "grd_col_"+i;})
-        .attr("transform", function(d, i) { 
+        .attr("transform", function(d, i) {
             return "translate(" + (x(i) - dimensions.grid_size/2) + ", "+ (-dimensions.grid_size/2)+")"; })
         .each(gbox_fn);
 
@@ -180,12 +218,12 @@ function draw_matrix(data){
 
 
     d3.selectAll(".row").call(d3.behavior.drag()
-        .origin(function(d) { 
-            return {y: y(d[0].x)}; 
+        .origin(function(d) {
+            return {y: y(d[0].x)};
         })
         .on("dragstart", function(d) {
             trigger = d3.event.sourceEvent.target.className.baseVal;
-            if (trigger == "label") {
+            if (trigger == "labels") {
                 d3.selectAll(".cellrow").attr("opacity", 1);
                 dragging[d[0].x] = y(d[0].x);
                 var sel = d3.select(this);
@@ -193,23 +231,23 @@ function draw_matrix(data){
             }
         })
         .on("drag", function(d) {
-            if (trigger == "label") {
+            if (trigger == "labels") {
                 d3.selectAll(".cellcolumn").attr("opacity", 0);
                 dragging[d[0].x] = Math.min(dimensions.w_height, Math.max(0, d3.event.y));
                 doc_orders.id.sort(function(a, b) { return position(a) - position(b); });
                 y.domain(doc_orders.id);
-                d3.selectAll(".row").attr("transform", function(d) { 
+                d3.selectAll(".row").attr("transform", function(d) {
                     if(d)
                         return "translate(0," + position(d[0].x) + ")";
                 });
             }
         })
         .on("dragend", function(d) {
-            if (trigger == "label") {
+            if (trigger == "labels") {
                 delete dragging[d[0].x];
                 transition(d3.select(this)).attr("transform", "translate(0," + y(d[0].x) + ")");
                 d3.selectAll(".column").each(function(d) {
-                    d3.select(this).selectAll(".cellcolumn").attr("x", function(d) { 
+                    d3.select(this).selectAll(".cellcolumn").attr("x", function(d) {
                         return -y(d.x); });
                 });
                 updateMatrixAndRedraw(data, doc_orders.id, 'left');
@@ -218,92 +256,127 @@ function draw_matrix(data){
     );
 
     row.append("text")
-        .attr("class", "label")
+        .attr("class", "labels")
         .attr("x", 10)
         .attr("y", 0)
         .attr("dy", ".32em")
         .attr("text-anchor", "end")
         .text(function(d, i) { return d_nodes[i].name; });
+    row.append("text")
+        .attr("class","sorter")
+        .attr("x", function(d, i) {return -8* d_nodes[i].name.length - 8;})
+        .attr("dy", ".32em")
+        .text("|-->");
 
+    d3.selectAll(".column").on("dblclick", function(d, i){
+        console.log("sort by column", d, i);
+        var order = doc_orders.sort.max[i];
+        // hide topic matrix
+        d3.selectAll(".cellcolumn").attr("opacity", 0);
+        d3.selectAll(".cellrow").attr("opacity", 1);
+        console.log("order is" ,order);
+        sort_animate(order, "document");
+        updateMatrixAndRedraw(data, order, "left");
+    });
+    // Define drag behaviour
+    d3.selectAll(".column").on("click", function(d){
+        console.log((d3.event.target.id).toString().replace("Topic",""))
+        console.log("updating topic view bar chart");
+        globalfns.handleTopicChange(/*d[0].y*/(d3.event.target.id).toString().replace("Topic","")); //Changing argument to get current topic_name for topic view issue
+        sel_topics.push(d.y);
+    })
+        .call(d3.behavior.drag()
+            .origin(function(d) {
+                return {x: x(d[0].y)};
+            })
+            .on("dragstart", function(d) {
+                // console.log("in dragstart", d);
+                trigger = d3.event.sourceEvent.target.className.baseVal;
+                console.log("im getting dragged");
+                if (trigger == "labels") {
+                    d3.selectAll(".cellcolumn").attr("opacity", 1);
+                    dragging[d[0].y] = x(d[0].y);
+                    var sel = d3.select(this);
+                    sel.moveToFront();
+                }
+            })
+            .on("drag", function(d, i) {
+                if (trigger == "labels") {
+                    d3.selectAll(".cellrow").attr("opacity", 0);
+                    dragging[d[0].y] = Math.min(dimensions.w_width, Math.max(0, d3.event.x));
+                    top_orders.id.sort(function(a, b) { return cPosition(a) - cPosition(b); });
+                    x.domain(top_orders.id);
+                    d3.selectAll(".column").attr("transform", function(d) {
+                        if(d)
+                            return "translate(" + cPosition(d[0].y) + ")rotate(-90)";
+                    });
+                }
 
-    d3.selectAll(".column").call(d3.behavior.drag()
-        .origin(function(d) {
-            return {x: x(d[0].y)}; 
-        })
-        .on("dragstart", function(d) {
-            trigger = d3.event.sourceEvent.target.className.baseVal;
-            if (trigger == "label") {
-                d3.selectAll(".cellcolumn").attr("opacity", 1);
-                dragging[d[0].y] = x(d[0].y);
-                var sel = d3.select(this);
-                sel.moveToFront();
-            }
-        })
-        .on("drag", function(d, i) {
-            if (trigger == "label") {
-                d3.selectAll(".cellrow").attr("opacity", 0);
-                dragging[d[0].y] = Math.min(dimensions.w_width, Math.max(0, d3.event.x));
-                top_orders.id.sort(function(a, b) { return cPosition(a) - cPosition(b); });
-                x.domain(top_orders.id);
-                d3.selectAll(".column").attr("transform", function(d) { 
-                    if(d)
-                        return "translate(" + cPosition(d[0].y) + ")rotate(-90)"; 
+            })
+            .on("dragend", function(d, i) {
+                delete dragging[d[0].y];
+                transition(d3.select(this)).attr("transform", "translate(" + x(d[0].y) + ")rotate(-90)");
+                d3.selectAll(".row").each(function(d, i) {
+                    d3.select(this).selectAll(".cellrow").attr("x", function(d) {
+                        return x(d.y);
+                    });
                 });
-            }
-
-        })
-        .on("dragend", function(d, i) {
-            delete dragging[d[0].y];
-            transition(d3.select(this)).attr("transform", "translate(" + x(d[0].y) + ")rotate(-90)");
-            d3.selectAll(".row").each(function(d, i) {
-                d3.select(this).selectAll(".cellrow").attr("x", function(d) { 
-                    return x(d.y);
-                });
-            });
-            updateMatrixAndRedraw(data, top_orders.id, 'top');
-        })
-    );
+                updateMatrixAndRedraw(data, top_orders.id, 'top');
+            })
+        );
 
     column.append("text")
-        .attr("class", "label")
+        .attr("class", "labels")
         .attr("x", -10)
         .attr("y", 0)
         .attr("dy", ".32em")
         .attr("text-anchor", "start")
         .text(function(d, i) { return t_nodes[i].name; });
+    column.append("text")
+        .attr("class","sorter")
+        .attr("x", function(d, i) {return 6* t_nodes[i].name.length;})
+        .attr("dy", ".32em")
+        .text("<--|")
+        .attr("id", function(d, i) { return t_nodes[i].name; })   //Fix added by Pranay on 19-Nov-2018 for incorrect topic view issue
+
+    d3.selection.prototype.moveToFront = function() {
+        return this.each(function(){
+            this.parentNode.appendChild(this);
+        });
+    };
 }
 
 function row_fn(row) {
     var cell = d3.select(this).selectAll(".cellrow")
-        .data(row.filter(function(d) { 
-            return d.z; 
+        .data(row.filter(function(d) {
+            return d.z;
         }))
         .enter().append("circle")
         .attr("pos_id", function(d){return "pos_"+d.x+"_"+d.y;})
         .attr("class", "cellrow")
-        .attr("cx", function(d) { 
+        .attr("cx", function(d) {
             if(x(d.y))
-                return x(d.y); 
+                return x(d.y);
         })
         .attr("fill", "#000")
-        .style("r", function(d, i) { 
+        .style("r", function(d, i) {
             return d.z;
         });
 }
 
 function column_fn(column) {
     var cell = d3.select(this).selectAll(".cellcolumn")
-        .data(column.filter(function(d) { 
-            return d.z; 
+        .data(column.filter(function(d) {
+            return d.z;
         }))
         .enter().append("circle")
         .attr("pos_id", function(d){return "pos_"+d.x+"_"+d.y;})
         .attr("class", "cellcolumn")
-        .attr("cx", function(d) { 
-            return -y(d.x); 
+        .attr("cx", function(d) {
+            return -y(d.x);
         })
-        .attr("fill", "#000")
-        .style("r", function(d,i,j) { 
+        .attr("fill", "#f00")
+        .style("r", function(d,i,j) {
             return d.z;
         });
 }
@@ -338,12 +411,6 @@ function gbox_fn(gbox, j) {
             d3.selectAll("[col_id=grd_col_"+cid+"]").style("fill", "#aaa5");
         });
 }
-
-d3.selection.prototype.moveToFront = function() {
-    return this.each(function(){
-        this.parentNode.appendChild(this);
-    });
-};
 
 function position(d) {
     var v = dragging[d];
@@ -396,8 +463,8 @@ function updateMatrixAndRedraw(data, orders, dimension){
         // uncomment to test out animation
         // sort_animate(doc_orders.name, "document");
         // sort_animate(top_orders.name, "topic");
-    }, 500);
-    
+    }, 1000);
+
 }
 
 function togetherSort(array, orders){
@@ -407,7 +474,7 @@ function togetherSort(array, orders){
     }
     //1) combine the arrays:
     // var list = [];
-    // for (var j = 0; j < array.length; j++) 
+    // for (var j = 0; j < array.length; j++)
     //     list.push({'item': array[j], 'id': orders[j]});
 
     // console.log("mash b4 sort:", list);
@@ -447,6 +514,15 @@ function sort_animate(orders, dimension){
 function scale_radius(r, min, max){
     return (r-min)/(max-min) * 10;
 }
-export function render_matrix(){
+
+
+export function render_matrix(props){
+    globalfns = props;
     read_data();
+    return this;
 }
+
+// export function sort_matrix(type){
+//     console.log(doc_orders);
+//     sort_animate(doc_orders.id, "document");
+// }
