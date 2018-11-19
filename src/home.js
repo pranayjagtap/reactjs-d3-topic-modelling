@@ -30,8 +30,16 @@ const title = {
 class Home extends Component {
     constructor(props){
         super(props);
-        console.log("Hello1")
-    }
+        this.state = {
+            doc_view_id: -1,
+            topic_view_id: 0
+        }
+    };
+    handleTopicChange = (topic_view_id) => {
+        this.setState({
+            topic_view_id: topic_view_id
+        });
+    };
     fetchFile(){
         var docs="";
         var rawFile = new XMLHttpRequest();
@@ -46,7 +54,7 @@ class Home extends Component {
                     docs=allText;
                 }
             }
-        }
+        };
         rawFile.send(null);
         return docs;
     }
@@ -56,6 +64,8 @@ class Home extends Component {
     }
     render() {
         var docs=this.fetchFile();
+        const {topic_view_id} = this.state;
+        var {handleTopicChange} = this;
         return (
             <div>
 
@@ -84,14 +94,18 @@ class Home extends Component {
                     <div style={m5}>
                         <div style={nopad} className="col-lg-8">
                             <div style={m5}>
-                                <Matrix />
+                                <Matrix 
+                                    handleTopicChange = {handleTopicChange}
+                                />
                             </div>
                         </div>
                     </div>
 
                     <div style={nopad} className="col-lg-2">
                         <div style={m5}>
-                            <TopicView />
+                            <TopicView 
+                                topic_view_id = {topic_view_id}
+                            />
                         </div>
                         <div style={m5}>
                             <div className="window side">

@@ -146,10 +146,18 @@
     height: 550px;
     overflow-y: scroll;
 }
-.line_workspace{
+.line_workspace {
     height: 550px;
     overflow-y: scroll;
 }
+
+.labels {
+    font-family: monospace;
+    font-weight: 100;
+    font-size: 12px;
+    cursor: grab;
+}
+
 #topic_list div{
     cursor: pointer;
 }
