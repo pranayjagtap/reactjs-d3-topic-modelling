@@ -24,9 +24,9 @@ class TextReader extends Component {
         });
 
         tag_words=nextProps.tags;
-        console.log("Child 2: I got invoked by Parent");
-        console.log("Child 2: Data I received was:");
-        this.DynamicHighlighter();
+        // console.log("Child 2: I got invoked by Parent");
+        // console.log("Child 2: Data I received was:");
+        // this.DynamicHighlighter();
     }
 
     //override findChunks function in react-highlight-words
