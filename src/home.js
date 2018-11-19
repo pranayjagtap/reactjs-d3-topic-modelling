@@ -4,7 +4,7 @@ import Matrix from './components/matrix_window';
 import TopicView from './components/topic_view';
 import DocumentControl from './components/document_control';
 import Controls from './components/controls';
-import DocumentScreen from './document';
+
 import RankView from './rank_view';
 
 
@@ -26,7 +26,7 @@ const title = {
     fontWeight: '700',
     margin: '0px 15px',
 };
-
+const screen="home";
 class Home extends Component {
     constructor(props){
         super(props);
@@ -36,9 +36,11 @@ class Home extends Component {
         }
     };
     handleTopicChange = (topic_view_id) => {
+        console.log(topic_view_id);
         this.setState({
             topic_view_id: topic_view_id
         });
+
     };
     fetchFile(){
         var docs="";
@@ -115,7 +117,8 @@ class Home extends Component {
                             <div className="sideworkspace">
 
                                     <TextReader
-                                        txt={docs}/>
+                                        txt={docs}
+                                        screen={screen}/>
                             </div>
                             </div>
 

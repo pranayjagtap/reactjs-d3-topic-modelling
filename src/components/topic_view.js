@@ -38,16 +38,18 @@ class TopicView extends Component {
     componentWillReceiveProps(newProps) {
         console.log("new props in topic_view", newProps);
         if(! newProps.topic_view_id <= 0){
-            this.setState({
-                topic_id: newProps.topic_view_id,
-                topic_title: "topic_"+(newProps.topic_view_id+1)
+
+            this.setState({topic_id: newProps.topic_view_id,topic_title: "topic_"+(newProps.topic_view_id/*+1*/)}, //removed +1 for topic view issue
+               function(){
+            
+                   this.draw_d3();
             });
-            this.draw_d3();
+
         }
     };
 
     draw_d3(){
-        //console.log(e)
+        console.log("H")
         // var ele=this.plotBarGraph();
         //  var topic = document.querySelector('#topic_canvas');
         //console.log(topic)
@@ -136,6 +138,7 @@ class TopicView extends Component {
 
             });
         }
+        this.forceUpdate();
     }
         /*Added div instead of svg on 20-Oct-2018. SVG didn't render div tags so letting it cascade inside parent div.
          * Also added enabled overflow in serendip.css file for sideworkspace
@@ -144,7 +147,7 @@ class TopicView extends Component {
 
 
         render() {
-            //console.log(el.toReact())
+            console.log("Pranay")
             return (
                 <div className="window side">
                     <div className="sidenavbar">{this.state.topic_title}

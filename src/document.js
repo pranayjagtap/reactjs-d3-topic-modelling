@@ -27,6 +27,8 @@ const title = {
     fontWeight: '700',
     margin: '0px 15px',
 };
+
+const screen="document";
 var tag_word;
 var curr = this;
 var items = [];
@@ -135,6 +137,7 @@ var docs="";
                                        <TextReader
                                            txt={document}
                                            tags={this.state.tags}
+                                           screen={screen}
 
                                         />
                                     </div>

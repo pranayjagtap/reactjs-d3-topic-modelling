@@ -19,14 +19,16 @@
 
         componentWillReceiveProps(nextProps) {
 
-            this.setState({
-                tags: nextProps.tags
-            });
+            if(nextProps.screen==="document") {
+                this.setState({
+                    tags: nextProps.tags
+                });
 
-            tag_words = nextProps.tags;
-            console.log("Child 2: I got invoked by Parent");
-            console.log("Child 2: Data I received was:");
-            this.DynamicHighlighter();
+                tag_words = nextProps.tags;
+                console.log("Child 2: I got invoked by Parent");
+                console.log("Child 2: Data I received was:");
+                this.DynamicHighlighter();
+            }
 
         }
 
