@@ -5,7 +5,7 @@ import  '../../style/style.css';
 import  '../../style/serendip.css';
 import {withFauxDOM} from 'react-faux-dom'
 
-class TopicList extends Component {
+class RankView extends Component {
     constructor(props) {
         super(props);
         var list_g = null;
@@ -15,7 +15,7 @@ class TopicList extends Component {
 
         var curr=this;
         var data2 = {};
-        var el =  this.props.connectFauxDOM('div', 'List');
+        var el =  this.props.connectFauxDOM('div', 'rankList');
         var el2=document.querySelector('div');
         var topic_count=[];
 
@@ -98,7 +98,7 @@ class TopicList extends Component {
                         <div className="col-lg-2" style={{height: '550px'}}>
                             <div id="topic_list" width="100%" height="100%">
                                 {
-                                    this.props.List
+                                    this.props.rankList
                                 }
                             </div>
                         </div>
@@ -109,10 +109,10 @@ class TopicList extends Component {
 
     }
 }
-TopicList.defaultProps = {
-    List: 'loading'
+RankView.defaultProps = {
+    rankList: 'loading'
 }
 //tvchng1 ends
 
 
-export default withFauxDOM(TopicList);
+export default withFauxDOM(RankView);

@@ -121,7 +121,7 @@ function init(){
     var doc_means = d3.range(t_cnt).sort(function(a, b) { return d3.ascending(doc_matrix[a], doc_matrix[b])});
     for(i = 0; i<matrix_data.docids.length; i++){
         top_orders.sort.max[i] = d3.range(t_cnt).sort(function(a, b) { return d3.descending(doc_matrix[i][a], doc_matrix[i][b]); });
-        top_orders.sort.min[i] = top_orders.sort.max.reverse();
+        top_orderste.sort.min[i] = top_orders.sort.max.reverse();
     }
     // Documents
     for(i = 0; i<matrix_data.topicids.length; i++){
