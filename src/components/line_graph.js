@@ -12,13 +12,14 @@ var data_mat=[] //Initializing Global variable as this will only be used in line
 let counter=[];//=new Array(100).fill(0);
 var topic_name="";
 var points=[];
-
+let document_id="";
 class LineGraph extends Component {
     data;
     constructor(props){
         super(props);
         //unused
         this.state = {
+            document_id : props.document_view_id,
             data_line : [{
                 name: "topic2",
                 color: "grey",
@@ -31,14 +32,26 @@ class LineGraph extends Component {
     }
 
     componentDidMount(){
-        this.getAllPoints();
+       // this.getAllPoints();
     }
+
     componentWillReceiveProps(nextProps) {
 
-        topic_name=nextProps.topicname;
-        console.log("Child 3: I got invoked by Parent");
-        console.log("Child 3: Data I received was:"+topic_name);
-        this.getPoints(topic_name)
+
+        this.setState({document_id: nextProps.document_id},
+            function () {
+
+                document_id = nextProps.document_id;
+                console.log("Listgraph.js says: "+document_id)
+                topic_name=nextProps.topicname;
+                console.log("Child 3: I got invoked by Parent");
+                console.log("Child 3: Data I received was:"+topic_name);
+                this.getPoints(topic_name)
+            });
+
+
+
+
     }
 
     getPoints(topic_name){
@@ -51,9 +64,12 @@ class LineGraph extends Component {
         //State update is used to make sure render is called post completion
         //To ensure sequence is followed callback is used to handle async calls
             this.setState({topic_name},function() {
-                d3.text('../Datamodel/Metadata/Shake_50/TopicModel/HTML/1KINGHENRYIV/tokens.csv', function (text) { //Needs to be generalized
+
+                d3.text('../Datamodel/Metadata/Shake_50/TopicModel/HTML/'+document_id+'/tokens.csv', function (text) { //Needs to be generalized
+
 
                     var data = d3.csv.parseRows(text);
+                    console.log(data)
                     topic_matrix = data;
                     topics = [];
                     var j = 0;
@@ -69,6 +85,7 @@ class LineGraph extends Component {
 
                         counter[j] = 0;
 
+                        if(topic_matrix[i].length>3)  //Added ass some tokens.csv files dont take blank lines
                         //Checks if topic of the word is selected topic of the current event fired
                         if ((topic_matrix[i][3].valueOf() === topic_name)) {
                             count++;
@@ -242,7 +259,7 @@ class LineGraph extends Component {
                                 <LineChart id = "root"
                                     //hidePoints={true}
                                            width={300}
-                                           height={10000}
+                                           height={5000}
                                            xMax={20}
                                            hideXAxis={true}
                                            hideYAxis={true}

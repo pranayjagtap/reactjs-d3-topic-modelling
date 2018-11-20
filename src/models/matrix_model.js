@@ -217,7 +217,12 @@ function draw_matrix(data){
     var trigger;
 
 
-    d3.selectAll(".row").call(d3.behavior.drag()
+    d3.selectAll(".row").on("click", function(d){
+        console.log((d3.event.target.id).toString().replace(/ /g, ''))
+        console.log("updating topic view bar chart")
+        globalfns.handleDocumentChange((d3.event.target.id).toString().replace(/ /g, '')); //Changing argument to get current topic_name for topic view issue
+        sel_topics.push(d.y);
+    })  .call(d3.behavior.drag()
         .origin(function(d) {
             return {y: y(d[0].x)};
         })
@@ -266,7 +271,8 @@ function draw_matrix(data){
         .attr("class","sorter")
         .attr("x", function(d, i) {return -8* d_nodes[i].name.length - 8;})
         .attr("dy", ".32em")
-        .text("|-->");
+        .text("|-->")
+        .attr("id", function(d, i) { return d_nodes[i].name; })   //Fix added by Pranay on 19-Nov-2018 for incorrect topic view issue;
 
     d3.selectAll(".column").on("dblclick", function(d, i){
         console.log("sort by column", d, i);

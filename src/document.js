@@ -32,9 +32,11 @@ const screen="document";
 var tag_word;
 var curr = this;
 var items = [];
+let state=1;
 export default class DocumentScreen extends Component {
 
     constructor(props){
+        state++
         super(props);
 
         this.state = {
@@ -47,9 +49,18 @@ export default class DocumentScreen extends Component {
             json_tokens:[],
             showPopup: false,
             popup:false,
-            textreader:false
+            textreader:false,
+            document_id:0,
+            flagForTopic:true
        };
+        console.log("Refresh hua:"+state)
+        this.state=state;
+        console.log(this.state)
         curr=this;
+    }
+    componentWillUnmount() {
+        // Remember state for the next mount
+        state = this.state;
     }
 
     togglePopup() {
@@ -62,7 +73,7 @@ export default class DocumentScreen extends Component {
     fetchFile=(dataFromChild) => {
 var docs="";
          var rawFile = new XMLHttpRequest();
-         rawFile.open("GET", '../Data/1KINGHENRYIV.txt', false);
+         rawFile.open("GET", '../Data/'+dataFromChild+'.txt', false);
          rawFile.onreadystatechange = function ()
          {
              if(rawFile.readyState === 4)
@@ -78,13 +89,21 @@ var docs="";
          return docs;
       }
 
+    handleTopicListChange(dataFromChild){
+        console.log("You got this far")
+        curr.setState({document_id:dataFromChild,flagForTopic:false},function(){
+            console.log("Document.js says: "+this.state.document_id)
+            this.forceUpdate();
+        });
+    }
+
     getTags=(topic_name)=>{
 
         if(topic_name!=null){
             d3.text('./Datamodel/Metadata/Shake_50/TopicModel/topics_freq/'+topic_name+'.csv', function (text) {
                 var data=d3.csv.parseRows(text);
                 console.log("Parent: State of item changed");
-                curr.setState({tags:data,topicname:topic_name})
+                curr.setState({tags:data,topicname:topic_name,flagForTopic:true})
                 console.log("Parent: State of item changed");
 
             });
@@ -96,8 +115,8 @@ var docs="";
     }
     render() {
 
-        document=this.fetchFile();
-
+       // document=this.fetchFile("1KINGHENRYIV");
+        state=state+1;
         /*var document=require("../Data/1KINGHENRYIV.csv");*/
 
         return (
@@ -115,6 +134,7 @@ var docs="";
                         <div style={m5}>
                             <TopicList
                                 callbackFromParent={this.getTags}
+                                document_id={this.state.document_id}
 
                             />
                         </div>
@@ -135,9 +155,11 @@ var docs="";
 
                                     <div className="documentcanvas" style={{height: '550px'}}>
                                        <TextReader
-                                           txt={document}
+                                           //txt={document}
                                            tags={this.state.tags}
                                            screen={screen}
+                                           handleTopicListChange={this.handleTopicListChange}
+                                           flagForTopic={this.state.flagForTopic}
 
                                         />
                                     </div>
@@ -150,10 +172,13 @@ var docs="";
                     <div style={nopad} className="col-lg-2">
                         <div style={m5}>
 
+{
                             <LineGraph
 
                                        topicname={this.state.topicname}
+                                       document_id={this.state.document_id}
                             />
+}
 
 
                         </div>

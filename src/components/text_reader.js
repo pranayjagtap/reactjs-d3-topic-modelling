@@ -5,29 +5,78 @@
     import * as d3 from "d3-3";
 
     var tag_words=[];
-
+    var document_txt="No Document Selected";
+    let document_id="";
+    let oldProps=[];
+    let flagForTopic=true;
     class TextReader extends Component {
         constructor(props) {
             super(props);
 
             this.state = {
+                document_id : props.document_view_id,
                 tag_words:[],
                 text:[]
             };
             tag_words=props.tags;
+            if(props.screen==="document") {
+                props.handleTopicListChange(document_id);
+                flagForTopic=false;  //flag to make sure dynamichighlighter does not run when we update document id
+            }
+        }
+
+
+        componentWillUnmount() {
+            // Remember state for the next mount
+            document_id = this.state.document_id;
+            oldProps=this.props;
+            flagForTopic=flagForTopic;
         }
 
         componentWillReceiveProps(nextProps) {
 
+
+            console.log(this.state)
+            console.log(this.nextProps)
+            console.log(this.props)
+
+            if(nextProps.screen==="home")
+            if(! nextProps.document_view_id <= 0){
+
+                this.setState({document_id: nextProps.document_view_id}, //removed +1 for topic view issue
+                    function(){
+
+
+                        document_id=nextProps.document_view_id;
+
+                        document_txt=this.fetchFile(nextProps.document_view_id); //Update new document to the component
+                        console.log(document)
+                        this.forceUpdate();
+                    });
+
+            }
+            console.log(this.state)
+            console.log(this.nextProps)
+
             if(nextProps.screen==="document") {
+
                 this.setState({
                     tags: nextProps.tags
                 });
 
+
+                /*nextProps.handleTopicListChange(document_id);*/
                 tag_words = nextProps.tags;
+                console.log("hhhhhhhhh"+tag_words)
                 console.log("Child 2: I got invoked by Parent");
                 console.log("Child 2: Data I received was:");
-                this.DynamicHighlighter();
+                document_txt=this.fetchFile(document_id);
+                console.log(nextProps.flagForTopic)
+                if(nextProps.flagForTopic) {
+                    this.DynamicHighlighter();
+
+                }
+
             }
 
         }
@@ -95,13 +144,37 @@
             return chunks;
         };
 
+        //Previously in Document.js. Moving it to Textreader to make easier calls. Changed by Pranay on 19-Nov-2018
+        fetchFile=(dataFromChild) => {
+            var docs="";
+            var rawFile = new XMLHttpRequest();
+
+            rawFile.open("GET", '../Datamodel/Corpora/Shakespeare/'+dataFromChild+'.txt', false);
+            rawFile.onreadystatechange = function ()
+            {
+                if(rawFile.readyState === 4)
+                {
+                    if(rawFile.status === 200 || rawFile.status == 0)
+                    {
+                        var allText = rawFile.responseText;
+                        docs=allText;
+                    }
+                }
+            }
+            rawFile.send(null);
+            return docs;
+        }
+
 
         //This function has the core business logic for text tagging
         DynamicHighlighter(){
+
             let tags=tag_words;
             let density=tag_words;
 
-            var text=this.props.txt.split("\n").toString();
+            console.log("This")
+            console.log(document_txt)
+            var text=document_txt.split("\n").toString();
             var x = d3.scale.linear()
                 .domain([tags[tags.length - 1][1], tags[0][1]])
                 .range([0, 1]);
@@ -122,13 +195,16 @@
         }
         render() {
 
+
+            console.log(this.state.document_id)
+
             return (
 
 
                 <div >
                     <div id="TextBox">
                         {
-                            this.props.txt.split("\n").toString()
+                            document_txt.split("\n").toString()
                         }
                     </div>
                 </div>

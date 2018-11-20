@@ -24,6 +24,7 @@ class Matrix extends Component{
         console.log("in matrix_window:", props);
         this.state = {
             handleTopicChange: props.handleTopicChange,
+            handleDocumentChange:props.handleDocumentChange
         }
     }
 

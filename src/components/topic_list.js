@@ -5,11 +5,38 @@ import  '../../style/style.css';
 import  '../../style/serendip.css';
 import {withFauxDOM} from 'react-faux-dom'
 
+
+let document_id=""
 class TopicList extends Component {
     constructor(props) {
         super(props);
         var list_g = null;
+        this.state = {
+            document_id : props.document_view_id
+        };
+
+        console.log("Topic list 1")
     }
+
+    componentWillReceiveProps(nextProps) {
+
+console.log("Topic list 2")
+        console.log(this.state)
+        console.log(this.nextProps)
+
+
+
+            this.setState({document_id: nextProps.document_id},
+                function () {
+
+                    document_id = nextProps.document_id;
+                    console.log("Topic list.js says: "+document_id)
+                });
+
+
+    }
+
+
 
     render() {
 
@@ -20,7 +47,7 @@ class TopicList extends Component {
         var topic_count=[];
 
             //We will pass path as a variable with file name according to topic selected by user
-        d3.json('./Data/rules.json', function (data) {
+        d3.json('./Datamodel/Metadata/Shake_50/TopicModel/HTML/'+document_id+'/rules.json', function (data) {
 
         var json_data=data;
         for (var i in json_data) {

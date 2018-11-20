@@ -32,7 +32,8 @@ class Home extends Component {
         super(props);
         this.state = {
             doc_view_id: -1,
-            topic_view_id: 0
+            topic_view_id: 0,
+            document_view_id:0
         }
     };
     handleTopicChange = (topic_view_id) => {
@@ -41,6 +42,13 @@ class Home extends Component {
             topic_view_id: topic_view_id
         });
 
+    };
+    //Added by Pranay on 19-Nov-2018 to allow users to select documents
+    handleDocumentChange=(document_view_id)=>{
+        console.log(document_view_id);
+        this.setState({
+            document_view_id: document_view_id
+        });
     };
     fetchFile(){
         var docs="";
@@ -67,7 +75,9 @@ class Home extends Component {
     render() {
         var docs=this.fetchFile();
         const {topic_view_id} = this.state;
+        const {document_view_id} = this.state;
         var {handleTopicChange} = this;
+        var {handleDocumentChange} = this;
         return (
             <div>
 
@@ -98,6 +108,7 @@ class Home extends Component {
                             <div style={m5}>
                                 <Matrix 
                                     handleTopicChange = {handleTopicChange}
+                                    handleDocumentChange={handleDocumentChange}
                                 />
                             </div>
                         </div>
@@ -118,7 +129,8 @@ class Home extends Component {
 
                                     <TextReader
                                         txt={docs}
-                                        screen={screen}/>
+                                        screen={screen}
+                                        document_view_id={document_view_id}/>
                             </div>
                             </div>
 

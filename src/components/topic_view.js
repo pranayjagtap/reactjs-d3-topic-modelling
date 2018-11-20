@@ -41,7 +41,7 @@ class TopicView extends Component {
 
             this.setState({topic_id: newProps.topic_view_id,topic_title: "topic_"+(newProps.topic_view_id/*+1*/)}, //removed +1 for topic view issue
                function(){
-            
+
                    this.draw_d3();
             });
 
