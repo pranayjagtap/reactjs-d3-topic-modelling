@@ -19,6 +19,8 @@
                 text:[]
             };
             tag_words=props.tags;
+            //This pushes document_id received from Home page to Document page
+            //If all components of home page are also components of Home then you may comment this
             if(props.screen==="document") {
                 props.handleTopicListChange(document_id);
                 flagForTopic=false;  //flag to make sure dynamichighlighter does not run when we update document id
@@ -34,11 +36,6 @@
         }
 
         componentWillReceiveProps(nextProps) {
-
-
-            console.log(this.state)
-            console.log(this.nextProps)
-            console.log(this.props)
 
             if(nextProps.screen==="home")
             if(! nextProps.document_view_id <= 0){
@@ -67,7 +64,7 @@
 
                 /*nextProps.handleTopicListChange(document_id);*/
                 tag_words = nextProps.tags;
-                console.log("hhhhhhhhh"+tag_words)
+
                 console.log("Child 2: I got invoked by Parent");
                 console.log("Child 2: Data I received was:");
                 document_txt=this.fetchFile(document_id);
@@ -172,8 +169,6 @@
             let tags=tag_words;
             let density=tag_words;
 
-            console.log("This")
-            console.log(document_txt)
             var text=document_txt.split("\n").toString();
             var x = d3.scale.linear()
                 .domain([tags[tags.length - 1][1], tags[0][1]])
@@ -196,7 +191,7 @@
         render() {
 
 
-            console.log(this.state.document_id)
+
 
             return (
 

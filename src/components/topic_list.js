@@ -6,53 +6,70 @@ import  '../../style/serendip.css';
 import {withFauxDOM} from 'react-faux-dom'
 
 
-let document_id=""
+var document_id=""
+var document_bkp=""
 class TopicList extends Component {
     constructor(props) {
         super(props);
         var list_g = null;
-        this.state = {
-            document_id : props.document_view_id
-        };
 
-        console.log("Topic list 1")
+        this.state = {
+            document_id : props.document_id
+        };
     }
 
-    componentWillReceiveProps(nextProps) {
 
-console.log("Topic list 2")
-        console.log(this.state)
-        console.log(this.nextProps)
+    componentDidMount(){
+        this.drawGraph(); //Call everytime
+    }
+    componentWillUnmount() {
+        // Remember state for the next mount
+        document_id = this.state.document_id;
+
+    }
+
+    componentWillReceiveProps(newProps) {
+        console.log("new props in list topic", newProps);
 
 
 
-            this.setState({document_id: nextProps.document_id},
-                function () {
 
-                    document_id = nextProps.document_id;
-                    console.log("Topic list.js says: "+document_id)
+        if(! newProps.document_id <= 0){
+
+            this.setState({document_id: newProps.document_id}, //removed +1 for topic view issue
+                function(){
+                    document_id=this.state.document_id
+                    document_bkp=this.state.document_id   //Save value in localMemory
+                    this.drawGraph();
+
+
                 });
 
-
+        }
     }
+    drawGraph(){
 
-
-
-    render() {
+        //When document_id=0,and componentWillReceiveProps is not called, we pick value from previous run
+        //This is required to retrieve bar graph when navigating from Document page to Home page
+        document_id=document_bkp
 
         var curr=this;
         var data2 = {};
-        var el =  this.props.connectFauxDOM('div', 'List');
+        console.log(this.props)
+
+       // var el =  this.props.connectFauxDOM('div', 'List');
+        //console.log(el)
         var el2=document.querySelector('div');
         var topic_count=[];
+        d3.select('#topic_list').selectAll('div').remove();
+        //We will pass path as a variable with file name according to topic selected by user
 
-            //We will pass path as a variable with file name according to topic selected by user
         d3.json('./Datamodel/Metadata/Shake_50/TopicModel/HTML/'+document_id+'/rules.json', function (data) {
 
-        var json_data=data;
-        for (var i in json_data) {
-           topic_count.push([i, json_data[i].num_tags]);
-       }
+            var json_data=data;
+            for (var i in json_data) {
+                topic_count.push([i, json_data[i].num_tags]);
+            }
 
 
 
@@ -64,11 +81,12 @@ console.log("Topic list 2")
             //       console.log(el)
             //console.log(svg1)
             // el = new ReactFauxDOM.createElement('div')
-            var svg1 = d3.select("#topic_canvas");
+            var svg1 = d3.select("#topic_list");
             var format = d3.format(".4f")
 
-            var list_g=d3
-                .select(el)
+
+
+            var list_g=svg1
                 // console.log(svg)
                 .selectAll('div')
                 .data(topic_count)
@@ -91,7 +109,7 @@ console.log("Topic list 2")
                 })
 
                 .style("width", function (d) {
-                    console.log(x(d[1]))
+             
                     return x(d[1]) + "px";
                 })
                 .style("background", function (d, i) {
@@ -105,13 +123,23 @@ console.log("Topic list 2")
                 })
                 .style("font-weight", "bold");
 
-
+            document_bkp=document_id  //store value in localMemory
         });
+
+        this.forceUpdate();
+    }
+
+
+
+
+    render() {
+
+
 
 
         return (
             <div className="window side">
-                <div className="sidenavbar">Topic List
+                <div className="sidenavbar">Topic  {document_id}
 
                 </div>
 
@@ -121,6 +149,7 @@ console.log("Topic list 2")
                         <div className="col-lg-2" style={{height: '550px'}}>
                             <div id="topic_list" width="100%" height="100%">
                                 {
+
                                     this.props.List
                                 }
                             </div>
@@ -130,17 +159,12 @@ console.log("Topic list 2")
                 </div>
             </div>
 
-
-
         );
 
 
     }
 }
-TopicList.defaultProps = {
-    List: 'loading'
-}
-//tvchng1 ends
+
 
 
 export default withFauxDOM(TopicList);

@@ -111,7 +111,6 @@ var docs="";
 
            // console.log("p"+tag_word_list);
         }
-
     }
     render() {
 

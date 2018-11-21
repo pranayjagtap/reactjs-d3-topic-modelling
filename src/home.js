@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
+import { Tabs, Tab, TabPanel, TabList } from 'react-web-tabs';
+
 import Matrix from './components/matrix_window';
 import TopicView from './components/topic_view';
+import TopicList from './components/topic_list';
 import DocumentControl from './components/document_control';
 import Controls from './components/controls';
 
@@ -13,6 +15,7 @@ import RankView from './rank_view';
 import  '../style/serendip.css';
 import {Router, BrowserRouter, Link, Route} from 'react-router-dom';
 import TextReader from "./components/text_reader";
+import * as d3 from "d3-3";
 
 const m5 = {
     margin: '5px'
@@ -33,7 +36,8 @@ class Home extends Component {
         this.state = {
             doc_view_id: -1,
             topic_view_id: 0,
-            document_view_id:0
+            document_view_id:0,
+            document_id:0
         }
     };
     handleTopicChange = (topic_view_id) => {
@@ -47,9 +51,11 @@ class Home extends Component {
     handleDocumentChange=(document_view_id)=>{
         console.log(document_view_id);
         this.setState({
-            document_view_id: document_view_id
+            document_view_id: document_view_id,
+            document_id:document_view_id
         });
     };
+
     fetchFile(){
         var docs="";
         var rawFile = new XMLHttpRequest();
@@ -76,6 +82,7 @@ class Home extends Component {
         var docs=this.fetchFile();
         const {topic_view_id} = this.state;
         const {document_view_id} = this.state;
+        const {document_id} = this.state;
         var {handleTopicChange} = this;
         var {handleDocumentChange} = this;
         return (
@@ -85,15 +92,15 @@ class Home extends Component {
                     <span style={title}>Serendip</span>
 
                     <select>
-                    <option value="0">Select model</option>
+                        <option value="0">Select model</option>
                     </select>
                     <div className="sidebtnctrl">
-                            <div className="sidebtns"><Link to="/Rank">RankViewer</Link></div>
-                        </div>
+                        <div className="sidebtns"><Link to="/Rank">RankViewer</Link></div>
                     </div>
+                </div>
 
 
-                    <div style={m5}>
+                <div style={m5}>
                     <div style={nopad} className="col-lg-2">
                         <div style={m5}>
                             <Controls />
@@ -106,7 +113,7 @@ class Home extends Component {
                     <div style={m5}>
                         <div style={nopad} className="col-lg-8">
                             <div style={m5}>
-                                <Matrix 
+                                <Matrix
                                     handleTopicChange = {handleTopicChange}
                                     handleDocumentChange={handleDocumentChange}
                                 />
@@ -116,7 +123,7 @@ class Home extends Component {
 
                     <div style={nopad} className="col-lg-2">
                         <div style={m5}>
-                            <TopicView 
+                            <TopicView
                                 topic_view_id = {topic_view_id}
                             />
                         </div>
@@ -125,13 +132,33 @@ class Home extends Component {
                                 <div className="sidenavbar"><Link to="/Document">Document</Link></div>
 
 
-                            <div className="sideworkspace">
+                                <div className="sideworkspace">
+                                    <Tabs
+                                        defaultTab="one"
+                                        onChange={(tabId) => { console.log(tabId) }}
+                                    >
+                                        <TabList>
+                                            <Tab tabFor="one">Document</Tab>
+                                            <Tab tabFor="two">Topic List</Tab>
 
-                                    <TextReader
-                                        txt={docs}
-                                        screen={screen}
-                                        document_view_id={document_view_id}/>
-                            </div>
+                                        </TabList>
+                                        <TabPanel tabId="one">
+
+                                            <TextReader
+                                                txt={docs}
+                                                screen={screen}
+                                                document_view_id={document_view_id}/>
+                                        </TabPanel>
+                                        <TabPanel tabId="two">
+                                            <div>
+                                            <TopicList
+
+                                                document_id={document_id}/>
+                                            </div>
+                                        </TabPanel>
+
+                                    </Tabs>
+                                </div>
                             </div>
 
 

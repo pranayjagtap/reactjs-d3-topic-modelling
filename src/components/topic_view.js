@@ -179,9 +179,7 @@ class TopicView extends Component {
 
     }
 
-    TopicView.defaultProps = {
-        chart: 'No Topic Selected'
-    };
+
     //tvchng1 ends
 
 
