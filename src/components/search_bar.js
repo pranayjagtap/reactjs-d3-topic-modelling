@@ -37,6 +37,7 @@
 
         }
         getTopics(term) {
+            console.log(term)
             var termcheck="";
             //Show hidden block when user starts typing
             if(!this.state.showPopup){
@@ -52,7 +53,7 @@
                 }); //d3 call back ends
                 topics = [];
 
-                termcheck=this.state.term;
+                termcheck=this.state.term.toLowerCase();
 
                 //Loop through tokens and check if entered word exists in which topics according to tokens
 
