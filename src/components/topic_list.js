@@ -109,7 +109,7 @@ class TopicList extends Component {
                 })
 
                 .style("width", function (d) {
-             
+
                     return x(d[1]) + "px";
                 })
                 .style("background", function (d, i) {

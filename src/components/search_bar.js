@@ -6,6 +6,7 @@
     //Global variables
     var topics=[];
     var topic_matrix=[];
+    var document_id="";
 
     class SearchBar extends Component{
         constructor(props){
@@ -29,6 +30,12 @@
             });
         }
 
+        componentWillReceiveProps(newProps){
+
+
+            document_id=newProps.document_id;
+
+        }
         getTopics(term) {
             var termcheck="";
             //Show hidden block when user starts typing
@@ -38,7 +45,8 @@
 
             //Set state call back starts
             this.setState({term},function(){
-                d3.text('./Datamodel/Metadata/Shake_50/TopicModel/HTML/1KINGHENRYIV/tokens.csv', function (text) { //Needs generalization ||d3 data ext call back starts
+
+                d3.text('./Datamodel/Metadata/Shake_50/TopicModel/HTML/'+document_id+'/tokens.csv', function (text) { //Needs generalization ||d3 data ext call back starts
                     var data = d3.csv.parseRows(text);
                     topic_matrix = data;
                 }); //d3 call back ends
@@ -47,10 +55,14 @@
                 termcheck=this.state.term;
 
                 //Loop through tokens and check if entered word exists in which topics according to tokens
+
                 topic_matrix.forEach(function (term, i) {
                     //Check if term entered matches token and its reflected topic in tokens.csv is not empty
-                    if ((topic_matrix[i][0].valueOf() === termcheck) &&(topic_matrix[i][3].length>0)) {
+                if(topic_matrix[i].length>3)
+                    if ((topic_matrix[i][0].valueOf().toLowerCase() === termcheck.toLowerCase()) &&(topic_matrix[i][3].length>0)) {
                         //Duplicity check
+                        console.log(termcheck.toLowerCase())
+                        console.log(topic_matrix[i][0].valueOf().toLowerCase())
                         if(!topics.includes(topic_matrix[i][3]))
                             topics.push(topic_matrix[i][3]); //Push topic name to array
                     }

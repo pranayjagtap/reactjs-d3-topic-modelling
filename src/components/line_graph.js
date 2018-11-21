@@ -65,6 +65,7 @@ class LineGraph extends Component {
         //To ensure sequence is followed callback is used to handle async calls
             this.setState({topic_name},function() {
 
+
                 d3.text('../Datamodel/Metadata/Shake_50/TopicModel/HTML/'+document_id+'/tokens.csv', function (text) { //Needs to be generalized
 
 

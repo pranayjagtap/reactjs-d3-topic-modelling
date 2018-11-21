@@ -98,8 +98,9 @@ var docs="";
     }
 
     getTags=(topic_name)=>{
-
+console.log("cdcrvtgtyjujujunnjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj")
         if(topic_name!=null){
+            console.log("21-Nov Github fuck up")
             d3.text('./Datamodel/Metadata/Shake_50/TopicModel/topics_freq/'+topic_name+'.csv', function (text) {
                 var data=d3.csv.parseRows(text);
                 console.log("Parent: State of item changed");
@@ -143,7 +144,7 @@ var docs="";
                     <div style={m5}>
                         <div style={nopad} className="col-lg-8">
 
-                            <SearchBar className="col-lg-8" callBackForTopic={this.getTopics} callbackFromParent={this.getTags} />
+                            <SearchBar className="col-lg-8" callBackForTopic={this.getTopics} callbackFromParent={this.getTags} document_id={this.state.document_id}/>
 
 
 
