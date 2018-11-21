@@ -65,14 +65,16 @@ class RankView extends Component {
                     console.log(x(d[1]))
                     return x(d[1]) + "px";
                 })
-                .style("width", 0)
+                .style("width", 14)
                   
-                .style("background", "#808080")
+                .style("background", function (d, i) {
+                    return i % 2 == 0 ? '#8B9FFC  ' : "#AEBCFC"
+                })
                 .style('position','absolute')
                 .style("padding-left", "10px")
                 .style('top', 0)
                 .style('left',function(d,i){
-                    return i * 11;
+                    return i * 20;
                 })
                 
                 .text(function (d) {
@@ -92,7 +94,11 @@ class RankView extends Component {
 
         return (
             
-                <div className="topic_rotated_workspace">
+            <div className="window" style={{width:995, height:245, paddingLeft:2, paddingRight:2, paddingTop:2}}>
+            <div className="sidenavbar">Topic List
+
+</div>
+                <div className="topic_rotated_workspace" style={{width:990, paddingTop:2}} >
                     <div className="row">
 
                         <div className="col-lg-2" style={{height: '550px'}}>
@@ -103,6 +109,7 @@ class RankView extends Component {
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
        
         );

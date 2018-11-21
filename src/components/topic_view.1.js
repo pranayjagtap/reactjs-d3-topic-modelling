@@ -108,7 +108,7 @@ class TopicView extends Component {
                         return x(d[1]) + "px";
                     })
                     .style("background", function (d, i) {
-                        return i % 2 == 0 ? '#FFFF99' : "#FFFF00"
+                        return i % 2 == 0 ? '#98d669' : "#77bb43"
                     })
                    
                     .text(function (d) {
@@ -124,8 +124,9 @@ class TopicView extends Component {
 
             //console.log(el.toReact())
             return (
-              
-                    <div className="sideworkspace1">
+                <div className="window" style={{width:208, height:400, paddingBottom:2, paddingTop:2, marginLeft:265, paddingLeft:2, paddingRight:2}} >
+                <div className="sidenavbar">Topic View</div>
+                    <div className="sideworkspace1" style={{height:350}}>
                         <div className="row">
                             <div className="col-lg-1"/>
                             <div className="col-lg-2">
@@ -137,6 +138,7 @@ class TopicView extends Component {
                             </div>
                             <div className="col-lg-1"/>
                         </div>
+                    </div>
                     </div>
            
 
