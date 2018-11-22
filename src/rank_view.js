@@ -5,11 +5,12 @@ import { browserHistory } from 'react-router';
 import {Router, BrowserRouter, Link} from 'react-router-dom';
 
 import TopicList from  './components/topic_list_rotated';
-import TextReader from  './components/text_reader';
+import SearchBarRank from  './components/search_bar_rank';
 import TopicView from './components/topic_view.1';
 //stylesheet
 import  '../style/serendip.css';
 import * as d3 from "d3-3";
+import SearchBar from "./components/search_bar";
 
 const m5 = {
     margin: '5px'
@@ -26,6 +27,7 @@ const title = {
     margin: '0px 15px',
 };
 var tag_word;
+var topic_view_id="";
 var curr = this;
 var items = [];
 export default class DocumentScreen extends Component {
@@ -36,6 +38,7 @@ export default class DocumentScreen extends Component {
         this.state = {
             tag_word_list:["p",0.5],
             tag_topic_sel: "",
+            topic_view_id:"",
             items:[],
             tags:[]
        };
@@ -62,22 +65,24 @@ var docs="";
          return docs;
       }
 
-    getTags=(topic_name)=>{
+      handleTopicChange = (topic_view_id) => {
+        console.log(topic_view_id);
+        this.setState({
+            topic_view_id: topic_view_id
+        });
 
-        if(topic_name!=null){
-            d3.text('./Datamodel/Metadata/Shake_50/TopicModel/topics_freq/'+topic_name+'.csv', function (text) {
-                var data=d3.csv.parseRows(text);
-                console.log("Parent: State of item changed");
-                curr.setState({tags:data})
+    };
+    fetchAndThrow=(topic_names)=>{
+
+        console.log("WOW")
+                curr.setState({topics:topic_names})
                 console.log("Parent: State of item changed");
 
-            });
+            }
 
 
            // console.log("p"+tag_word_list);
-        }
 
-    }
     render() {
 
         document=this.fetchFile();
@@ -91,34 +96,25 @@ var docs="";
                     <span style={title}>RankViewer</span>
                 </div>
 
-                <form class = "search">
-                    <input type="text" name="name" placeholder="Enter words separated by a space" style={{ width:"300px" }}/>
-                    {" "}
-                    <select style={{ height:"30px" }}> 
-                    <option value="red">Red</option>
-                    <option value="blue">Blue</option>
-                    <option value="green">Green</option>
-                    <option value="purple">Purple</option>
-                    <option value="orange">Orange</option>
-                    <option value="pink">Pink</option>
-                    </select>
-                    {" "}
-                    <input type="submit" value="Add" />
-                </form>
+                <SearchBarRank className="col-lg-8"
+                 callbackParent={this.fetchAndThrow}/>
 
                 <div style={m5}>
                     <div style={nopad} className="col-lg-2" style={{height: '550px'}}>
                         <div style={m5}>
                             <TopicList
-                                callbackFromParent={this.getTags}
+                                callbackFromParent={this.handleTopicChange}
+                                topics={this.state.topics}
                                  />
                         </div>
                     </div>
                 
                 <div style={m5}>
-                    <div style={{float: "right", width:"500px", nopad}} className="col-lg-2">
+                    <div style={{postion: "relative", float: "right", width:"500px", nopad}} className="col-lg-2">
                         <div style={m5}>
-                        <TopicView />
+                        <TopicView 
+                        topic_view_id = {this.state.topic_view_id}
+                        />
                         </div>
 
         </div></div>

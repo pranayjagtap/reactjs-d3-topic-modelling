@@ -21,10 +21,19 @@ import  '../../style/serendip.css';
 import ReactFauxDom from 'react-faux-dom'
 import {withFauxDOM} from 'react-faux-dom'
 
+var topic_name="";
 class TopicView extends Component {
     constructor(props) {
         super(props);
         var bar = null;
+
+    }
+
+    componentWillReceiveProps(newProps){
+        console.log("HHHHHHHHHHHHHHHHHHH"+newProps.topic_view_id)
+            topic_name=newProps.topic_view_id;  
+            console.log("topic view"+topic_name)   
+            this.forceUpdate(); 
 
     }
 
@@ -48,10 +57,10 @@ class TopicView extends Component {
             var data2 = {};
             var el =  this.props.connectFauxDOM('div', 'chart');
             var el2=document.querySelector('div');
-
-
+console.log(topic_name)
+            d3.select("#topic_canvas").selectAll("*").remove();
             //We will pass path as a variable with file name according to topic selected by user
-            d3.text('./Data/topic_0.csv', function (data) {
+            d3.text('./Datamodel/Metadata/Shake_50/TopicModel/topics_freq/'+topic_name+'.csv', function (data) {
                 data2 = d3.csv.parseRows(data);
 
                 /*17-Oct-2018
@@ -71,8 +80,7 @@ class TopicView extends Component {
                 var svg1 = d3.select("#topic_canvas");
                 var format = d3.format(".4f")
 
-                var bar=d3
-                    .select(el)
+                var bar=svg1
                     // console.log(svg)
                     .selectAll('div')
                     .data(data2)
@@ -148,9 +156,6 @@ class TopicView extends Component {
 
     }
 
-    TopicView.defaultProps = {
-    chart: 'loading'
-}
     //tvchng1 ends
 
 
