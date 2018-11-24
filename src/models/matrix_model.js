@@ -163,14 +163,14 @@ function draw_matrix(data){
     t_nodes.forEach(function(node, i) {
         node.index = i;
         top_matrix[i] = d3.range(d_cnt).map((j) => {
-            return {x: j, y: i, z: scale_radius(data["weights"][j][i], 0, 20)};
+            return {x: j, y: i, z: scale_radius(data["weights"][j][i], 0, 5)};
         });
     });
 
     d_nodes.forEach(function(node, i) {
         node.index = i;
         doc_matrix[i] = d3.range(t_cnt).map((j) => {
-            return {x: i, y: j, z: scale_radius(data["weights"][i][j], 0, 20)};
+            return {x: i, y: j, z: scale_radius(data["weights"][i][j], 0, 5)};
         });
     });
 
@@ -218,8 +218,8 @@ function draw_matrix(data){
     var endX = 0, endY = 0;
     d3.selectAll(".row").on("dblclick", function(d, i){
         console.log("sort by row", i);
-        // var order = d3.range(doc_matrix[i].length).sort(function(a, b){ return doc_matrix[i][b].z - doc_matrix[i][a].z});
-        var order = top_orders.sort.max[i];
+        var order = d3.range(doc_matrix[i].length).sort(function(a, b){ return doc_matrix[i][b].z - doc_matrix[i][a].z});
+        // var order = top_orders.sort.max[i];
         //console.log("orders", orders, "order", order);
         // hide topic matrix
         d3.selectAll(".cellrow").attr("opacity", 0);
@@ -286,7 +286,8 @@ function draw_matrix(data){
 
     d3.selectAll(".column").on("dblclick", function(d, i){
         console.log("sort by column", i);
-        var order = doc_orders.sort.max[i];
+        var order = d3.range(top_matrix[i].length).sort(function(a, b){ return top_matrix[i][b].z - top_matrix[i][a].z});
+        //var order = doc_orders.sort.max[i];
         // hide topic matrix
         d3.selectAll(".cellcolumn").attr("opacity", 0);
         d3.selectAll(".cellrow").attr("opacity", 1);
@@ -490,7 +491,7 @@ function updateMatrixAndRedraw(data, orders, dimension){
         // uncomment to test out animation
         // sort_animate(doc_orders.name, "document");
         // sort_animate(top_orders.name, "topic");
-    }, 1000);
+    }, 500);
 
 }
 
@@ -525,21 +526,26 @@ function sort_animate(orders, dimension){
     if(dimension == "topic"){
         for(var i=0;i<orders.length;i++){
             d3.select("[col_id=col_" + i +"]")
-                .transition().duration(1000)
+                .transition().duration(500)
                 .attr("transform", function(d) {return "translate(" + (x(orders.indexOf(i))) + ", 0)rotate(-90)"})
         }
     }
     if(dimension == "document"){
         for(var i=0;i<orders.length;i++){
             d3.select("[row_id=row_" + i +"]")
-                .transition().duration(1000)
+                .transition().duration(500)
                 .attr("transform", function(d) {return "translate(0, " + (y(orders.indexOf(i))) + ")"})
         }
     }
 
 }
 function scale_radius(r, min, max){
-    return ((r-min)/(max-min)) * 10;
+    var rad = ((r-min)/(max-min)) * 10;
+    console.log(rad, min, max);
+    if(rad > 11){
+        rad = 11;
+    }
+    return rad
 }
 
 
