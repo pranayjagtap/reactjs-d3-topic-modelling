@@ -541,7 +541,6 @@ function sort_animate(orders, dimension){
 }
 function scale_radius(r, min, max){
     var rad = ((r-min)/(max-min)) * 10;
-    console.log(rad, min, max);
     if(rad > 11){
         rad = 11;
     }
