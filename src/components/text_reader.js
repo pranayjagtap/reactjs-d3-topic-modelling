@@ -75,7 +75,6 @@
                 }
 
             }
-
         }
 
         //override findChunks function in react-highlight-words
