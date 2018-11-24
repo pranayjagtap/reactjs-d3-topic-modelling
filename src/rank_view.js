@@ -100,7 +100,7 @@ var docs="";
                  callbackParent={this.fetchAndThrow}/>
 
                 <div style={m5}>
-                    <div style={nopad} className="col-lg-2" style={{height: '550px'}}>
+                    <div style={nopad} className="col-lg-2" style={{height: '950px'}}>
                         <div style={m5}>
                             <TopicList
                                 callbackFromParent={this.handleTopicChange}
@@ -110,7 +110,7 @@ var docs="";
                     </div>
                 
                 <div style={m5}>
-                    <div style={{postion: "relative", float: "right", width:"500px", nopad}} className="col-lg-2">
+                    <div style={{postion: "relative", float: "right", width:"950px", nopad}} className="col-lg-2">
                         <div style={m5}>
                         <TopicView 
                         topic_view_id = {this.state.topic_view_id}
