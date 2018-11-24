@@ -218,6 +218,12 @@ function draw_matrix(data){
     var endX = 0, endY = 0;
     d3.selectAll(".row").on("click", function(d){
         globalfns.handleDocumentChange((d3.event.target.id).toString().replace(/ /g, ''));
+        sel_docs.push((d3.event.target.id).toString());
+        d3.select(this).select("rect")
+            .attr("opacity", 1);
+        d3.select(this).select("text")
+            .attr("fill", "#fff")
+            .style("font-weight", "bolder")
     });
     d3.selectAll(".row").on("dblclick", function(d, i){
         console.log("sort by row", i);
@@ -273,13 +279,34 @@ function draw_matrix(data){
         })
     );
 
+    row.append("rect").attr("width", function(d, i) {return 8* d_nodes[i].name.length;})
+        .attr("height","20px")
+        .attr("x", function(d, i) {return -8* d_nodes[i].name.length + 16;})
+        .attr("y", "-10px")
+        .attr("opacity", function(d, i){
+            if (sel_docs.indexOf(d_nodes[i].name) > -1) {
+                return 1;
+            }else{
+                return 0;
+            }
+        });
     row.append("text")
         .attr("class", "labels")
         .attr("x", 10)
         .attr("y", 0)
         .attr("dy", ".32em")
         .attr("text-anchor", "end")
-        .text(function(d, i) { return d_nodes[i].name; });
+        .text(function(d, i) { return d_nodes[i].name; })
+        .attr("fill", function(d, i){
+            if (sel_docs.indexOf(d_nodes[i].name) > -1) {
+                return "#fff";
+            }
+        })
+        .style("font-weight", function(d, i){
+            if (sel_docs.indexOf(d_nodes[i].name) > -1) {
+                return "bolder";
+            }
+        })
     row.append("text")
         .attr("class","sorter")
         .attr("x", function(d, i) {return -8* d_nodes[i].name.length - 8;})
@@ -307,11 +334,14 @@ function draw_matrix(data){
     });
     // Define drag behaviour
     d3.selectAll(".column").on("click", function(d){
-        console.log((d3.event.target.id).toString().replace("Topic",""))
         console.log("updating topic view bar chart");
         globalfns.handleTopicChange(/*d[0].y*/(d3.event.target.id).toString().replace("Topic","")); //Changing argument to get current topic_name for topic view issue
-        sel_topics.push(d.y);
-
+        sel_topics.push(d3.event.target.id.toString());
+        d3.select(this).select("rect")
+            .attr("opacity", 1);
+        d3.select(this).select("text")
+            .attr("fill", "#fff")
+            .style("font-weight", "bolder")
         //make highlighted
     })
         .call(d3.behavior.drag()
@@ -358,13 +388,34 @@ function draw_matrix(data){
         })
     );
 
+    column.append("rect").attr("width", function(d, i) {return 8* t_nodes[i].name.length;})
+        .attr("height","20px")
+        .attr("x", function(d, i) {return -t_nodes[i].name.length -5;})
+        .attr("y", "-10px")
+        .attr("opacity", function(d, i){
+            if (sel_topics.indexOf(t_nodes[i].name) > -1) {
+                return 1;
+            }else{
+                return 0;
+            }
+        });
     column.append("text")
         .attr("class", "labels")
         .attr("x", -10)
         .attr("y", 0)
         .attr("dy", ".32em")
         .attr("text-anchor", "start")
-        .text(function(d, i) { return t_nodes[i].name; });
+        .text(function(d, i) { return t_nodes[i].name; })
+        .attr("fill", function(d, i){
+            if (sel_topics.indexOf(t_nodes[i].name) > -1) {
+                return "#fff";
+            }
+        })
+        .style("font-weight", function(d, i){
+            if (sel_topics.indexOf(t_nodes[i].name) > -1) {
+                return "bolder";
+            }
+        });
     column.append("text")
         .attr("class","sorter")
         .attr("x", function(d, i) {return 6* t_nodes[i].name.length;})
