@@ -43,7 +43,6 @@ class TopicView extends Component {
     componentWillReceiveProps(newProps) {
         console.log("new props in topic_view", newProps);
         if(! newProps.topic_view_id <= 0){
-
             this.setState({topic_id: newProps.topic_view_id,topic_title: "topic_"+(newProps.topic_view_id/*+1*/)}, //removed +1 for topic view issue
                function(){
                    this.draw_d3();
@@ -149,6 +148,7 @@ class TopicView extends Component {
                     .style("font-weight", 700)
                     .style("font-size", "12px")
                     .style("color", "white")
+                    .style("border", "1px solid black")
                     .text(function (d) {
                         return d[0];
                     })

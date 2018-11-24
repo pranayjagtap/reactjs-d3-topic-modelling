@@ -216,6 +216,9 @@ function draw_matrix(data){
 
     var startX = 0, startY = 0;
     var endX = 0, endY = 0;
+    d3.selectAll(".row").on("click", function(d){
+        globalfns.handleDocumentChange((d3.event.target.id).toString().replace(/ /g, ''));
+    });
     d3.selectAll(".row").on("dblclick", function(d, i){
         console.log("sort by row", i);
         var order = d3.range(doc_matrix[i].length).sort(function(a, b){ return doc_matrix[i][b].z - doc_matrix[i][a].z});
@@ -308,6 +311,8 @@ function draw_matrix(data){
         console.log("updating topic view bar chart");
         globalfns.handleTopicChange(/*d[0].y*/(d3.event.target.id).toString().replace("Topic","")); //Changing argument to get current topic_name for topic view issue
         sel_topics.push(d.y);
+
+        //make highlighted
     })
         .call(d3.behavior.drag()
         .origin(function(d) {
@@ -540,9 +545,9 @@ function sort_animate(orders, dimension){
 
 }
 function scale_radius(r, min, max){
-    var rad = ((r-min)/(max-min)) * 10;
-    if(rad > 11){
-        rad = 11;
+    var rad = ((r-min)/(max-min)) * 8;
+    if(rad > 10){
+        rad = 10;
     }
     return rad
 }
