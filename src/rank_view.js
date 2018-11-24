@@ -85,7 +85,7 @@ var docs="";
 
     render() {
 
-        document=this.fetchFile();
+       // document=this.fetchFile();
 
         /*var document=require("../Data/1KINGHENRYIV.csv");*/
 

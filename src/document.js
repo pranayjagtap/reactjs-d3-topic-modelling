@@ -33,12 +33,14 @@ var tag_word;
 var curr = this;
 var items = [];
 let state=1;
+let document_id;
 export default class DocumentScreen extends Component {
 
     constructor(props){
         state++
         super(props);
-
+document_id=localStorage.getItem('doc_id');
+console.log(document_id)
         this.state = {
             tag_word_list:["p",0.5],
             tag_topic_sel: "",
@@ -50,18 +52,21 @@ export default class DocumentScreen extends Component {
             showPopup: false,
             popup:false,
             textreader:false,
-            document_id:0,
+            document_id:document_id,
             flagForTopic:true
        };
+
+
         console.log("Refresh hua:"+state)
+        console.log(localStorage.getItem('doc_id'));
+        document_id=localStorage.getItem('doc_id');
+        console.log(this.state.document_id);
         this.state=state;
         console.log(this.state)
         curr=this;
+
     }
-    componentWillUnmount() {
-        // Remember state for the next mount
-        state = this.state;
-    }
+
 
     togglePopup() {
         console.log("yes toggle works")
@@ -71,7 +76,7 @@ export default class DocumentScreen extends Component {
         });
     }
     fetchFile=(dataFromChild) => {
-var docs="";
+         var docs="";
          var rawFile = new XMLHttpRequest();
          rawFile.open("GET", '../Data/'+dataFromChild+'.txt', false);
          rawFile.onreadystatechange = function ()
@@ -98,9 +103,9 @@ var docs="";
     }
 
     getTags=(topic_name)=>{
-console.log("cdcrvtgtyjujujunnjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj")
+
         if(topic_name!=null){
-            console.log("21-Nov Github fuck up")
+
             d3.text('./Datamodel/Metadata/Shake_50/TopicModel/topics_freq/'+topic_name+'.csv', function (text) {
                 var data=d3.csv.parseRows(text);
                 console.log("Parent: State of item changed");
@@ -108,18 +113,21 @@ console.log("cdcrvtgtyjujujunnjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
                 console.log("Parent: State of item changed");
 
             });
-
-
-           // console.log("p"+tag_word_list);
         }
     }
     render() {
 
-       // document=this.fetchFile("1KINGHENRYIV");
+        console.log(document_id)
+        console.log(localStorage.getItem('doc_id'));
+        localStorage.setItem('doc_id',this.state.document_id);
+
+       // console.log(localStorage.getItem('doc_id'));
+
+
         state=state+1;
-        /*var document=require("../Data/1KINGHENRYIV.csv");*/
 
         return (
+
             <div>
 
                 <div  className="navbar">
@@ -134,7 +142,9 @@ console.log("cdcrvtgtyjujujunnjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
                         <div style={m5}>
                             <TopicList
                                 callbackFromParent={this.getTags}
-                                document_id={this.state.document_id}
+                                document_id={
+
+                                    this.state.document_id}
 
                             />
                         </div>
