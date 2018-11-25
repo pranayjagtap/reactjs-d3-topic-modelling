@@ -55,13 +55,13 @@ class RankView extends Component {
             //console.log(svg1)
             // el = new ReactFauxDOM.createElement('div')
 
-            //var svg1 = d3.select("#topic_list");
+            var svg1 = d3.select("#topic_list");
             //var format = d3.format(".4f")
 
-            var list_g=d3.select(el);
+           // var list_g=d3.select(el);
 
             // console.log(svg)
-            list_g.selectAll('div')
+           var list_g=svg1.selectAll('div')
                 .data(topic_count)
                 .enter()
                 /* If you need text outside the bar
@@ -93,12 +93,14 @@ class RankView extends Component {
 
                     return i % 2 == 0 ? '#8B9FFC  ' : "#AEBCFC"
                 })
+               .style('left',function(d,i){
+                   console.log()
+                   return i * 50+"px";
+               })
                 .style('position','absolute')
                 .style("padding-left", "10px")
                 .style('top', 0)
-                .style('left',function(d,i){
-                    return i * 50;
-                })
+
 
                 .text(function (d) {
 
@@ -115,12 +117,15 @@ class RankView extends Component {
                 curr.forceUpdate();
         });
 
+        this.forceUpdate();
+        console.log("drawPlot:")
+        console.log(this.props.rankList)
     }
 
     render() {
 
-
-
+        console.log(this.props.rankList)
+        console.log("Render1:")
 
         return (
             
@@ -128,7 +133,7 @@ class RankView extends Component {
             <div className="sidenavbar">Topic List
 
 </div>
-                <div className="topic_rotated_workspace" style={{width:950, paddingTop:2}} >
+                <div className="topic_rotated_workspace" style={{width:940, paddingTop:2}} >
                     <div className="row">
 
                         <div className="col-lg-2" style={{height: '950px'}}>
