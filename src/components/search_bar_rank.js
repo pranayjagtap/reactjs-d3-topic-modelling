@@ -126,7 +126,7 @@ class SearchBarRank extends Component{
                         doc.innerHTML = "";
                         var innerElement = document.createElement('div');
                         //document.getElementById(topics_list[i].toLowerCase())
-                        innerElement.style.width = "30px"
+                        innerElement.style.width = "40px"
                         innerElement.style.height = height + "px";
                         //innerElement.style.paddingLeft= "10px"
                         innerElement.style.borderBottom = "solid red"

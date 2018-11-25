@@ -87,7 +87,7 @@ class RankView extends Component {
                     console.log("Y"+d[1])
                     return x(d[1]) + "px";
                 })
-                .style("width", 30)
+                .style("width", "40px")
 
                 .style("background", function (d, i) {
 
@@ -98,7 +98,7 @@ class RankView extends Component {
                    return i * 50+"px";
                })
                 .style('position','absolute')
-                .style("padding-left", "10px")
+               // .style("padding-left", "10px")
                 .style('top', 0)
 
 
@@ -118,14 +118,12 @@ class RankView extends Component {
         });
 
         this.forceUpdate();
-        console.log("drawPlot:")
-        console.log(this.props.rankList)
+
     }
 
     render() {
 
-        console.log(this.props.rankList)
-        console.log("Render1:")
+
 
         return (
             
@@ -139,7 +137,7 @@ class RankView extends Component {
                         <div className="col-lg-2" style={{height: '950px'}}>
                             <div id="topic_list" width="100%" height="100%">
                                 {
-                                    this.props.rankList
+                                  //  this.props.rankList
                                 }
                             </div>
                         </div>
@@ -151,10 +149,12 @@ class RankView extends Component {
 
     }
 }
+/*
 RankView.defaultProps = {
     rankList: 'loading'
 }
 //tvchng1 ends
+*/
 
 
 export default withFauxDOM(RankView);
