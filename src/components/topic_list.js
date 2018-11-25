@@ -64,7 +64,7 @@ class TopicList extends Component {
         d3.select('#topic_list').selectAll('div').remove();
         //We will pass path as a variable with file name according to topic selected by user
 
-        d3.json('./Datamodel/Metadata/Shake_50/TopicModel/HTML/'+document_id+'/rules.json', function (data) {
+        d3.json('./Datamodel/Metadata/'+localStorage.getItem('dataset')+'/TopicModel/HTML/'+document_id+'/rules.json', function (data) {
 
             var json_data=data;
             for (var i in json_data) {

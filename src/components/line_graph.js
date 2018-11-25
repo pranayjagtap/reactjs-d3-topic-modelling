@@ -66,7 +66,7 @@ class LineGraph extends Component {
             this.setState({topic_name},function() {
 
 
-                d3.text('../Datamodel/Metadata/Shake_50/TopicModel/HTML/'+document_id+'/tokens.csv', function (text) { //Needs to be generalized
+                d3.text('../Datamodel/Metadata/'+localStorage.getItem('dataset')+'/TopicModel/HTML/'+document_id+'/tokens.csv', function (text) { //Needs to be generalized
 
 
                     var data = d3.csv.parseRows(text);

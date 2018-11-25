@@ -28,7 +28,7 @@ class SearchBarRank extends Component{
         }
         topics.forEach(function(data,i){
 
-            d3.text('./Datamodel/Metadata/Shake_50/TopicModel/topics_freq/topic_'+i+'.csv', function (text) { //Needs generalization ||d3 data ext call back starts
+            d3.text('./Datamodel/Metadata/'+localStorage.getItem('dataset')+'/TopicModel/topics_freq/topic_'+i+'.csv', function (text) { //Needs generalization ||d3 data ext call back starts
                 var data = d3.csv.parseRows(text);
                 topics[i]=data.toString();
                 topic_matrix = data;

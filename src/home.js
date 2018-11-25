@@ -30,16 +30,27 @@ const title = {
     margin: '0px 15px',
 };
 const screen="home";
+var initial_db="Shake_50";
 class Home extends Component {
+
+
     constructor(props){
         super(props);
+        if(localStorage.getItem('dataset') ===null){
+            console.log("not set")
+            initial_db="Shake_50";
+        }
+        else
+            initial_db=localStorage.getItem('dataset');
+
         this.state = {
             doc_view_id: -1,
             topic_view_id: 0,
             document_view_id:0,
             document_id:0,
-            value:"Shake_50"
+            value:initial_db
         }
+        this.changeValue = this.changeValue.bind(this);
     };
     handleTopicChange = (topic_view_id) => {
         console.log(topic_view_id);
@@ -48,6 +59,9 @@ class Home extends Component {
         });
 
     };
+    componentDidUnmount(){
+
+    }
     //Added by Pranay on 19-Nov-2018 to allow users to select documents
     handleDocumentChange=(document_view_id)=>{
         console.log(document_view_id);
@@ -78,18 +92,24 @@ class Home extends Component {
     onClick(){
         //Your code to add user to the lst of users
         BrowserRouter.push("/Document");
+
     }
 
-    changeValue(value){
+    changeValue(event){
 
-        this.setState({value},function(){
+        this.setState({value:event.target.value},function(){
         console.log("Got called")
 
             localStorage.setItem('dataset',document.getElementById('select_data').value);
+            initial_db=localStorage.getItem('dataset');
+            document.location.reload();
+
+
         });
     }
 
     render() {
+        console.log("Finishing touches:"+this.state.value)
         var docs=this.fetchFile();
         const {topic_view_id} = this.state;
         const {document_view_id} = this.state;
@@ -102,7 +122,7 @@ class Home extends Component {
                 <div  className="navbar">
                     <span style={title}>Serendip</span>
 
-                    <select className="custom-select" id="select_data" onChange={event=>{this.changeValue(event.target.value)}} value={this.state.value}>
+                    <select className="custom-select" id="select_data" onChange={this.changeValue} value={this.state.value}>
 
                         <option  value="Shake_50">Shakespeare</option>
                         <option value="Movie_review">Movie Reviews</option>

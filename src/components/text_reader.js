@@ -145,7 +145,7 @@
             var docs="";
             var rawFile = new XMLHttpRequest();
 
-            rawFile.open("GET", '../Datamodel/Corpora/Shakespeare/'+dataFromChild+'.txt', false);
+            rawFile.open("GET", '../Datamodel/Corpora/'+localStorage.getItem('dataset')+'/'+dataFromChild+'.txt', false);
             rawFile.onreadystatechange = function ()
             {
                 if(rawFile.readyState === 4)
