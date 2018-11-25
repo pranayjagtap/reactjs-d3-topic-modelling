@@ -38,7 +38,8 @@ class Home extends Component {
             topic_view_id: 0,
             document_view_id:0,
             document_id:0,
-            value:"Shake_50"
+            value:"Shake_50",
+            sort_controls: "none"
         }
     };
     handleTopicChange = (topic_view_id) => {
@@ -54,6 +55,12 @@ class Home extends Component {
         this.setState({
             document_view_id: document_view_id,
             document_id:document_view_id
+        });
+    };
+
+    handleSortControl = (sort_params) => {
+        this.setState({
+            sort_controls: sort_params
         });
     };
 
@@ -89,19 +96,21 @@ class Home extends Component {
         });
     }
 
+
+
     render() {
         var docs=this.fetchFile();
         const {topic_view_id} = this.state;
         const {document_view_id} = this.state;
         const {document_id} = this.state;
+        const {sort_controls} = this.state;
         var {handleTopicChange} = this;
         var {handleDocumentChange} = this;
+        var {handleSortControl} = this;
         return (
             <div>
-
                 <div  className="navbar">
-                    <span style={title}>Serendip</span>
-
+                    <Link to="/"><span style={title}>Serendip</span></Link>
                     <select className="custom-select" id="select_data" onChange={event=>{this.changeValue(event.target.value)}} value={this.state.value}>
                         <option value="0">Select model</option>
                         <option  value="Shake_50">Shakespeare</option>
@@ -116,7 +125,9 @@ class Home extends Component {
                 <div style={m5}>
                     <div style={nopad} className="col-lg-2">
                         <div style={m5}>
-                            <Controls />
+                            <Controls
+                                handleSortControl = {handleSortControl}
+                            />
                         </div>
                         <div style={m5}>
 
@@ -127,6 +138,7 @@ class Home extends Component {
                         <div style={nopad} className="col-lg-8">
                             <div style={m5}>
                                 <Matrix
+                                    sort_controls = {sort_controls}
                                     handleTopicChange = {handleTopicChange}
                                     handleDocumentChange={handleDocumentChange}
                                 />

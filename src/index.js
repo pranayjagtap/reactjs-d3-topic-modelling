@@ -14,7 +14,7 @@ export default class App extends Component {
 
             <Router>
                 <div>
-                    <Link to="/">Home</Link>
+
                     <Route exact path="/" component={Home} />
                     <Route path="/Document" component={DocumentScreen} />
                     <Route path="/Rank" component={RankView} />

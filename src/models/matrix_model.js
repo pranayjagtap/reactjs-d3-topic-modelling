@@ -6,6 +6,7 @@ var matrix_data = {
     weights:""
 }; //holds data to render matrix read from csv
 
+var new_data = {};
 //variable to store react functions and callbacks
 var globalfns;
 var x,y;
@@ -133,6 +134,7 @@ function init(){
 }
 
 function draw_matrix(data){
+    new_data = data;
     // clean the slate before drawing
     d3.select("#matrix").remove();
     matrix = d3.select("#matrix_canvas")
@@ -610,6 +612,37 @@ export function render_matrix(props){
     return this;
 }
 
+export function sort(props){
+    console.log("sort called", props);
+    d3.selectAll(".cellrow").attr("opacity", 0);
+    d3.selectAll(".cellcolumn").attr("opacity", 1);
+    var orders = top_orders.id;
+    if(props.sort_controls.order === "max"){
+        let maxs = top_matrix.map((item) => {return d3.max(item)});
+        orders = d3.range(maxs.length).sort(function (a, b) {
+            return maxs[b].z- maxs[a].z
+        });
+    }else if(props.sort_controls.order === "min"){
+        let mins = top_matrix.map((item) => {return d3.min(item)});
+        orders = d3.range(mins.length).sort(function (a, b) {
+            return mins[b].z- mins[a].z
+        });
+    }else if(props.sort_controls.order === "mean"){
+        let means = top_matrix.map((item) => {return d3.mean(item, (d)=>{return d.z})});
+        orders = d3.range(means.length).sort(function (a, b) {
+            return means[b]- means[a]
+        });
+
+    }
+    sort_animate(orders, "topic");
+    for (var i = 0; i < orders.length; ++i) {
+        if (orders[i] !== top_orders.id[i]) {
+            updateMatrixAndRedraw(new_data, orders, "top");
+            break;
+        }
+    }
+
+}
 // export function sort_matrix(type){
 //     console.log(doc_orders);
 //     sort_animate(doc_orders.id, "document");

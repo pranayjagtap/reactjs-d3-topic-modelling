@@ -12,7 +12,9 @@ class Controls extends Component{
         this.state.selectioncontrol = "none";
         this.togglesort = this.togglesort.bind(this);
         this.toggleselection = this.toggleselection.bind(this);
-        this.sortcontrols = [{"key":-1, "value":"none"},{"key":1, "value":"min"},{"key":2, "value":"max"},{"key":2, "value":"mean"}]
+        this.change = this.change.bind(this);
+        this.sortcontrols = [{"key":"none", "value":"none"},{"key":"min", "value":"min"},{"key":"max", "value":"max"},{"key":"mean", "value":"mean"}];
+        this.handleSortControl = props.handleSortControl;
     };
 
     togglesort (){
@@ -30,6 +32,13 @@ class Controls extends Component{
         }
         this.setState({selectioncontrol:status});
     };
+
+    change(evt){
+        console.log("selected ", evt.target.value);
+        let type = evt.target.value;
+        this.handleSortControl({order: type});
+    }
+
     render (){
         return (
             <div className="window side">
@@ -39,7 +48,7 @@ class Controls extends Component{
                     Sorting
                     </div>
                     <div id='sortcontrol' style={{display: this.state.sortcontrol}}>
-                    <select style={{width: '150px'}}>
+                    <select style={{width: '150px'}} onChange={this.change}>
                         { this.sortcontrols.map(item => <option value={item.key}>{item.value}</option>) }
                     </select>
                     </div>
