@@ -73,7 +73,7 @@ class RankView extends Component {
                     curr.props.callbackFromParent(topic_name);
                     console.log("Child 1: My work is done");
                 })
-
+                    .attr("id", function(d, i) { return d[0] })
                 .style("height", function (d) {
                     console.log(x(d[1]))
                     return x(d[1]) + "px";
@@ -81,7 +81,7 @@ class RankView extends Component {
                 .style("width", 14)
 
                 .style("background", function (d, i) {
-                   
+
                         return i % 2 == 0 ? '#8B9FFC  ' : "#AEBCFC"
                 })
                 .style('position','absolute')

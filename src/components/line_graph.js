@@ -78,7 +78,7 @@ class LineGraph extends Component {
                     //Loop tokens
                     topic_matrix.forEach(function (term, i) {
                         //Window size =500, increment every 500 words. Store count in counter
-                        if (i % 500 === 0) {
+                        if (i % 100 === 0) {
                             counter[j] = count;
                             count = 0;
                             j++;
@@ -97,7 +97,7 @@ class LineGraph extends Component {
                     //Create data structure points for easy creation of final data structure to be passed to LineGraph
                     counter.forEach(function (topic_name, i) {
                         points[i] = {x: counter[i], y: k};
-                        k = k + 500;
+                        k = k + 100;
                     });
                     data_mat=[];
                     var DataObj=new curr.DataObj(topic_name,"black",points);
@@ -176,7 +176,7 @@ class LineGraph extends Component {
                             for (var i = 0; i < topic_matrix.length; i++) {
 
                                 //Window size =500, increment every 500 words. Store count in counter
-                                if (i % 500 === 0) {
+                                if (i % 100 === 0) {
                                     counter[j] = count;
                                     count = 0;
                                     j++;
@@ -198,7 +198,7 @@ class LineGraph extends Component {
                             for (var i = 0; i < counter.length; i++) {
 
                                 point[i] =  {x: counter[i], y: k};
-                                k = k + 500;
+                                k = k + 100;
                             }
 
 
