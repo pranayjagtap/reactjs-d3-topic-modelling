@@ -27,7 +27,7 @@ class SearchBarRank extends Component{
             topics.push(0);
         }
         topics.forEach(function(data,i){
-            console.log(i)
+
             d3.text('./Datamodel/Metadata/Shake_50/TopicModel/topics_freq/topic_'+i+'.csv', function (text) { //Needs generalization ||d3 data ext call back starts
                 var data = d3.csv.parseRows(text);
                 topics[i]=data.toString();
@@ -53,7 +53,7 @@ class SearchBarRank extends Component{
             topics.push(0);
         }
         topics.forEach(function(data,i){
-            console.log(i)
+
             d3.text('./Datamodel/Metadata/Shake_50/TopicModel/topics_freq/topic_'+i+'.csv', function (text) { //Needs generalization ||d3 data ext call back starts
                 var data = d3.csv.parseRows(text);
                 topics[i]=data.toString();
@@ -126,7 +126,7 @@ class SearchBarRank extends Component{
                         doc.innerHTML = "";
                         var innerElement = document.createElement('div');
                         //document.getElementById(topics_list[i].toLowerCase())
-                        innerElement.style.width = "14px"
+                        innerElement.style.width = "30px"
                         innerElement.style.height = height + "px";
                         //innerElement.style.paddingLeft= "10px"
                         innerElement.style.borderBottom = "solid red"

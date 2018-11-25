@@ -14,7 +14,7 @@ class RankView extends Component {
 
     componentWillReceiveProps(newProps){
         topics=newProps.topics;
-        this.forceUpdate();
+      //  this.forceUpdate();
     }
 
     render() {
@@ -46,7 +46,7 @@ class RankView extends Component {
             //console.log(svg1)
             // el = new ReactFauxDOM.createElement('div')
 
-            //var svg1 = d3.select("#topic_canvas");
+            //var svg1 = d3.select("#topic_list");
             //var format = d3.format(".4f")
 
             var list_g=d3.select(el);
@@ -75,10 +75,10 @@ class RankView extends Component {
                 })
                     .attr("id", function(d, i) { return d[0] })
                 .style("height", function (d) {
-
+console.log("Y"+d[1])
                     return x(d[1]) + "px";
                 })
-                .style("width", 14)
+                .style("width", 30)
 
                 .style("background", function (d, i) {
 
@@ -88,7 +88,7 @@ class RankView extends Component {
                 .style("padding-left", "10px")
                 .style('top', 0)
                 .style('left',function(d,i){
-                    return i * 20;
+                    return i * 40;
                 })
 
                 .text(function (d) {
@@ -101,21 +101,21 @@ class RankView extends Component {
                 .style("font-weight", "bold")
                 .style("writing-mode", "vertical-rl")
                 .style("text-orientation", "sideways")
-                .style("font-size", "8px")
+                .style("font-size", "15px")
                 .style("padding-top", "2px");
         });
 
 
         return (
             
-            <div className="window" style={{width:606, height:245, paddingLeft:2, paddingRight:2, paddingTop:2}}>
+            <div className="window" style={{width:1000, height:245, paddingLeft:2, paddingRight:2, paddingTop:2}}>
             <div className="sidenavbar">Topic List
 
 </div>
-                <div className="topic_rotated_workspace" style={{width:600, paddingTop:2}} >
+                <div className="topic_rotated_workspace" style={{width:980, paddingTop:2}} >
                     <div className="row">
 
-                        <div className="col-lg-2" style={{height: '550px'}}>
+                        <div className="col-lg-2" style={{height: '945px'}}>
                             <div id="topic_list" width="100%" height="100%">
                                 {
                                     this.props.rankList

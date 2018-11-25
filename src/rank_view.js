@@ -101,8 +101,8 @@ var docs="";
                 <SearchBarRank className="col-lg-8"
                  callbackParent={this.fetchAndThrow}/>
 
-                <div style={m5}>
-                    <div style={nopad} className="col-lg-2" style={{height: '950px'}}>
+
+                    <div style={nopad} className="col-lg-8" style={{height: '950px'}}>
                         <div style={m5}>
                             <TopicList
                                 callbackFromParent={this.handleTopicChange}
@@ -111,8 +111,8 @@ var docs="";
                         </div>
                     </div>
                 
-                <div style={m5}>
-                    <div style={{postion: "relative", float: "right", width:"950px", nopad}} className="col-lg-2">
+
+                    <div style={{postion: "relative", float: "right", width:"950px"}} className="col-lg-2">
                         <div style={m5}>
                             {
                                 this.state.topic_view_id.length>1?
@@ -123,10 +123,11 @@ var docs="";
                             }
                         </div>
 
-        </div></div>
-
+                    </div>
                 </div>
-            </div>
+
+
+
         );
     }
 }
