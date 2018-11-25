@@ -15,15 +15,18 @@ class SearchBarRank extends Component{
         this.state = {
             term:'',
             showPopup: true,
-            topic_list_map:[]
+            topic_list_map:[],
+            rankflag:false
 
         };
         this.getTopics.bind(this)
         //get all files data
+        topics=[];
         for(var i=0;i<50;i++) {
             topics.push(0);
         }
         topics.forEach(function(data,i){
+            console.log(i)
             d3.text('./Datamodel/Metadata/Shake_50/TopicModel/topics_freq/topic_'+i+'.csv', function (text) { //Needs generalization ||d3 data ext call back starts
                 var data = d3.csv.parseRows(text);
                 topics[i]=data.toString();

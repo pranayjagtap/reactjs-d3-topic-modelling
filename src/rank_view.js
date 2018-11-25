@@ -38,9 +38,10 @@ export default class DocumentScreen extends Component {
         this.state = {
             tag_word_list:["p",0.5],
             tag_topic_sel: "",
-            topic_view_id:"",
+            topic_view_id:0,
             items:[],
-            tags:[]
+            tags:[],
+            rankflag:false
        };
         curr=this;
     }
@@ -68,7 +69,8 @@ var docs="";
       handleTopicChange = (topic_view_id) => {
         console.log(topic_view_id);
         this.setState({
-            topic_view_id: topic_view_id
+            topic_view_id: topic_view_id,
+            rankflag:true
         });
 
     };
@@ -112,9 +114,13 @@ var docs="";
                 <div style={m5}>
                     <div style={{postion: "relative", float: "right", width:"950px", nopad}} className="col-lg-2">
                         <div style={m5}>
-                        <TopicView 
-                        topic_view_id = {this.state.topic_view_id}
-                        />
+                            {
+
+                                <TopicView
+                                    topic_view_id={this.state.topic_view_id}
+                                    rankflag={this.state.rankflag}
+                                />
+                            }
                         </div>
 
         </div></div>

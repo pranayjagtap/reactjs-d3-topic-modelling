@@ -81,10 +81,7 @@ class RankView extends Component {
                 .style("width", 14)
 
                 .style("background", function (d, i) {
-                    if(topics.includes(d[0])){
-                        return "red";
-                    }
-                    else
+                   
                         return i % 2 == 0 ? '#8B9FFC  ' : "#AEBCFC"
                 })
                 .style('position','absolute')

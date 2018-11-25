@@ -20,7 +20,7 @@ import  '../../style/style.css';
 import  '../../style/serendip.css';
 import ReactFauxDom from 'react-faux-dom'
 import {withFauxDOM} from 'react-faux-dom'
-
+var rankflag="";
 var topic_name="";
 class TopicView extends Component {
     constructor(props) {
@@ -30,8 +30,9 @@ class TopicView extends Component {
     }
 
     componentWillReceiveProps(newProps){
-        console.log("HHHHHHHHHHHHHHHHHHH"+newProps.topic_view_id)
-            topic_name=newProps.topic_view_id;  
+            console.log("HHHHHHHHHHHHHHHHHHH"+newProps.topic_view_id)
+            topic_name=newProps.topic_view_id;
+            rankflag=newProps.rankflag;
             console.log("topic view"+topic_name)   
             this.forceUpdate(); 
 
