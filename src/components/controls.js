@@ -13,6 +13,7 @@ class Controls extends Component{
         this.togglesort = this.togglesort.bind(this);
         this.toggleselection = this.toggleselection.bind(this);
         this.change = this.change.bind(this);
+        this.selection = this.selection.bind(this);
         this.sortcontrols = [{"key":"none", "value":"none"},{"key":"min", "value":"min"},{"key":"max", "value":"max"},{"key":"mean", "value":"mean"}];
         this.handleSortControl = props.handleSortControl;
     };
@@ -39,6 +40,10 @@ class Controls extends Component{
         this.handleSortControl({order: type});
     }
 
+    selection(type){
+        console.log("clicked ", type);
+        this.handleSortControl({selection: type});
+    }
     render (){
         return (
             <div className="window side">
@@ -60,11 +65,9 @@ class Controls extends Component{
                             <div>No columns Selected</div>
                         </div>
                         <div id='selectionbuttonscontainer'>
-                            <div className='selbtns'>a</div>
-                            <div className='selbtns'>b</div>
-                            <div className='selbtns'>c</div>
-                            <div className='selbtns'>d</div>
-                            <div className='selbtns'>e</div>
+                            <div className='selbtns' onClick={() => this.selection("bringleft")}>&lt;</div>
+                            <div className='selbtns' onClick={() => this.selection("sort")}>^</div>
+                            <div className='selbtns' onClick={() => this.selection("clear")}>X</div>
                         </div>
                     </div>
                 </div>

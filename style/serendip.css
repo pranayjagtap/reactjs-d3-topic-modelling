@@ -110,6 +110,7 @@
     margin: 5px;
     background: black;
     color: white;
+    padding: 10px;
 }
 
 #selectionbuttonscontainer{
@@ -117,13 +118,15 @@
     min-height: 40px;
     border: 1px solid;
     margin: 5px;
-    padding: 0px 6px;
+    text-align: center;
 }
 .selbtns{
     padding: 7px 20px;
-    width: 30px;
+    width: 33.3%;
     float: left;
+    margin: 0px auto;
     cursor: pointer;
+    border-right: 1px solid;
 }
 .selbtns:hover{
     background: black;
