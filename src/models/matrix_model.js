@@ -47,7 +47,7 @@ var sel_topics = [];
 var sel_docs = [];
 
 var read_data = function(){
-    d3.csv("../Data/theta.csv", function(error, data) {
+    d3.csv("../Datamodel/Metadata/"+localStorage.getItem('dataset')+"/TopicModel/theta.csv", function(error, data) {
         // console.log("in callback");
         var topicids = [];
         var docids = [];

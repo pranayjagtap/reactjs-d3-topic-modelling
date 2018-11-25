@@ -84,7 +84,7 @@ class Home extends Component {
 
         this.setState({value},function(){
         console.log("Got called")
-     
+
             localStorage.setItem('dataset',document.getElementById('select_data').value);
         });
     }
@@ -103,7 +103,7 @@ class Home extends Component {
                     <span style={title}>Serendip</span>
 
                     <select className="custom-select" id="select_data" onChange={event=>{this.changeValue(event.target.value)}} value={this.state.value}>
-                        <option value="0">Select model</option>
+
                         <option  value="Shake_50">Shakespeare</option>
                         <option value="Movie_review">Movie Reviews</option>
                     </select>

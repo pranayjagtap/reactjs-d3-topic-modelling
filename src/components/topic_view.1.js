@@ -61,7 +61,7 @@ class TopicView extends Component {
 console.log(topic_name)
             d3.select("#topic_canvas").selectAll("*").remove();
             //We will pass path as a variable with file name according to topic selected by user
-            d3.text('./Datamodel/Metadata/Shake_50/TopicModel/topics_freq/'+topic_name+'.csv', function (data) {
+            d3.text('./Datamodel/Metadata/'+localStorage.getItem('dataset')+'/TopicModel/topics_freq/'+topic_name+'.csv', function (data) {
                 data2 = d3.csv.parseRows(data);
 
                 /*17-Oct-2018

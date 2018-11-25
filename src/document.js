@@ -106,7 +106,8 @@ console.log(document_id)
 
         if(topic_name!=null){
 
-            d3.text('./Datamodel/Metadata/Shake_50/TopicModel/topics_freq/'+topic_name+'.csv', function (text) {
+            d3.text('./Datamodel/Metadata/'+localStorage.getItem('dataset')+'/TopicModel/topics_freq/'+topic_name+'.csv', function (text) {
+                var data=d3.csv.parseRows(text);
                 var data=d3.csv.parseRows(text);
                 console.log("Parent: State of item changed");
                 curr.setState({tags:data,topicname:topic_name,flagForTopic:true})
