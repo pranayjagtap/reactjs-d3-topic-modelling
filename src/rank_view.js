@@ -70,7 +70,7 @@ var docs="";
 
         this.setState({
             topic_view_id: topic_view_id
-            
+
         });
 
     };
@@ -90,7 +90,7 @@ var docs="";
        // document=this.fetchFile();
 
         /*var document=require("../Data/1KINGHENRYIV.csv");*/
-
+console.log("Data?:"+localStorage.getItem('dataset'));
         return (
             <div>
 

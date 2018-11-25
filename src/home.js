@@ -37,7 +37,8 @@ class Home extends Component {
             doc_view_id: -1,
             topic_view_id: 0,
             document_view_id:0,
-            document_id:0
+            document_id:0,
+            value:"Shake_50"
         }
     };
     handleTopicChange = (topic_view_id) => {
@@ -78,6 +79,16 @@ class Home extends Component {
         //Your code to add user to the lst of users
         BrowserRouter.push("/Document");
     }
+
+    changeValue(value){
+
+        this.setState({value},function(){
+        console.log("Got called")
+     
+            localStorage.setItem('dataset',document.getElementById('select_data').value);
+        });
+    }
+
     render() {
         var docs=this.fetchFile();
         const {topic_view_id} = this.state;
@@ -91,8 +102,10 @@ class Home extends Component {
                 <div  className="navbar">
                     <span style={title}>Serendip</span>
 
-                    <select>
+                    <select className="custom-select" id="select_data" onChange={event=>{this.changeValue(event.target.value)}} value={this.state.value}>
                         <option value="0">Select model</option>
+                        <option  value="Shake_50">Shakespeare</option>
+                        <option value="Movie_review">Movie Reviews</option>
                     </select>
                     <div className="sidebtnctrl">
                         <div className="sidebtns"><Link to="/Rank">RankViewer</Link></div>

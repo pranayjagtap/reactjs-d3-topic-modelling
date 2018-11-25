@@ -113,8 +113,15 @@ class TopicList extends Component {
                     return x(d[1]) + "px";
                 })
                 .style("background", function (d, i) {
-                    return i % 2 == 0 ? '#8B9FFC  ' : "#AEBCFC"
+                    return i % 2 == 0 ? '#a0a0a0' : "#838383"
                 })
+                .style("margin", "2px")
+                .style("border-radius", "0 10px 10px 0")
+                .style("padding", "2px")
+                .style("font-weight", 700)
+                .style("font-size", "12px")
+                .style("color", "white")
+                .style("border", "1px solid black")
                 .text(function (d) {
 
                     /*To avoid too many words with no width at the bottom*/
