@@ -67,7 +67,7 @@ var docs="";
       }
 
       handleTopicChange = (topic_view_id) => {
-        console.log(topic_view_id);
+
         this.setState({
             topic_view_id: topic_view_id,
             rankflag:true
@@ -76,7 +76,7 @@ var docs="";
     };
     fetchAndThrow=(topic_names)=>{
 
-        console.log("WOW")
+
                 curr.setState({topics:topic_names})
                 console.log("Parent: State of item changed");
 
@@ -115,11 +115,11 @@ var docs="";
                     <div style={{postion: "relative", float: "right", width:"950px", nopad}} className="col-lg-2">
                         <div style={m5}>
                             {
-
+                                this.state.topic_view_id.length>1?
                                 <TopicView
                                     topic_view_id={this.state.topic_view_id}
                                     rankflag={this.state.rankflag}
-                                />
+                                />:null
                             }
                         </div>
 

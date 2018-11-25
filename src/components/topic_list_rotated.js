@@ -75,7 +75,7 @@ class RankView extends Component {
                 })
                     .attr("id", function(d, i) { return d[0] })
                 .style("height", function (d) {
-                    console.log(x(d[1]))
+
                     return x(d[1]) + "px";
                 })
                 .style("width", 14)

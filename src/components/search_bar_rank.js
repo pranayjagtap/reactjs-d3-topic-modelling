@@ -32,7 +32,7 @@ class SearchBarRank extends Component{
                 var data = d3.csv.parseRows(text);
                 topics[i]=data.toString();
                 topic_matrix = data;
-                console.log(topics)
+
             }); //d3 call back ends
 
 
@@ -58,7 +58,7 @@ class SearchBarRank extends Component{
                 var data = d3.csv.parseRows(text);
                 topics[i]=data.toString();
                 topic_matrix = data;
-                console.log(topics)
+
             }); //d3 call back ends
 
 
@@ -102,7 +102,7 @@ class SearchBarRank extends Component{
                 if(data.indexOf(word)>-1){
                     topics_list.push("Topic_"+i)
                 }
-                console.log(topics_list)
+
                 var split;
 
                 for(var i = 0 ; i < topics_list.length ; i++)
@@ -110,10 +110,9 @@ class SearchBarRank extends Component{
                     var topic_no = topics_list[i].substr(topics_list[i].lastIndexOf("_")+1,topics_list[i].lastIndexOf("_")+2);
                     console.log(topic_no);
                     split = topics[topic_no].split(",");
-                    console.log(split)
+
                     if(split.indexOf(word)>=0) { //To avoid half words
-                        console.log((split.indexOf(word) / 2) + 1);
-                        console.log(split[split.indexOf(word) + 1])
+
                         var topicname = topics_list[i].toLowerCase();
                         var divHeight=(document.getElementById(topicname).style.height).replace("px","");
                         var x = d3.scale.linear()
@@ -121,8 +120,7 @@ class SearchBarRank extends Component{
                             .range([0,divHeight]);
                         var height = x(split[split.indexOf(word) + 1]);
 
-                        console.log(height + "}}" + split[split.indexOf(word) + 1])
-                        console.log(topics_list[i])
+
 
                         var doc = document.getElementById(topicname);
                         doc.innerHTML = "";
@@ -135,7 +133,7 @@ class SearchBarRank extends Component{
                         innerElement.innerHTML=topicname;
                         doc.appendChild(innerElement)
 
-                        console.log(document.getElementById(topicname))
+
                     }
                 }
             });
