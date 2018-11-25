@@ -82,48 +82,58 @@ class SearchBarRank extends Component{
         word=term;
         this.setState({term});
     }
-    getTopics(term) {
+    getTopics() {
         console.log(word)
-       // term=word;
+        // term=word;
         var termcheck="";
         //Show hidden block when user starts typing
-        if(!this.state.showPopup){
-            this.togglePopup();
-        }
+
 
         //Set state call back starts
         this.setState({term},function(){
 
-            termcheck=this.state.term.toLowerCase();
+            termcheck=word;
 
 
             topics_list=[];
             topics.forEach(function (data, i) {
-                if(data.indexOf(term)>-1){
+                if(data.indexOf(word)>-1){
                     topics_list.push("Topic_"+i)
                 }
                 console.log(topics_list)
-                var split
+                var split;
+
                 for(var i = 0 ; i < topics_list.length ; i++)
                 {
                     var topic_no = topics_list[i].substr(topics_list[i].lastIndexOf("_")+1,topics_list[i].lastIndexOf("_")+2);
                     console.log(topic_no);
                     split = topics[topic_no].split(",");
-                    console.log((split.indexOf(term)/2)+1);
+                    console.log(split)
+                    if(split.indexOf(word)>=0) {
+                        console.log((split.indexOf(word) / 2) + 1);
+                        console.log(split[split.indexOf(word) + 1])
 
 
-                    var x = d3.scale.linear()
-                        .domain([split[1],split[split.length-1]])
-                        .range([0,100]);
-                    console.log(topics_list[i])
-                    var topicname=topics_list[i].toLowerCase();
-                    var doc=document.getElementById(topicname);
-                    var innerElement=document.createElement('div');
-                    //document.getElementById(topics_list[i].toLowerCase())
-                    innerElement.style.height = "100px"
-                    innerElement.style.border = "thick solid red"
-                    doc.appendChild(innerElement)
-                    console.log(document.getElementById(topicname))
+                        var x = d3.scale.linear()
+                            .domain([0,300])
+                            .range([0,100]);
+                        var height = x(split[split.indexOf(word) + 1]);
+
+                        console.log(height + "}}" + split[split.indexOf(word) + 1])
+                        console.log(topics_list[i])
+                        var topicname = topics_list[i].toLowerCase();
+                        var doc = document.getElementById(topicname);
+                        doc.innerHTML = "";
+                        var innerElement = document.createElement('div');
+                        //document.getElementById(topics_list[i].toLowerCase())
+                        innerElement.style.width = "14px"
+                        innerElement.style.height = height + "px";
+                        //innerElement.style.paddingLeft= "10px"
+                        innerElement.style.borderBottom = "solid red"
+
+                        doc.appendChild(innerElement)
+                        console.log(document.getElementById(topicname))
+                    }
                 }
             });
             /*
