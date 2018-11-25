@@ -93,7 +93,9 @@ class SearchBarRank extends Component{
         this.setState({term},function(){
 
             termcheck=word;
-
+            for(var i=0;i<50;i++){
+                document.getElementById("topic_"+i).innerHTML="Topic"+i;
+            }
 
             topics_list=[];
             topics.forEach(function (data, i) {
@@ -109,19 +111,19 @@ class SearchBarRank extends Component{
                     console.log(topic_no);
                     split = topics[topic_no].split(",");
                     console.log(split)
-                    if(split.indexOf(word)>=0) {
+                    if(split.indexOf(word)>=0) { //To avoid half words
                         console.log((split.indexOf(word) / 2) + 1);
                         console.log(split[split.indexOf(word) + 1])
-
-
+                        var topicname = topics_list[i].toLowerCase();
+                        var divHeight=(document.getElementById(topicname).style.height).replace("px","");
                         var x = d3.scale.linear()
-                            .domain([0,300])
-                            .range([0,100]);
+                            .domain([split[1],split[split.length-1]])
+                            .range([0,divHeight]);
                         var height = x(split[split.indexOf(word) + 1]);
 
                         console.log(height + "}}" + split[split.indexOf(word) + 1])
                         console.log(topics_list[i])
-                        var topicname = topics_list[i].toLowerCase();
+
                         var doc = document.getElementById(topicname);
                         doc.innerHTML = "";
                         var innerElement = document.createElement('div');
@@ -130,8 +132,9 @@ class SearchBarRank extends Component{
                         innerElement.style.height = height + "px";
                         //innerElement.style.paddingLeft= "10px"
                         innerElement.style.borderBottom = "solid red"
-
+                        innerElement.innerHTML=topicname;
                         doc.appendChild(innerElement)
+
                         console.log(document.getElementById(topicname))
                     }
                 }
@@ -167,7 +170,7 @@ class SearchBarRank extends Component{
                         </button>
                     </div>
                     <div className ="col-lg-4">
-                        {topics_list}
+
                     </div>
                 </div>
 
