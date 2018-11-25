@@ -69,8 +69,8 @@ var docs="";
       handleTopicChange = (topic_view_id) => {
 
         this.setState({
-            topic_view_id: topic_view_id,
-            rankflag:true
+            topic_view_id: topic_view_id
+            
         });
 
     };
@@ -102,25 +102,29 @@ var docs="";
                  callbackParent={this.fetchAndThrow}/>
 
 
-                    <div style={nopad} className="col-lg-8" style={{height: '950px'}}>
+                <div style={m5}>
+                    <div style={nopad} className="col-lg-8">
                         <div style={m5}>
                             <TopicList
                                 callbackFromParent={this.handleTopicChange}
                                 topics={this.state.topics}
                                  />
                         </div>
+                        </div>
                     </div>
-                
 
-                    <div style={{postion: "relative", float: "right", width:"950px"}} className="col-lg-2">
+
+                <div style={m5}>
+                    <div style={nopad} className="col-lg-2">
                         <div style={m5}>
                             {
                                 this.state.topic_view_id.length>1?
                                 <TopicView
                                     topic_view_id={this.state.topic_view_id}
-                                    rankflag={this.state.rankflag}
+
                                 />:null
                             }
+                        </div>
                         </div>
 
                     </div>

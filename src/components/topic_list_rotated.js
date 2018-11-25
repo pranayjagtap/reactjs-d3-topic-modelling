@@ -88,7 +88,7 @@ console.log("Y"+d[1])
                 .style("padding-left", "10px")
                 .style('top', 0)
                 .style('left',function(d,i){
-                    return i * 40;
+                    return i * 50;
                 })
 
                 .text(function (d) {
@@ -108,14 +108,14 @@ console.log("Y"+d[1])
 
         return (
             
-            <div className="window" style={{width:1000, height:245, paddingLeft:2, paddingRight:2, paddingTop:2}}>
+            <div className="window" style={{width:950, height:245, paddingLeft:2, paddingRight:2, paddingTop:2}}>
             <div className="sidenavbar">Topic List
 
 </div>
-                <div className="topic_rotated_workspace" style={{width:980, paddingTop:2}} >
+                <div className="topic_rotated_workspace" style={{width:950, paddingTop:2}} >
                     <div className="row">
 
-                        <div className="col-lg-2" style={{height: '945px'}}>
+                        <div className="col-lg-2" style={{height: '950px'}}>
                             <div id="topic_list" width="100%" height="100%">
                                 {
                                     this.props.rankList
