@@ -1,0 +1,1 @@
+import csv with open songdata.csv rb as f reader csv.reader(f i 0 for row in reader row artist song_name song_link lyrics if i 5000 break i 1 print writing into file artist row[0 song_name row[1 f open(row[1 _ row[0 txt a f.write(row[3

@@ -19,7 +19,7 @@ var dimensions = {
         top: 150,
         right: 50,
         bottom: 50,
-        left: 220
+        left: 500
     },
     width: function(){
         return this.w_width - (this.margin.left + this.margin.right)

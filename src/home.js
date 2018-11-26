@@ -142,6 +142,7 @@ class Home extends Component {
                     <select className="custom-select" id="select_data" onChange={this.changeValue} value={this.state.value}>
                         <option  value="Shake_50">Shakespeare</option>
                         <option value="Movie_review">Movie Reviews</option>
+                        <option value="Songs">Song Lyrics</option>
                     </select>
                     <div className="sidebtnctrl">
                         <div className="sidebtns"><Link to="/Rank">RankViewer</Link></div>
