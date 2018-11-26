@@ -18,6 +18,10 @@ class Matrix extends Component{
             sort_controls: {
                 order: "none",
                 selection: []
+            },
+            doc_sort_controls: {
+                order: "none",
+                selection: []
             }
         }
     }
@@ -29,7 +33,8 @@ class Matrix extends Component{
     componentWillReceiveProps(newProps) {
         console.log("recieved new prop", newProps);
         this.setState({
-            sort_control: newProps.sort_control
+            sort_control: newProps.sort_controls,
+            doc_sort_control: newProps.doc_sort_controls
         });
         this.model.sort(newProps);
     }

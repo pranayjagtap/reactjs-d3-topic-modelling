@@ -113,7 +113,7 @@ class TopicList extends Component {
                     return x(d[1]) + "px";
                 })
                 .style("background", function (d, i) {
-                    return i % 2 == 0 ? '#a0a0a0' : "#838383"
+                    return i % 2 == 0 ? '#000' : "#444"
                 })
                 .style("margin", "2px")
                 .style("border-radius", "0 10px 10px 0")

@@ -51,7 +51,8 @@ class Home extends Component {
 
             value:initial_db,
 
-            sort_controls: "none"
+            sort_controls: {order: "none", selection: "none"},
+            doc_sort_controls: {order: "none", selection: "none"}
 
         }
         this.changeValue = this.changeValue.bind(this);
@@ -78,6 +79,12 @@ class Home extends Component {
     handleSortControl = (sort_params) => {
         this.setState({
             sort_controls: sort_params
+        });
+    };
+
+    docsSortControl = (sort_params) => {
+        this.setState({
+            doc_sort_controls: sort_params
         });
     };
 
@@ -127,17 +134,14 @@ class Home extends Component {
         const {document_view_id} = this.state;
         const {document_id} = this.state;
         const {sort_controls} = this.state;
+        const {doc_sort_controls} = this.state;
         var {handleTopicChange} = this;
         var {handleDocumentChange} = this;
         var {handleSortControl} = this;
+        var {docsSortControl} = this;
         return (
             <div>
                 <div  className="navbar">
-
-                    <span style={title}>Serendip</span>
-
-
-
                     <Link to="/"><span style={title}>Serendip</span></Link>
                     <select className="custom-select" id="select_data" onChange={this.changeValue} value={this.state.value}>
                         <option  value="Shake_50">Shakespeare</option>
@@ -158,7 +162,9 @@ class Home extends Component {
                         </div>
                         <div style={m5}>
 
-                            <DocumentControl/>
+                            <DocumentControl
+                                handleSortControl = {docsSortControl}
+                            />
                         </div>
                     </div>
                     <div style={m5}>
@@ -166,6 +172,7 @@ class Home extends Component {
                             <div style={m5}>
                                 <Matrix
                                     sort_controls = {sort_controls}
+                                    doc_sort_controls = {doc_sort_controls}
                                     handleTopicChange = {handleTopicChange}
                                     handleDocumentChange={handleDocumentChange}
                                 />

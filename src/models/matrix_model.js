@@ -46,7 +46,6 @@ var doc_orders = {};
 
 var sel_topics = [];
 var sel_docs = [];
-
 var read_data = function(){
     d3.csv("../Datamodel/Metadata/"+localStorage.getItem('dataset')+"/TopicModel/theta.csv", function(error, data) {
         // console.log("in callback");
@@ -220,12 +219,20 @@ function draw_matrix(data){
     var endX = 0, endY = 0;
     d3.selectAll(".row").on("click", function(d){
         globalfns.handleDocumentChange((d3.event.target.id).toString().replace(/ /g, ''));
-        sel_docs.push((d3.event.target.id).toString());
+        if (sel_docs.indexOf(d3.event.target.id).toString() == -1) {
+            sel_docs.push((d3.event.target.id).toString());
+        }
         d3.select(this).select("rect")
             .attr("opacity", 1);
         d3.select(this).select("text")
             .attr("fill", "#fff")
             .style("font-weight", "bolder")
+
+        // add to selection box
+        document.getElementById('selecteddocslist').innerHTML = "";
+        for(var i=0; i<sel_docs.length; i++){
+            document.getElementById('selecteddocslist').innerHTML += sel_docs[i]+"<br/>";
+        }
     });
     d3.selectAll(".row").on("dblclick", function(d, i){
         console.log("sort by row", i);
@@ -526,6 +533,7 @@ function updateMatrixAndRedraw(data, orders, dimension){
     var tempweights = data["weights"];
     var temptopicids = data["topicids"];
     var tempdocids = data["docids"];
+
     // console.log("data before:", data);
     // console.log("temp before:", temp);
     if(dimension == 'top'){
@@ -620,83 +628,184 @@ export function render_matrix(props){
     return this;
 }
 
+var oldProps = {
+    sort_controls: {order:"none", selection: "none"},
+    doc_sort_controls: {order:"none", selection: "none"}
+};
+
 export function sort(props){
-    console.log("sort called", props);
-    d3.selectAll(".cellrow").attr("opacity", 0);
-    d3.selectAll(".cellcolumn").attr("opacity", 1);
-    var orders = top_orders.id;
+    console.log("sort called", oldProps, props);
+    if(props.sort_controls.order !== oldProps.sort_controls.order || props.sort_controls.selection !== oldProps.sort_controls.selection) {
+        console.log("inside topic control block");
+        d3.selectAll(".cellrow").attr("opacity", 0);
+        d3.selectAll(".cellcolumn").attr("opacity", 1);
+        var orders = top_orders.id;
 
-    var sel_topids = [];
-    for(var i=0; i<sel_topics.length; i++){
-        var idx = top_nodes.indexOf(sel_topics[i]);
-        if(idx >= -1){
-            sel_topids.push(idx);
+        var sel_topids = [];
+        for (var i = 0; i < sel_topics.length; i++) {
+            var idx = top_nodes.indexOf(sel_topics[i]);
+            if (idx >= -1) {
+                sel_topids.push(idx);
+            }
+        }
+
+        //sort contorls
+        if (props.sort_controls.order === "max") {
+            let maxs = top_matrix.map((item) => {
+                return d3.max(item)
+            });
+            orders = d3.range(maxs.length).sort(function (a, b) {
+                return maxs[b].z - maxs[a].z
+            });
+        } else if (props.sort_controls.order === "min") {
+            let mins = top_matrix.map((item) => {
+                return d3.min(item)
+            });
+            orders = d3.range(mins.length).sort(function (a, b) {
+                return mins[b].z - mins[a].z
+            });
+        } else if (props.sort_controls.order === "mean") {
+            let means = top_matrix.map((item) => {
+                return d3.mean(item, (d) => {
+                    return d.z
+                })
+            });
+            orders = d3.range(means.length).sort(function (a, b) {
+                return means[b] - means[a]
+            });
+        } else if (props.sort_controls.selection === "bringleft") {
+            orders = d3.range(t_cnt).filter(function (d) {
+                return sel_topids.indexOf(d) == -1;
+            });
+            orders = sel_topids.concat(orders);
+        }
+
+        // update data only if view has changed
+        sort_animate(orders, "topic");
+        for (var i = 0; i < orders.length; ++i) {
+            if (orders[i] !== top_orders.id[i]) {
+                updateMatrixAndRedraw(new_data, orders, "top");
+                break;
+            }
+        }
+
+        orders = doc_orders.id;
+        if (props.sort_controls.selection === "sort") {
+            d3.selectAll(".cellrow").attr("opacity", 1);
+            d3.selectAll(".cellcolumn").attr("opacity", 0);
+            var sums = []
+            for (var i = 0; i < top_matrix[0].length; i++) {
+                var sum = 0;
+                for (var j = 0; j < sel_topics.length; j++) {
+                    sum += top_matrix[sel_topids[j]][i].z;
+                }
+                sums.push(sum);
+            }
+            orders = d3.range(sums.length).sort(function (a, b) {
+                return sums[b] - sums[a];
+            })
+        } else if (props.sort_controls.selection === "clear") {
+            sel_topics = [];
+            document.getElementById('selectedtopicslist').innerHTML = "No Topics Selected";
+            updateMatrixAndRedraw(new_data, orders, "left");
+        }
+        // update data only if view has changed
+        //selection controls
+        sort_animate(orders, "document");
+        for (var i = 0; i < orders.length; i++) {
+            if (orders[i] !== doc_orders.id[i]) {
+                updateMatrixAndRedraw(new_data, orders, "left");
+                break;
+            }
         }
     }
 
-    //sort contorls
-    if(props.sort_controls.order === "max"){
-        let maxs = top_matrix.map((item) => {return d3.max(item)});
-        orders = d3.range(maxs.length).sort(function (a, b) {
-            return maxs[b].z- maxs[a].z
-        });
-    }else if(props.sort_controls.order === "min"){
-        let mins = top_matrix.map((item) => {return d3.min(item)});
-        orders = d3.range(mins.length).sort(function (a, b) {
-            return mins[b].z- mins[a].z
-        });
-    }else if(props.sort_controls.order === "mean"){
-        let means = top_matrix.map((item) => {return d3.mean(item, (d)=>{return d.z})});
-        orders = d3.range(means.length).sort(function (a, b) {
-            return means[b]- means[a]
-        });
-    }else if(props.sort_controls.selection === "bringleft"){
-        orders = d3.range(t_cnt).filter(function(d){
-            return sel_topids.indexOf(d) == -1;
-        });
-        orders = sel_topids.concat(orders);
-    }
-
-    // update data only if view has changed
-    sort_animate(orders, "topic");
-    for (var i = 0; i < orders.length; ++i) {
-        if (orders[i] !== top_orders.id[i]) {
-            updateMatrixAndRedraw(new_data, orders, "top");
-            break;
-        }
-    }
-
-    orders = doc_orders.id;
-    if(props.sort_controls.selection === "sort"){
+    if(props.doc_sort_controls.order !== oldProps.doc_sort_controls.order || props.doc_sort_controls.selection !== oldProps.doc_sort_controls.selection) {
+        //documents related sorting
+        console.log("inside document control block");
         d3.selectAll(".cellrow").attr("opacity", 1);
         d3.selectAll(".cellcolumn").attr("opacity", 0);
-        var sums = []
-        for(var i=0; i<top_matrix[0].length; i++){
-            var sum = 0;
-            for(var j=0; j<sel_topics.length; j++){
-                sum += top_matrix[sel_topids[j]][i].z;
+        var orders = doc_orders.id;
+
+        var sel_docids = [];
+        for (var i = 0; i < sel_docs.length; i++) {
+            var idx = doc_nodes.indexOf(sel_docs[i]);
+            if (idx >= -1) {
+                sel_docids.push(idx);
             }
-            sums.push(sum);
         }
-        orders = d3.range(sums.length).sort(function(a,b){
-            return sums[b] - sums[a];
-        })
-    }else if(props.sort_controls.selection === "clear"){
-        sel_topics = [];
-        document.getElementById('selectedtopicslist').innerHTML ="No Topics Selected";
-        updateMatrixAndRedraw(new_data, orders, "left");
-    }
-    // update data only if view has changed
-    //selection controls
-    // d3.selectAll(".cellrow").attr("opacity", 1);
-    // d3.selectAll(".cellcolumn").attr("opacity", 0);
-    sort_animate(orders, "document");
-    for (var i = 0; i < orders.length; i++) {
-        if (orders[i] !== doc_orders.id[i]) {
+
+        var temp_doc_nodes = [];
+        var sortordertype = props.doc_sort_controls.order;
+        if (sortordertype === "file") {
+            temp_doc_nodes = matrix_data["docids"];
+        }else if(sortordertype === "id"){
+            temp_doc_nodes = []
+            for(var i=0; i<matrix_data["docids"].length; i++){
+                temp_doc_nodes.push("ID:    "+i);
+            }
+        }else if(sortordertype === "auto"){
+            temp_doc_nodes = []
+            for(var i=0; i<matrix_data["docids"].length; i++){
+                temp_doc_nodes.push("document "+i);
+            }
+        }else if(sortordertype === "sortfile"){
+            orders = doc_orders.name;
+        }else if(sortordertype === "sortid"){
+            orders = doc_orders.id;
+        }
+
+        var sortselectiontype = props.doc_sort_controls.selection;
+        if(sortselectiontype === "sortdoc"){
+            var sums = [];
+            for (var i = 0; i < doc_matrix[0].length; i++) {
+                var sum = 0;
+                for (var j = 0; j < sel_docs.length; j++) {
+                    sum += doc_matrix[sel_docids[j]][i].z;
+                }
+                sums.push(sum);
+            }
+            orders = d3.range(sums.length).sort(function (a, b) {
+                return sums[b] - sums[a];
+            });
+            console.log("sortdoc order is ", doc_orders.id);
+        }else if(sortselectiontype === "movedoc"){
+            orders = d3.range(d_cnt).filter(function (d) {
+                return sel_docids.indexOf(d) == -1;
+            });
+            orders = sel_docids.concat(orders);
+        }else if(sortselectiontype === "cleardoc"){
+            sel_docs = [];
+            document.getElementById('selecteddocslist').innerHTML = "No Document Selected";
+        }
+
+        if(sortordertype === "file" || sortordertype === "id" || sortordertype === "auto"){
+            d3.selectAll(".cellrow").attr("opacity", 1);
+            d3.selectAll(".cellcolumn").attr("opacity", 0);
+            new_data.docids = temp_doc_nodes;
+            sel_docs = [];
+            document.getElementById('selecteddocslist').innerHTML = "No Document Selected";
             updateMatrixAndRedraw(new_data, orders, "left");
-            break;
         }
+        if(sortselectiontype === "sortdoc"){
+            d3.selectAll(".cellrow").attr("opacity", 0);
+            d3.selectAll(".cellcolumn").attr("opacity", 1);
+            sort_animate(orders, "topic");
+            for (var i = 0; i < orders.length; i++) {
+                if (orders[i] !== top_orders.id[i]) {
+                    updateMatrixAndRedraw(new_data, orders, "top");
+                    break;
+                }
+            }
+        }else{
+            d3.selectAll(".cellrow").attr("opacity", 1);
+            d3.selectAll(".cellcolumn").attr("opacity", 0);
+            sort_animate(orders, "document");
+            updateMatrixAndRedraw(new_data, orders, "left");
+        }
+
     }
+    oldProps = props;
 }
 // export function sort_matrix(type){
 //     console.log(doc_orders);

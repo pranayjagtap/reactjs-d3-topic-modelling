@@ -62,7 +62,7 @@ class Controls extends Component{
                     </div>
                     <div id='selectioncontrol' style={{display: this.state.selectioncontrol}}>
                         <div id='selectedtopicslist'>
-                            <div>No columns Selected</div>
+                            <div>No Topics Selected</div>
                         </div>
                         <div id='selectionbuttonscontainer'>
                             <div className='selbtns' onClick={() => this.selection("bringleft")}>&lt;</div>
