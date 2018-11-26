@@ -95,6 +95,7 @@ console.log("Data?:"+localStorage.getItem('dataset'));
             <div>
 
                 <div  className="navbar">
+                    <Link to="/"><span style={title}>Go to Corpus Viewer</span></Link>
                     <span style={title}>RankViewer</span>
                 </div>
 

@@ -132,6 +132,7 @@ console.log(document_id)
             <div>
 
                 <div  className="navbar">
+                    <Link to="/"><span style={title}>Go to Corpus Viewer</span></Link>
                     <span style={title}>Document View</span>
 
 

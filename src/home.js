@@ -37,7 +37,7 @@ class Home extends Component {
     constructor(props){
         super(props);
         if(localStorage.getItem('dataset') ===null){
-            console.log("not set")
+
             initial_db="Shake_50";
         }
         else
@@ -48,7 +48,11 @@ class Home extends Component {
             topic_view_id: 0,
             document_view_id:0,
             document_id:0,
-            value:initial_db
+
+            value:initial_db,
+
+            sort_controls: "none"
+
         }
         this.changeValue = this.changeValue.bind(this);
     };
@@ -68,6 +72,12 @@ class Home extends Component {
         this.setState({
             document_view_id: document_view_id,
             document_id:document_view_id
+        });
+    };
+
+    handleSortControl = (sort_params) => {
+        this.setState({
+            sort_controls: sort_params
         });
     };
 
@@ -108,22 +118,28 @@ class Home extends Component {
         });
     }
 
+
+
     render() {
         console.log("Finishing touches:"+this.state.value)
         var docs=this.fetchFile();
         const {topic_view_id} = this.state;
         const {document_view_id} = this.state;
         const {document_id} = this.state;
+        const {sort_controls} = this.state;
         var {handleTopicChange} = this;
         var {handleDocumentChange} = this;
+        var {handleSortControl} = this;
         return (
             <div>
-
                 <div  className="navbar">
+
                     <span style={title}>Serendip</span>
 
-                    <select className="custom-select" id="select_data" onChange={this.changeValue} value={this.state.value}>
 
+
+                    <Link to="/"><span style={title}>Serendip</span></Link>
+                    <select className="custom-select" id="select_data" onChange={this.changeValue} value={this.state.value}>
                         <option  value="Shake_50">Shakespeare</option>
                         <option value="Movie_review">Movie Reviews</option>
                     </select>
@@ -136,7 +152,9 @@ class Home extends Component {
                 <div style={m5}>
                     <div style={nopad} className="col-lg-2">
                         <div style={m5}>
-                            <Controls />
+                            <Controls
+                                handleSortControl = {handleSortControl}
+                            />
                         </div>
                         <div style={m5}>
 
@@ -147,6 +165,7 @@ class Home extends Component {
                         <div style={nopad} className="col-lg-8">
                             <div style={m5}>
                                 <Matrix
+                                    sort_controls = {sort_controls}
                                     handleTopicChange = {handleTopicChange}
                                     handleDocumentChange={handleDocumentChange}
                                 />

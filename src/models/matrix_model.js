@@ -6,6 +6,7 @@ var matrix_data = {
     weights:""
 }; //holds data to render matrix read from csv
 
+var new_data = {};
 //variable to store react functions and callbacks
 var globalfns;
 var x,y;
@@ -133,6 +134,7 @@ function init(){
 }
 
 function draw_matrix(data){
+    new_data = data;
     // clean the slate before drawing
     d3.select("#matrix").remove();
     matrix = d3.select("#matrix_canvas")
@@ -336,13 +338,21 @@ function draw_matrix(data){
     d3.selectAll(".column").on("click", function(d){
         console.log("updating topic view bar chart");
         globalfns.handleTopicChange(/*d[0].y*/(d3.event.target.id).toString().replace("Topic","")); //Changing argument to get current topic_name for topic view issue
-        sel_topics.push(d3.event.target.id.toString());
+        if (sel_topics.indexOf(d3.event.target.id).toString() == -1) {
+            sel_topics.push(d3.event.target.id.toString());
+        }
+        //make highlighted
         d3.select(this).select("rect")
             .attr("opacity", 1);
         d3.select(this).select("text")
             .attr("fill", "#fff")
-            .style("font-weight", "bolder")
-        //make highlighted
+            .style("font-weight", "bolder");
+
+        // add to selection box
+        document.getElementById('selectedtopicslist').innerHTML = "";
+        for(var i=0; i<sel_topics.length; i++){
+            document.getElementById('selectedtopicslist').innerHTML += sel_topics[i]+"<br/>";
+        }
     })
         .call(d3.behavior.drag()
         .origin(function(d) {
@@ -610,6 +620,84 @@ export function render_matrix(props){
     return this;
 }
 
+export function sort(props){
+    console.log("sort called", props);
+    d3.selectAll(".cellrow").attr("opacity", 0);
+    d3.selectAll(".cellcolumn").attr("opacity", 1);
+    var orders = top_orders.id;
+
+    var sel_topids = [];
+    for(var i=0; i<sel_topics.length; i++){
+        var idx = top_nodes.indexOf(sel_topics[i]);
+        if(idx >= -1){
+            sel_topids.push(idx);
+        }
+    }
+
+    //sort contorls
+    if(props.sort_controls.order === "max"){
+        let maxs = top_matrix.map((item) => {return d3.max(item)});
+        orders = d3.range(maxs.length).sort(function (a, b) {
+            return maxs[b].z- maxs[a].z
+        });
+    }else if(props.sort_controls.order === "min"){
+        let mins = top_matrix.map((item) => {return d3.min(item)});
+        orders = d3.range(mins.length).sort(function (a, b) {
+            return mins[b].z- mins[a].z
+        });
+    }else if(props.sort_controls.order === "mean"){
+        let means = top_matrix.map((item) => {return d3.mean(item, (d)=>{return d.z})});
+        orders = d3.range(means.length).sort(function (a, b) {
+            return means[b]- means[a]
+        });
+    }else if(props.sort_controls.selection === "bringleft"){
+        orders = d3.range(t_cnt).filter(function(d){
+            return sel_topids.indexOf(d) == -1;
+        });
+        orders = sel_topids.concat(orders);
+    }
+
+    // update data only if view has changed
+    sort_animate(orders, "topic");
+    for (var i = 0; i < orders.length; ++i) {
+        if (orders[i] !== top_orders.id[i]) {
+            updateMatrixAndRedraw(new_data, orders, "top");
+            break;
+        }
+    }
+
+    orders = doc_orders.id;
+    if(props.sort_controls.selection === "sort"){
+        d3.selectAll(".cellrow").attr("opacity", 1);
+        d3.selectAll(".cellcolumn").attr("opacity", 0);
+        var sums = []
+        for(var i=0; i<top_matrix[0].length; i++){
+            var sum = 0;
+            for(var j=0; j<sel_topics.length; j++){
+                sum += top_matrix[sel_topids[j]][i].z;
+            }
+            sums.push(sum);
+        }
+        orders = d3.range(sums.length).sort(function(a,b){
+            return sums[b] - sums[a];
+        })
+    }else if(props.sort_controls.selection === "clear"){
+        sel_topics = [];
+        document.getElementById('selectedtopicslist').innerHTML ="No Topics Selected";
+        updateMatrixAndRedraw(new_data, orders, "left");
+    }
+    // update data only if view has changed
+    //selection controls
+    // d3.selectAll(".cellrow").attr("opacity", 1);
+    // d3.selectAll(".cellcolumn").attr("opacity", 0);
+    sort_animate(orders, "document");
+    for (var i = 0; i < orders.length; i++) {
+        if (orders[i] !== doc_orders.id[i]) {
+            updateMatrixAndRedraw(new_data, orders, "left");
+            break;
+        }
+    }
+}
 // export function sort_matrix(type){
 //     console.log(doc_orders);
 //     sort_animate(doc_orders.id, "document");

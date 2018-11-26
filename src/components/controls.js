@@ -12,7 +12,10 @@ class Controls extends Component{
         this.state.selectioncontrol = "none";
         this.togglesort = this.togglesort.bind(this);
         this.toggleselection = this.toggleselection.bind(this);
-        this.sortcontrols = [{"key":-1, "value":"none"},{"key":1, "value":"min"},{"key":2, "value":"max"},{"key":2, "value":"mean"}]
+        this.change = this.change.bind(this);
+        this.selection = this.selection.bind(this);
+        this.sortcontrols = [{"key":"none", "value":"none"},{"key":"min", "value":"min"},{"key":"max", "value":"max"},{"key":"mean", "value":"mean"}];
+        this.handleSortControl = props.handleSortControl;
     };
 
     togglesort (){
@@ -30,6 +33,17 @@ class Controls extends Component{
         }
         this.setState({selectioncontrol:status});
     };
+
+    change(evt){
+        console.log("selected ", evt.target.value);
+        let type = evt.target.value;
+        this.handleSortControl({order: type});
+    }
+
+    selection(type){
+        console.log("clicked ", type);
+        this.handleSortControl({selection: type});
+    }
     render (){
         return (
             <div className="window side">
@@ -39,7 +53,7 @@ class Controls extends Component{
                     Sorting
                     </div>
                     <div id='sortcontrol' style={{display: this.state.sortcontrol}}>
-                    <select style={{width: '150px'}}>
+                    <select style={{width: '150px'}} onChange={this.change}>
                         { this.sortcontrols.map(item => <option value={item.key}>{item.value}</option>) }
                     </select>
                     </div>
@@ -51,11 +65,9 @@ class Controls extends Component{
                             <div>No columns Selected</div>
                         </div>
                         <div id='selectionbuttonscontainer'>
-                            <div className='selbtns'>a</div>
-                            <div className='selbtns'>b</div>
-                            <div className='selbtns'>c</div>
-                            <div className='selbtns'>d</div>
-                            <div className='selbtns'>e</div>
+                            <div className='selbtns' onClick={() => this.selection("bringleft")}>&lt;</div>
+                            <div className='selbtns' onClick={() => this.selection("sort")}>^</div>
+                            <div className='selbtns' onClick={() => this.selection("clear")}>X</div>
                         </div>
                     </div>
                 </div>
