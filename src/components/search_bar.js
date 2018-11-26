@@ -47,7 +47,7 @@
             //Set state call back starts
             this.setState({term},function(){
 
-                d3.text('./Datamodel/Metadata/Shake_50/TopicModel/HTML/'+document_id+'/tokens.csv', function (text) { //Needs generalization ||d3 data ext call back starts
+                d3.text('./Datamodel/Metadata/'+localStorage.getItem('dataset')+'/TopicModel/HTML/'+document_id+'/tokens.csv', function (text) { //Needs generalization ||d3 data ext call back starts
                     var data = d3.csv.parseRows(text);
                     topic_matrix = data;
                 }); //d3 call back ends
