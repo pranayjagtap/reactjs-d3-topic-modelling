@@ -71,6 +71,10 @@ class TopicList extends Component {
                 topic_count.push([i, json_data[i].num_tags]);
             }
 
+            topic_count.sort(function(a,b) {
+                return b[1] - a[1];
+            });
+
 
 
             var x = d3.scale.linear()

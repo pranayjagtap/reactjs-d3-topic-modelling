@@ -98,6 +98,7 @@ class RankView extends Component {
                    return i * 50+"px";
                })
                 .style('position','absolute')
+
                // .style("padding-left", "10px")
                 .style('top', 0)
 
