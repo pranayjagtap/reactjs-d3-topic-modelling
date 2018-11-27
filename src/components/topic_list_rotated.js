@@ -5,17 +5,49 @@ import  '../../style/style.css';
 import  '../../style/serendip.css';
 import {withFauxDOM} from 'react-faux-dom'
 
+var topics2=[];
 var topics="";
 var curr=this;
+var topic_matrix=[];
 class RankView extends Component {
     constructor(props) {
         super(props);
         var list_g = null;
 
+       /* for(var i=0;i<50;i++) {
+            topics2.push(0);
+        }
+        topics2.forEach(function(data,j){
+
+            d3.text('./Datamodel/Metadata/'+localStorage.getItem('dataset')+'/TopicModel/topics_freq/topic_'+j+'.csv', function (text) { //Needs generalization ||d3 data ext call back starts
+                var data = d3.csv.parseRows(text);
+                topics2[j]=data.toString();
+                topic_matrix = data;
+
+            }); //d3 call back ends
+
+
+        });
+*/
 
     }
 
     componentDidMount(){
+
+        for(var i=0;i<50;i++) {
+            topics2.push(0);
+        }
+        topics2.forEach(function(data,i){
+
+            d3.text('./Datamodel/Metadata/'+localStorage.getItem('dataset')+'/TopicModel/topics_freq/topic_'+i+'.csv', function (text) { //Needs generalization ||d3 data ext call back starts
+                var data = d3.csv.parseRows(text);
+                topics2[i]=data.toString();
+                topic_matrix = data;
+
+            }); //d3 call back ends
+
+
+        });
         this.drawPlot();
         this.forceUpdate();
     }
@@ -28,6 +60,8 @@ class RankView extends Component {
 
 
     drawPlot(){
+        console.log("I got called")
+        console.log(topics2)
         var curr=this;
         var data2 = {};
         var el =  this.props.connectFauxDOM('div', 'rankList');
@@ -41,11 +75,22 @@ class RankView extends Component {
         d3.json('./Data/rules.json', function (data) {
             //d3.json('./Datamodel/Metadata/'+localStorage.getItem('dataset')+'TopicModel/HTML/'+document_id+'/rules.json'),function(data){
 
-            var json_data=data;
+            /*var json_data=data;
             for (var i in json_data) {
                 topic_count.push([i, json_data[i].num_tags]);
             }
+            */
+var topic_list=[];
+           // console.log(topics)
+            for(var i=0;i<50;i++){
+                var split = topics2[i].split(",");
+                topic_list[i]=["topic_"+i,split.length/2];
+            }
+          //  console.log(topic_list)
 
+
+            topic_count=topic_list;
+            console.log(topic_count)
 
             var x = d3.scale.linear()
                 .domain([0,300])
@@ -106,8 +151,10 @@ class RankView extends Component {
                 .text(function (d) {
 
                     //    To avoid too many words with no width at the bottom
-                    if (x(d[1]) > 1)
+                    if (x(d[1]) > 1) {
+                        console.log(d[0])
                         return d[0];
+                    }
                 })
 
                 .style("font-weight", "bold")
@@ -128,11 +175,11 @@ class RankView extends Component {
 
         return (
             
-            <div className="window" style={{width:950, height:245, paddingLeft:2, paddingRight:2, paddingTop:2}}>
+            <div className="window" style={{width:950, height:500, paddingLeft:2, paddingRight:2, paddingTop:2}}>
             <div className="sidenavbar">Topic List
 
 </div>
-                <div className="topic_rotated_workspace" style={{width:940, paddingTop:2}} >
+                <div className="topic_rotated_workspace" style={{width:940,height:500, paddingTop:2}} >
                     <div className="row">
 
                         <div className="col-lg-2" style={{height: '950px'}}>

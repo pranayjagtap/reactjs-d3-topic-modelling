@@ -90,15 +90,14 @@ var docs="";
        // document=this.fetchFile();
 
         /*var document=require("../Data/1KINGHENRYIV.csv");*/
-console.log("Data?:"+localStorage.getItem('dataset'));
+
         return (
             <div>
 
                 <div  className="navbar">
-                    <Link to="/"><span style={title}>Go to Corpus Viewer</span></Link>
                     <span style={title}>RankViewer</span>
                 </div>
-
+                <Link to="/"><span style={title}>Go to Corpus Viewer</span></Link>
                 <SearchBarRank className="col-lg-8"
                  callbackParent={this.fetchAndThrow}/>
 
