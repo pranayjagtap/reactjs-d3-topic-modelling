@@ -9,13 +9,14 @@ class Popup extends React.Component {
         var curr=this;
         console.log("Hi")
         var result_list=[]
-
+           // result_list.push(<div class="button-box col-lg-12">)
         topics.forEach(function(data,i){
 
-            result_list.push (<li><button type="button" className="btn btn-light" onClick={() =>curr.props.callFromPop(topics[i])}>{topics[i]}</button></li>);
-            result_list.push(<br/>)
+            result_list.push (<button type="button" className="btn btn-light" onClick={() =>curr.props.callFromPop(topics[i])}>{topics[i]}</button>)
+            result_list.push("  ")
+            //result_list.push(<br/>)
         });
-
+        //result_list.push(</div>)
         return result_list;
     }
     render() {

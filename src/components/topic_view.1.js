@@ -93,33 +93,20 @@ console.log(topic_name)
                      })
                      */
                     .append("div")
-                    .on('mouseover',  ()=> {
-                        // color=
 
-                        curr.setState({"background": 'orange'});
-
-                        /*d3.select(this)
-                            .style("background", "orange")
-                            .append('text')
-                            .text(function (d) {
-                                return '    =' + format(d[1])
-                            });*/
-                    })
-                    .on("mouseout",  (d, i) =>{
-
-                        curr.setState({'background':i % 2 == 0 ? '#98d669' : "#77bb43"});
-                        /* d3.select(this).style("background-color", function () {
-                             return i % 2 == 0 ? '#98d669' : "#77bb43";
-                         }).select("text").remove();
-                         ;*/
-                    })
                     .style("width", function (d) {
-                        return x(d[1]) + "px";
+                        return x(d[1]) + "%";
                     })
                     .style("background", function (d, i) {
-                        return i % 2 == 0 ? '#98d669' : "#77bb43"
+                        return i % 2 == 0 ? '#000' : "#444"
                     })
-                   
+                    .style("margin", "2px")
+                    .style("border-radius", "0 10px 10px 0")
+                    .style("padding", "2px")
+                    .style("font-weight", 700)
+                    .style("font-size", "12px")
+                    .style("color", "white")
+                    .style("border", "1px solid black")
                     .text(function (d) {
 
                         /*To avoid too many words with no width at the bottom*/
@@ -138,7 +125,7 @@ console.log(topic_name)
                     <div className="sideworkspace1" style={{height:350}}>
                         <div className="row">
                             <div className="col-lg-1"/>
-                            <div className="col-lg-2">
+                            <div className="col-lg-8">
                                 <div id="topic_canvas" width="100%" height="100%">
                                     {
                                         this.props.chart

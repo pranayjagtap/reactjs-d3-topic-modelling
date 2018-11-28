@@ -79,7 +79,7 @@
                 <div className="md-form active-cyan-2 mb-3">
                     <div className="row">
                         <div className="col-lg-6">
-                            <input  className="form-control col-lg-6" placeholder="Enter a word" aria-label="Search"
+                            <input  className="form-control col-lg-6" placeholder="Enter a word for context suggestion" aria-label="Search"
                                     value={this.state.term}
                                     onChange={event=>{this.getTopics(event.target.value);}} />
                         </div>

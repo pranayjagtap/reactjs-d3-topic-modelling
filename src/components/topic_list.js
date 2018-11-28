@@ -114,7 +114,7 @@ class TopicList extends Component {
 
                 .style("width", function (d) {
 
-                    return x(d[1]) + "px";
+                    return x(d[1]) + "%";
                 })
                 .style("background", function (d, i) {
                     return i % 2 == 0 ? '#000' : "#444"
@@ -157,7 +157,7 @@ class TopicList extends Component {
                 <div className="topic_workspace">
                     <div className="row">
 
-                        <div className="col-lg-2" style={{height: '550px'}}>
+                        <div className="col-lg-6" style={{height: '550px'}}>
                             <div id="topic_list" width="100%" height="100%">
                                 {
 

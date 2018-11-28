@@ -14,7 +14,7 @@ class RankView extends Component {
         super(props);
         var list_g = null;
 
-       /* for(var i=0;i<50;i++) {
+        for(var i=0;i<50;i++) {
             topics2.push(0);
         }
         topics2.forEach(function(data,j){
@@ -28,7 +28,7 @@ class RankView extends Component {
 
 
         });
-*/
+
 
     }
 
@@ -118,7 +118,7 @@ var topic_list=[];
 
                 .append("div")
                 .on('click',  (d)=> {
-
+console.log(d)
                     console.log("click")
                     var topic_name=(d[0].toString())
                     console.log("rank view :Callback to Parent with-->"+topic_name)
@@ -136,7 +136,7 @@ var topic_list=[];
 
                 .style("background", function (d, i) {
 
-                    return i % 2 == 0 ? '#8B9FFC  ' : "#AEBCFC"
+                    return i % 2 == 0 ? '#000' : "#444"
                 })
                .style('left',function(d,i){
                    console.log()
@@ -146,7 +146,13 @@ var topic_list=[];
 
                // .style("padding-left", "10px")
                 .style('top', 0)
-
+               //.style("margin", "2px")
+               .style("border-radius", "0 10px 10px 0")
+               //.style("padding", "2px")
+               .style("font-weight", 700)
+               .style("font-size", "12px")
+               .style("color", "white")
+               .style("border", "1px solid black")
 
                 .text(function (d) {
 

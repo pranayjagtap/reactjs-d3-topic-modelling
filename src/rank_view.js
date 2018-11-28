@@ -95,13 +95,14 @@ var docs="";
             <div>
 
                 <div  className="navbar">
+                    <Link to="/"><span style={title}>Go to Corpus Viewer</span></Link>
                     <span style={title}>RankViewer</span>
                 </div>
-                <Link to="/"><span style={title}>Go to Corpus Viewer</span></Link>
+
                 <SearchBarRank className="col-lg-8"
                  callbackParent={this.fetchAndThrow}/>
 
-
+<div className="row">
                 <div style={m5}>
                     <div style={nopad} className="col-lg-8">
                         <div style={m5}>
@@ -128,6 +129,7 @@ var docs="";
                         </div>
 
                     </div>
+</div>
                 </div>
 
 

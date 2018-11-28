@@ -116,26 +116,8 @@ class TopicView extends Component {
                      */
                     .append("div")
                     .filter(function(d) { return x(d[1]) > 10 })
-                    .on('mouseover',  ()=> {
-                        // color=
 
-                        //curr.setState({"background": 'orange'});
 
-                        /*d3.select(this)
-                            .style("background", "orange")
-                            .append('text')
-                            .text(function (d) {
-                                return '    =' + format(d[1])
-                            });*/
-                    })
-                    .on("mouseout",  (d, i) =>{
-
-                        //curr.setState({'background':i % 2 == 0 ? '#98d669' : "#77bb43"});
-                        /* d3.select(this).style("background-color", function () {
-                             return i % 2 == 0 ? '#98d669' : "#77bb43";
-                         }).select("text").remove();
-                         ;*/
-                    })
                     .style("width", function (d) {
                         return 0.9*x(d[1]) + "%";
                     })
