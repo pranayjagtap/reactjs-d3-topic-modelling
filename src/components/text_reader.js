@@ -178,7 +178,7 @@
                     console.log("hello")
                     var docText = document.querySelector('#TextBox');
                     //Regex for word search
-                    var regex = new RegExp('(\\s' + tags[i][0] + '\\s)', 'ig');
+                    var regex = new RegExp('(\\s' + tags[i][0] + ')', 'ig');
                     console.log(x(density[i][1]))
                     //Replace word with highlighted version of the word along with set opacity
                     text = text.replace(regex, '<span id="highlight" class="highlight" style="opacity:' + (x(density[i][1]))*10 + '">$1</span>');
