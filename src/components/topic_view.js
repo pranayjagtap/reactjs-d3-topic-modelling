@@ -42,11 +42,13 @@ class TopicView extends Component {
     };
     componentWillReceiveProps(newProps) {
         console.log("new props in topic_view", newProps);
-        if(! newProps.topic_view_id <= 0){
+        console.log(newProps.topic_view_id)
+        console.log(newProps.topic_view_id)
+        if( newProps.topic_view_id !== "-1"){
             this.setState({topic_id: newProps.topic_view_id,topic_title: "topic_"+(newProps.topic_view_id/*+1*/)}, //removed +1 for topic view issue
-               function(){
-                   this.draw_d3();
-            });
+                function(){
+                    this.draw_d3();
+                });
 
         }
     };
@@ -62,7 +64,7 @@ class TopicView extends Component {
         // var el =  this.props.connectFauxDOM('div', 'chart');
         // var el2=document.querySelector('div');
 
-        if(this.props.topic_view_id <= 0){
+        if(this.props.topic_view_id === "-1"){
             console.log("empty text holder");
             d3.select('#topic_canvas').selectAll('div').data([0]).enter()
                 .append("div")
@@ -74,7 +76,7 @@ class TopicView extends Component {
         }else{
             console.log("calling remove");
             d3.select('#topic_canvas').selectAll('div').remove();
-            var filepath = "./Datamodel/Metadata/"+localStorage.getItem('dataset')+"/TopicModel/topics_freq/topic_"+(this.props.topic_view_id-1)+".csv";
+            var filepath = "./Datamodel/Metadata/"+localStorage.getItem('dataset')+"/TopicModel/topics_freq/topic_"+(this.props.topic_view_id)+".csv";
             //We will pass path as a variable with file name according to topic selected by user
             d3.text(filepath,  (data) => {
                 data2 = d3.csv.parseRows(data);
@@ -140,56 +142,56 @@ class TopicView extends Component {
         }
         this.forceUpdate();
     }
-        /*Added div instead of svg on 20-Oct-2018. SVG didn't render div tags so letting it cascade inside parent div.
-         * Also added enabled overflow in serendip.css file for sideworkspace
-         * -Pranay
-         * */
+    /*Added div instead of svg on 20-Oct-2018. SVG didn't render div tags so letting it cascade inside parent div.
+     * Also added enabled overflow in serendip.css file for sideworkspace
+     * -Pranay
+     * */
 
-        showtopics() {
-            document.getElementById("topic_canvas").style.display = "block";
-            document.getElementById("topic_stats").style.display = "none";
-        }
-        showstats() {
-            document.getElementById("topic_canvas").style.display = "none";
-            document.getElementById("topic_stats").style.display = "block";
-        }
-        render() {
-            console.log("Pranay")
-            return (
-                <div className="window side">
-                    <div className="sidenavbar">{this.state.topic_title}
-                        <div className="sidebtnctrl">
-                            <div className="sidebtns" onClick={this.showtopics}>Topics</div>
-                            <div className="sidebtns" onClick={this.showstats}>Stats</div>
-                        </div>
+    showtopics() {
+        document.getElementById("topic_canvas").style.display = "block";
+        document.getElementById("topic_stats").style.display = "none";
+    }
+    showstats() {
+        document.getElementById("topic_canvas").style.display = "none";
+        document.getElementById("topic_stats").style.display = "block";
+    }
+    render() {
+        console.log("Pranay")
+        return (
+            <div className="window side">
+                <div className="sidenavbar">{this.state.topic_title}
+                    <div className="sidebtnctrl">
+                        <div className="sidebtns" onClick={this.showtopics}>Topics</div>
+                        <div className="sidebtns" onClick={this.showstats}>Stats</div>
                     </div>
+                </div>
 
-                    <div className="sideworkspace">
-                        <div className="row">
-                            <div style={{width:"90%", padding: "5px", margin:"0px 15px"}}>
-                                <div id="topic_canvas" width="100%" height="100%">
-                                    {
-                                        this.props.chart
-                                    }
-                                </div>
-                                <div id="topic_stats" style={{display: "none"}}>
-                                    Topic Mean: {this.state.mean}<br/>
-                                    Topic Max: {this.state.max}<br/>
-                                    Topic Min: {this.state.min}<br/>
-                                </div>
+                <div className="sideworkspace">
+                    <div className="row">
+                        <div style={{width:"90%", padding: "5px", margin:"0px 15px"}}>
+                            <div id="topic_canvas" width="100%" height="100%">
+                                {
+                                    this.props.chart
+                                }
+                            </div>
+                            <div id="topic_stats" style={{display: "none"}}>
+                                Topic Mean: {this.state.mean}<br/>
+                                Topic Max: {this.state.max}<br/>
+                                Topic Min: {this.state.min}<br/>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-            );
-
-        }
+        );
 
     }
 
+}
 
-    //tvchng1 ends
+
+//tvchng1 ends
 
 
-    export default withFauxDOM(TopicView);
+export default withFauxDOM(TopicView);

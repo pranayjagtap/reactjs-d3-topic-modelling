@@ -45,7 +45,7 @@ class Home extends Component {
 
         this.state = {
             doc_view_id: -1,
-            topic_view_id: 0,
+            topic_view_id: "-1",  //27-nov pranay from 0 to -1
             document_view_id:0,
             document_id:0,
 
