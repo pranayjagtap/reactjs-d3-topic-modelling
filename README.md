@@ -6,6 +6,7 @@ Thank you to him and his team for starter project.
 Link to the system: http://serendip-asu.s3-website-us-west-1.amazonaws.com/
 
 Demo video: https://drive.google.com/file/d/1IYfnhB_c5Rr1IpxBvf8bhlc_non3FzaN/view?usp=sharing 
+
 Poster: https://drive.google.com/file/d/1CGAILfI6Y-u2fn-s5CZhuRuK81_nqGLK/view?usp=sharing
 
 Serendip is tool for exploration of long tedious texts and making “serendipitous discoveries” between them. Technology Stack: ReactJS, D3, Javascript, HTML,CSS, Bootstrap
